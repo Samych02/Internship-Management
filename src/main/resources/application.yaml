@@ -1,0 +1,19 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: Internship-Management-Backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/Internship-Management
+    username: admin
+    password: admin
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: false
+    hibernate:
+      ddl-auto: update
