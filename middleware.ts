@@ -6,12 +6,11 @@ export default auth(async (request) => {
   if (!session && (!"/login".includes(nextUrl.pathname) || nextUrl.pathname == "/")) {
     return Response.redirect(new URL("/login", nextUrl));
   }
-  if (session && "/login".includes(nextUrl.pathname) && !"/".includes(nextUrl.pathname)) {
-    console.log(3)
-    return Response.redirect(new URL("/", nextUrl));
+  if (session && "/login".includes(nextUrl.pathname) && !"/dashboard".includes(nextUrl.pathname)) {
+    return Response.redirect(new URL("/dashboard", nextUrl));
   }
 })
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!api|static|.*\\..*|_next|favicon.ico).*)"],
 }

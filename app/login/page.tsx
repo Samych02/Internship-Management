@@ -9,14 +9,13 @@ export async function loginAction(data: { email: string, password: string }) {
   "use server"
   try {
     await signIn('credentials', {
-      redirectTo: "/",
+      redirectTo: "/dashboard",
       email: data.email,
       password: data.password,
     })
   } catch (error) {
     if (error instanceof AuthError) {
       redirect("/login?error=credentials");
-
     } else {
       throw error;
     }
