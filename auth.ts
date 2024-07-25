@@ -1,5 +1,7 @@
 import NextAuth, {DefaultSession} from "next-auth"
 import Credentials from "next-auth/providers/credentials"
+import {JWT} from "next-auth/jwt"
+
 
 declare module "next-auth" {
   interface User {
