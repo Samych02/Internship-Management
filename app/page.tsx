@@ -1,23 +1,20 @@
 import {auth, signOut} from "@/auth";
+import {Button} from "@mantine/core";
 
 export default async function Home() {
   const session = await auth()
-  console.log(session?.user)
+  // const [opened, { toggle }] = useDisclosure();
 
   return (
       <>
-        <p>{session?.user?.id}</p>
-        <p>{session?.user?.userRole}</p>
-        <p>{session?.user?.email}</p>
-        <form
-            action={async () => {
-              "use server"
-              await signOut({redirectTo: "/login"})
-            }}
-        >
-          <button type="submit">Sign Out</button>
+        <h1>{session?.user.email}</h1>
+        {/*<BasicAppShell/>*/}
+        <form action={async () => {
+          "use server"
+          await signOut()
+        }}>
+          <Button type="submit">logout</Button>
         </form>
       </>
-
-  )
+  );
 }

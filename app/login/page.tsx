@@ -1,16 +1,13 @@
 "use client"
-import {Button, TextInput, useMantineTheme} from "@mantine/core";
+import {Alert, Button, TextInput} from "@mantine/core";
 import {hasLength, isEmail, useForm} from "@mantine/form";
 import handleLoginSubmit from "@/app/login/handleLoginSubmit";
 import {useSearchParams} from "next/navigation"
-
+import {IconAlertCircle} from "@tabler/icons-react";
 
 export default function Login() {
-  const theme = useMantineTheme();
-
   const searchParams = useSearchParams()
 
-  console.log(searchParams.get("error") == "credentials")
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {email: "", password: ""},
@@ -24,26 +21,51 @@ export default function Login() {
     handleLoginSubmit(data)
   })
 
-  return (
-      <form onSubmit={handleSubmit}>
-        <TextInput
-            {...form.getInputProps('email')}
-            key={form.key('email')}
-            mt="md"
-            label="Email"
-            placeholder="Email"
-        />
-        <TextInput
-            {...form.getInputProps('password')}
-            key={form.key('password')}
-            mt="md"
-            label="Mot de passe"
-            placeholder="Mot de passe"
-            type="password"
-        />
-        <Button type="submit" mt="md">
-          Submit
-        </Button>
-      </form>
+  return (<div className="flex flex-col items-center w-full mt-[10rem]">
+        <div className="w-[25rem]">
+          {(searchParams.get("error") == "credentials") ?
+              <Alert
+                  color="red"
+                  title="Email et/ou mot de passe incorrect!"
+                  icon={<IconAlertCircle/>}
+                  className="opacity-1 rounded-lg"
+              /> :
+              <Alert
+                  title="deed"
+                  className="opacity-0"/>
+          }
+
+          <form
+              onSubmit={handleSubmit}
+              className="flex flex-col justify-items-center border-2 p-5 rounded-lg mt-3"
+          >
+
+            <TextInput
+                {...form.getInputProps('email')}
+                key={form.key('email')}
+                label="Email"
+                placeholder="Email"
+                className="mb-5"
+            />
+
+            <TextInput
+                {...form.getInputProps('password')}
+                key={form.key('password')}
+                label="Mot de passe"
+                placeholder="Mot de passe"
+                type="password"
+                className="mb-8"
+            />
+
+            <Button
+                type="submit"
+                className=""
+            >
+              Se connecter
+            </Button>
+
+          </form>
+        </div>
+      </div>
   );
 }
