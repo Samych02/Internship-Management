@@ -38,7 +38,7 @@ export default function LoginForm() {
 
           <form
               onSubmit={submit}
-              className="flex flex-col justify-items-center border-2 p-5 rounded-lg mt-3 border-black"
+              className="flex flex-col justify-items-center border-2 p-5 rounded-lg mt-3 border-[var(--mantine-color-cb-9)]"
           >
 
             <TextInput
