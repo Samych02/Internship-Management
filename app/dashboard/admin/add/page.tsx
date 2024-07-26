@@ -1,6 +1,5 @@
 "use server"
 import AddingUserForm from "@/app/dashboard/admin/add/addingUserForm";
-import {redirect} from "next/navigation";
 
 export async function addingUserAction(data: {
   email: string,
@@ -10,6 +9,7 @@ export async function addingUserAction(data: {
   lastName: string
 }) {
   "use server"
+  console.log(data)
   let response = await fetch('http://localhost:8081/users/register', {
     method: "POST",
     body: JSON.stringify({
@@ -23,9 +23,7 @@ export async function addingUserAction(data: {
       'Content-type': 'application/json'
     }
   })
-  if (response.ok) {
-    redirect("/dashboard/admin/add?success=true")
-  }
+  return response.ok
 }
 
 export async function isEmailUsed(email: string) {
