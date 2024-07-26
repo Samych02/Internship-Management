@@ -15,7 +15,7 @@ export async function loginAction(data: { email: string, password: string }) {
     })
   } catch (error) {
     if (error instanceof AuthError) {
-      redirect("/login?error=credentials");
+      redirect("/login?error=Email et/ou mot de passe incorrect!");
     } else {
       throw error;
     }

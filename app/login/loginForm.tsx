@@ -2,7 +2,7 @@
 
 import {useSearchParams} from "next/navigation";
 import {hasLength, isEmail, useForm} from "@mantine/form";
-import {Alert, Button, TextInput} from "@mantine/core";
+import {Alert, Button, PasswordInput, TextInput} from "@mantine/core";
 import {IconAlertCircle} from "@tabler/icons-react";
 import {loginAction} from "@/app/login/page";
 
@@ -13,7 +13,7 @@ export default function LoginForm() {
     mode: "uncontrolled",
     initialValues: {email: "", password: ""},
     validate: {
-      email: isEmail("Email incorrect"),
+      email: isEmail("Email Invalid"),
       password: hasLength({min: 1}, "Mot de passe requis"),
     },
   });
@@ -24,15 +24,25 @@ export default function LoginForm() {
 
   return (<div className="flex flex-col items-center w-full mt-[10rem]">
         <div className="w-[25rem]">
-          {(searchParams.get("error") == "credentials") ?
+          {(searchParams.get("error") != null) ?
               <Alert
-                  color="red"
-                  title="Email et/ou mot de passe incorrect!"
+                  styles={{
+                    root: {
+                      backgroundColor: "var(--mantine-color-red-2)"
+                    },
+                    label: {
+                      color: "var(--mantine-color-red-9)"
+                    }, icon: {
+                      color: "var(--mantine-color-red-9)"
+                    }
+                  }}
+                  title={searchParams.get("error")}
                   icon={<IconAlertCircle/>}
-                  className="opacity-1 rounded-lg"
+                  // className="opacity-1 rounded-lg justify-end w-full"
               /> :
               <Alert
-                  title="deed"
+                  // did this so the form wont move down when the alert appears
+                  title="no error"
                   className="opacity-0"/>
           }
 
@@ -49,18 +59,16 @@ export default function LoginForm() {
                 className="mb-5"
             />
 
-            <TextInput
+            <PasswordInput
                 {...form.getInputProps('password')}
                 key={form.key('password')}
                 label="Mot de passe"
                 placeholder="Mot de passe"
-                type="password"
                 className="mb-8"
             />
 
             <Button
                 type="submit"
-                className=""
             >
               Se connecter
             </Button>
