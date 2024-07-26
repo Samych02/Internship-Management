@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 public class UserService {
   private final UserRepository userRepository;
 
+  public Boolean isEmailUsed(String email) {
+    User user = userRepository.findByEmail(email);
+    return user != null;
+  }
+
   public void register(RegisterDTO registerDTO) {
     registerDTO.setPassword(new BCryptPasswordEncoder().encode(registerDTO.getPassword()));
     User user = new User(registerDTO);

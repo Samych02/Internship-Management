@@ -6,6 +6,7 @@ import com.capgemini.Internship_Management_Backend.User.model.UserRole;
 import com.capgemini.Internship_Management_Backend.User.service.UserService;
 import com.capgemini.Internship_Management_Backend.common.httpresponse.util.ResponseUtil;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,20 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class UsersController {
   private final UserService userService;
+
+  @GetMapping("isEmailUsed")
+  public ResponseEntity<?> isEmailUsed(@RequestParam @Valid @Email String email) {
+    Boolean isEmailUsed = userService.isEmailUsed(email);
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(
+                    ResponseUtil
+                            .successResponse((isEmailUsed ? "Email used" : "Email not used"),
+                                    Collections.singletonMap("isEmailUsed", isEmailUsed)
+                            )
+            );
+
+  }
 
   @PostMapping("register")
   public ResponseEntity<?> register(@RequestBody @Valid RegisterDTO registerDTO) {
