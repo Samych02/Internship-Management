@@ -1,20 +1,10 @@
-import {auth, signOut} from "@/auth";
-import {Button} from "@mantine/core";
+import {auth} from "@/auth";
+import {redirect} from "next/navigation";
 
 export default async function Home() {
   const session = await auth()
-  // const [opened, { toggle }] = useDisclosure();
-
+  const link = session?.user.userRole?.toLowerCase()
   return (
-      <>
-        <h1>{session?.user.email}</h1>
-        {/*<BasicAppShell/>*/}
-        <form action={async () => {
-          "use server"
-          await signOut()
-        }}>
-          <Button type="submit">logout</Button>
-        </form>
-      </>
+      redirect(`/dashboard/${link}`)
   );
 }

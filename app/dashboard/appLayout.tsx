@@ -3,13 +3,14 @@ import {AppShell, NavLink, Text} from "@mantine/core";
 import Image from "next/image";
 import React from "react";
 import {usePathname} from "next/navigation";
+import {IconPower} from "@tabler/icons-react";
+import {logout} from "@/app/dashboard/layout";
 
-export default function TTT({children, data}) {
+export default function AppLayout({children, data}: { children: React.ReactNode, data: any }) {
   function NavItem({item}: { item: any }) {
     const pathname = usePathname()
     return (
         <NavLink
-            autoContrast={true}
             href={item.href}
             key={item.label}
             active={pathname === item.href}
@@ -46,8 +47,21 @@ export default function TTT({children, data}) {
         <AppShell.Navbar p="md">{
           <div className="flex flex-col h-full justify-between">
             <div>
-              {data?.map((item, key) => (<NavItem item={item} key={key}/>))}
+              {data?.map((item: any, key: React.Key | null | undefined) => (<NavItem item={item} key={key}/>))}
             </div>
+            <NavLink
+                onClick={() => {
+                  logout()
+                }}
+                active={true}
+                color="red"
+                label="Se déconnecter"
+                leftSection={<IconPower size="1rem" stroke={1.5}/>}
+                styles={{
+                  root: {
+                    marginBottom: "1rem", borderRadius: 5,
+                  },
+                }}/>
           </div>
 
         }</AppShell.Navbar>

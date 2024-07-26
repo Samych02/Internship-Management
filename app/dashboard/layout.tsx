@@ -1,7 +1,13 @@
+"use server"
 import React from "react";
-import {auth} from "@/auth";
-import TTT from "@/app/dashboard/test";
+import {auth, signOut} from "@/auth";
 import {IconGauge, IconUserPlus, IconUsersGroup} from "@tabler/icons-react";
+import AppLayout from "@/app/dashboard/appLayout";
+
+export async function logout() {
+  "use server"
+  await signOut({redirectTo: "/login"});
+}
 
 export default async function Layout({children}: { children: React.ReactNode }) {
   const session = await auth()
@@ -30,7 +36,7 @@ export default async function Layout({children}: { children: React.ReactNode }) 
   }
 
   return (
-      <TTT data={data}>{children}</TTT>
+      <AppLayout data={data}>{children}</AppLayout>
 
   )
 }
