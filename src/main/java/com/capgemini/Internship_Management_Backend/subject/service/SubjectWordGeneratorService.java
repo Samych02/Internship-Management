@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SubjectService {
+public class SubjectWordGeneratorService {
 
   public void addSubject(AddSubjectDTO addSubjectDTO) {
     Subject subject = new Subject(addSubjectDTO);

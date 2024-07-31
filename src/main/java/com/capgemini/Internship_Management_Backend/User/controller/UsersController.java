@@ -20,10 +20,9 @@ public class UsersController {
   private final UserService userService;
 
   @GetMapping("/check-email-used")
-  public ResponseEntity<?> isEmailUsed(@RequestParam @Valid @Email String email) {
+  public ResponseEntity<?> checkEmailUsed(@RequestParam @Valid @Email String email) {
     Boolean isEmailUsed = userService.isEmailUsed(email);
     return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse((isEmailUsed ? "Email used" : "Email not used"), Collections.singletonMap("isEmailUsed", isEmailUsed)));
-
   }
 
   @PostMapping("register")
