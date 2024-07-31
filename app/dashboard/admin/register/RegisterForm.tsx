@@ -8,7 +8,6 @@ import {useDisclosure} from "@mantine/hooks";
 import {IconAlertCircle} from "@tabler/icons-react";
 
 export default function RegisterForm() {
-  const stepNumber = 2
   const [active, setActive] = useState(0);
   let mailUsed = true
   const [opened, {open, close}] = useDisclosure(false);
