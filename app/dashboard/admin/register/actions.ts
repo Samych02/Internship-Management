@@ -1,7 +1,6 @@
 "use server"
-import AddingUserForm from "@/app/dashboard/admin/add/addingUserForm";
 
-export async function addingUserAction(data: {
+export async function registerAction(data: {
   email: string,
   password: string,
   userRole: string,
@@ -9,8 +8,7 @@ export async function addingUserAction(data: {
   lastName: string
 }) {
   "use server"
-  console.log(data)
-  let response = await fetch('http://localhost:8081/users/register', {
+  let response = await fetch('http://localhost:8081/api/users/register', {
     method: "POST",
     body: JSON.stringify({
       email: data.email,
@@ -26,19 +24,11 @@ export async function addingUserAction(data: {
   return response.ok
 }
 
-export async function isEmailUsed(email: string) {
-  let response = await fetch(`http://localhost:8081/users/isEmailUsed?email=${email}`, {
+export async function checkEmailUsedAction(email: string) {
+  let response = await fetch(`http://localhost:8081/api/users/check-email-used?email=${email}`, {
     method: "GET",
   })
   response = await response.json()
   // @ts-ignore
   return response.body?.isEmailUsed
-}
-
-export default async function AddingPage() {
-  return (
-      <div className="flex flex-col items-center">
-        <AddingUserForm/>
-      </div>
-  )
 }

@@ -16,7 +16,7 @@ export default async function Layout({children}: { children: React.ReactNode }) 
     {
       icon: <IconUserPlus size="1rem" stroke={1.5}/>,
       label: 'Ajouter un nouveau utilisateur',
-      href: "/dashboard/admin/add"
+      href: "/dashboard/admin/register"
     },
   ]
   const managerNav = [

@@ -39,21 +39,8 @@ export default function LoginForm() {
               className="flex flex-col w-[25rem] justify-items-center border-2 p-5 rounded-lg mt-3 border-[var(--mantine-color-cb-9)]"
           >
             {opened && <Alert
-                styles={{
-                  root: {
-                    backgroundColor: "var(--mantine-color-red-2)",
-                    marginBottom: "1rem"
-                  },
-                  label: {
-                    color: "var(--mantine-color-red-9)"
-                  },
-                  icon: {
-                    color: "var(--mantine-color-red-9)"
-                  },
-                  closeButton: {
-                    color: "var(--mantine-color-red-9)"
-                  }
-                }}
+                color="red"
+                mb="1rem"
                 title={"Email et/ou mot de passe incorrect"}
                 icon={<IconAlertCircle/>}
                 withCloseButton

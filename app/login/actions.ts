@@ -6,7 +6,7 @@ export async function loginAction(data: { email: string, password: string }) {
   "use server"
   try {
     await signIn('credentials', {
-      redirectTo: "/dashboard",
+      redirectTo: "/",
       email: data.email,
       password: data.password,
     })

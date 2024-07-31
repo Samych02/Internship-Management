@@ -1,16 +1,18 @@
 "use client"
-import {useState} from 'react';
-import {Button, Group, NativeSelect, Notification, PasswordInput, Stepper, TextInput} from '@mantine/core';
+import {FormEvent, useState} from 'react';
+import {Alert, Button, Group, Loader, NativeSelect, PasswordInput, Stepper, TextInput} from '@mantine/core';
 import {useForm} from '@mantine/form';
-import {addingUserAction, isEmailUsed} from "@/app/dashboard/admin/add/page";
-import {IconCheck} from "@tabler/icons-react";
-import {useSearchParams} from "next/navigation";
+import ROLES from "@/app/lib/roles";
+import {checkEmailUsedAction, registerAction} from "@/app/dashboard/admin/register/actions";
+import {useDisclosure} from "@mantine/hooks";
+import {IconAlertCircle} from "@tabler/icons-react";
 
-export default function AddingUserForm() {
-  const searchParams = useSearchParams()
+export default function RegisterForm() {
+  const stepNumber = 2
   const [active, setActive] = useState(0);
-  const [opacity, setOpacity] = useState(0);
   let mailUsed = true
+  const [opened, {open, close}] = useDisclosure(false);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -37,7 +39,7 @@ export default function AddingUserForm() {
                   ? "Mot de passe requis"
                   : null,
           userRole:
-              ["ADMIN", "MANAGER"].includes(values.userRole)
+              Object.entries(ROLES).map(([key]) => (key)).includes(values.userRole)
                   ? null
                   : "Role requis",
         };
@@ -58,33 +60,34 @@ export default function AddingUserForm() {
     },
   });
 
-  const nextStep = () => {
-    setOpacity(0)
-    setActive((current) => {
-      if (form.validate().hasErrors) {
-        return current;
+  const nextStep = () => setActive((current) => (form.validate().hasErrors ? current : current + 1))
+
+  const prevStep = () => setActive((current) => (current - 1));
+
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    form.onSubmit(async (data) => {
+      setLoading(true)
+      if (await registerAction(data)) {
+        open()
+        setLoading(false)
+        form.reset()
+        setActive(0);
       }
-      return current < 2 ? current + 1 : current;
-    });
+    })()
   }
 
-  const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
-
-  const submit = form.onSubmit(async (data) => {
-    if (await addingUserAction(data)) setOpacity(1)
-    setActive(0)
-    form.reset()
-  })
-
   return (<div className="w-[50%]">
-        <Notification color="green" title="Utilisateur ajouté avec succes"
-                      className="w-full border-[2px] mb-5 border-green-600"
-                      style={{opacity: opacity}}
-                      icon={<IconCheck width={20} height={20}/>}
-                      onClose={
-                        () => setOpacity(0)
-                      }/>
+
         <form onSubmit={submit}>
+          {opened && <Alert
+              color="green"
+              mb="1rem"
+              title={"Utilisateur ajouté avec succès"}
+              icon={<IconAlertCircle/>}
+              withCloseButton
+              onClose={close}
+          />}
           <Stepper active={active}>
             <Stepper.Step label="Identifiants">
               <TextInput
@@ -106,8 +109,7 @@ export default function AddingUserForm() {
                   label="Role"
                   data={[
                     {label: "Choisissez une option", value: ""},
-                    {label: 'Administrateur', value: 'ADMIN'},
-                    {label: 'Manager', value: 'MANAGER'},
+                    ...Object.entries(ROLES).map(([key, value]) => ({label: value, value: key}))
                   ]}
                   {...form.getInputProps('userRole')}
                   key={form.key('userRole')}
@@ -140,14 +142,19 @@ export default function AddingUserForm() {
                   Précédent
                 </Button>
             )}
-            {active !== 1 ?
-                <Button onClick={async () => {
-                  if (active === 0) {
-                    mailUsed = await isEmailUsed(form.getValues().email)
-                  }
+            {active === 0
+                ? <Button onClick={async () => {
+                  mailUsed = await checkEmailUsedAction(form.getValues().email)
+                  close()
                   nextStep()
-                }}>Suivant</Button> :
-                <Button type="submit">Ajouter</Button>}
+                }}>Suivant</Button>
+                : <Button
+                    type="submit"
+                >
+                  {loading
+                      ? <Loader color="white" type="bars" size="20"/>
+                      : "Ajouter"}
+                </Button>}
           </Group>
         </form>
       </div>
