@@ -36,7 +36,7 @@ export default async function Layout({children}: { children: React.ReactNode }) 
   }
 
   return (
-      <AppLayout data={data}>{children}</AppLayout>
+      <AppLayout data={data} session={session}>{children}</AppLayout>
 
   )
 }
