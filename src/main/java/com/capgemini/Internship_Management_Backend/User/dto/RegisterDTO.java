@@ -1,9 +1,7 @@
 package com.capgemini.Internship_Management_Backend.User.dto;
 
-import com.capgemini.Internship_Management_Backend.User.model.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -21,6 +19,6 @@ public class RegisterDTO {
   @NotEmpty(message = "Last Name is required.")
   private String lastName;
 
-  @NotNull(message = "User role is required.")
-  private UserRole userRole;
+  @NotEmpty(message = "User role is required.")
+  private String userRole;
 }

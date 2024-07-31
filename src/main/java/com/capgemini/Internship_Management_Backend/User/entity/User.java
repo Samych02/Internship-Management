@@ -1,9 +1,10 @@
 package com.capgemini.Internship_Management_Backend.User.entity;
 
 import com.capgemini.Internship_Management_Backend.User.dto.RegisterDTO;
-import com.capgemini.Internship_Management_Backend.User.model.UserRole;
 import com.capgemini.Internship_Management_Backend.common.entity.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.*;
 
 @Data
@@ -26,8 +27,15 @@ public class User extends BaseEntity {
   @Column(nullable = false)
   private String lastName;
 
-  @Enumerated(EnumType.STRING)
-  private UserRole userRole;
+  private String userRole;
+
+  private String phoneNumber;
+
+  private String team;
+
+  private String perimeter;
+
+  private String image;
 
   public User(RegisterDTO registerDTO) {
     this.email = registerDTO.getEmail();
@@ -35,5 +43,9 @@ public class User extends BaseEntity {
     this.firstName = registerDTO.getFirstName();
     this.lastName = registerDTO.getLastName();
     this.userRole = registerDTO.getUserRole();
+  }
+
+  public String getFullName() {
+    return firstName + " " + lastName;
   }
 }
