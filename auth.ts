@@ -1,6 +1,5 @@
 import NextAuth, {DefaultSession} from "next-auth"
 import Credentials from "next-auth/providers/credentials"
-import {JWT} from "next-auth/jwt"
 
 
 declare module "next-auth" {
@@ -34,7 +33,7 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
       authorize: async (credentials) => {
         const {email, password} = credentials
 
-        let response = await fetch('http://localhost:8081/users/login', {
+        let response = await fetch('http://localhost:8081/api/users/login', {
           method: "POST",
           body: JSON.stringify({
             email: email,

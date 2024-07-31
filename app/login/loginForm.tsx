@@ -1,55 +1,59 @@
 "use client"
 
-import {useSearchParams} from "next/navigation";
 import {hasLength, isEmail, useForm} from "@mantine/form";
 import {Alert, Button, PasswordInput, TextInput} from "@mantine/core";
+import {useDisclosure} from "@mantine/hooks";
+import {FormEvent} from "react";
+import {loginAction} from "@/app/login/actions";
 import {IconAlertCircle} from "@tabler/icons-react";
-import {loginAction} from "@/app/login/page";
 
 export default function LoginForm() {
-  const searchParams = useSearchParams()
+  const [opened, {open, close}] = useDisclosure(false);
 
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {email: "", password: ""},
     validate: {
-      email: isEmail("Email Invalid"),
+      email: isEmail("Email invalid"),
       password: hasLength({min: 1}, "Mot de passe requis"),
     },
   });
 
-  const submit = form.onSubmit((data) => {
-    loginAction(data)
-  })
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    form.onSubmit(async (data) => {
+      if (!await loginAction(data)) open()
+    })()
+  }
 
-  return (<div className="flex flex-col items-center w-full mt-[10rem]">
-        <div className="w-[25rem]">
-          {(searchParams.get("error") != null) ?
-              <Alert
-                  styles={{
-                    root: {
-                      backgroundColor: "var(--mantine-color-red-2)"
-                    },
-                    label: {
-                      color: "var(--mantine-color-red-9)"
-                    }, icon: {
-                      color: "var(--mantine-color-red-9)"
-                    }
-                  }}
-                  title={searchParams.get("error")}
-                  icon={<IconAlertCircle/>}
-                  // className="opacity-1 rounded-lg justify-end w-full"
-              /> :
-              <Alert
-                  // did this so the form wont move down when the alert appears
-                  title="no error"
-                  className="opacity-0"/>
-          }
 
+  return (<>
+        <div className="flex flex-col items-center w-full mt-[10rem]">
           <form
               onSubmit={submit}
-              className="flex flex-col justify-items-center border-2 p-5 rounded-lg mt-3 border-[var(--mantine-color-cb-9)]"
+              className="flex flex-col w-[25rem] justify-items-center border-2 p-5 rounded-lg mt-3 border-[var(--mantine-color-cb-9)]"
           >
+            {opened && <Alert
+                styles={{
+                  root: {
+                    backgroundColor: "var(--mantine-color-red-2)",
+                    marginBottom: "1rem"
+                  },
+                  label: {
+                    color: "var(--mantine-color-red-9)"
+                  },
+                  icon: {
+                    color: "var(--mantine-color-red-9)"
+                  },
+                  closeButton: {
+                    color: "var(--mantine-color-red-9)"
+                  }
+                }}
+                title={"Email et/ou mot de passe incorrect"}
+                icon={<IconAlertCircle/>}
+                withCloseButton
+                onClose={close}
+            />}
 
             <TextInput
                 {...form.getInputProps('email')}
@@ -72,9 +76,8 @@ export default function LoginForm() {
             >
               Se connecter
             </Button>
-
           </form>
         </div>
-      </div>
+      </>
   );
 }
