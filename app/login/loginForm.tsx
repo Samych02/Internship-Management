@@ -1,14 +1,15 @@
 "use client"
 
 import {hasLength, isEmail, useForm} from "@mantine/form";
-import {Alert, Button, PasswordInput, TextInput} from "@mantine/core";
+import {Alert, Button, Loader, PasswordInput, TextInput} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
-import {FormEvent} from "react";
+import {FormEvent, useState} from "react";
 import {loginAction} from "@/app/login/actions";
 import {IconAlertCircle} from "@tabler/icons-react";
 
 export default function LoginForm() {
   const [opened, {open, close}] = useDisclosure(false);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm({
     mode: "uncontrolled",
@@ -22,7 +23,11 @@ export default function LoginForm() {
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     form.onSubmit(async (data) => {
-      if (!await loginAction(data)) open()
+      setLoading(true)
+      if (await loginAction(data) == "loginError") {
+        setLoading(false)
+        open()
+      }
     })()
   }
 
@@ -74,7 +79,9 @@ export default function LoginForm() {
             <Button
                 type="submit"
             >
-              Se connecter
+              {loading
+                  ? <Loader color="white" type="bars" size="20"/>
+                  : "Se connecter"}
             </Button>
           </form>
         </div>

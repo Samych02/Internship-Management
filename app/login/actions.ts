@@ -10,10 +10,9 @@ export async function loginAction(data: { email: string, password: string }) {
       email: data.email,
       password: data.password,
     })
-    return true
   } catch (error) {
     if (error instanceof AuthError) {
-      return false
+      return "loginError"
     } else {
       throw error;
     }
