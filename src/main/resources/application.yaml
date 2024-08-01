@@ -18,5 +18,4 @@ spring:
     hibernate:
       ddl-auto: update
 
-subject-directory: C:\Users\scherif\OneDrive - Capgemini\InternshipManagementResources\Subjects
-profile-picture-directory: C:\Users\scherif\OneDrive - Capgemini\InternshipManagementResources\ProfilePictures
+resources-directory: C:\Users\scherif\OneDrive - Capgemini\InternshipManagementResources

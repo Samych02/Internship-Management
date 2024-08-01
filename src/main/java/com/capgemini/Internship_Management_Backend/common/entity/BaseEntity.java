@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Integer id;
+  protected Integer id;
 
   @CreatedDate
   @Column(name = "created_at")

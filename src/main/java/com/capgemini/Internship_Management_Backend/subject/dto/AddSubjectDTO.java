@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class AddSubjectDTO {
@@ -16,19 +17,23 @@ public class AddSubjectDTO {
   @NotNull
   public List<String> tasks;
 
-  @NotEmpty
+  @NotNull
   public InternType internType;
 
-  @NotEmpty
-  public String targetSchools;
+  @NotNull
+  public List<String> targetSchools;
 
   @NotEmpty
-  public String targetSpecialities;
+  public List<String> targetSpecialities;
 
   @NotNull
-  public List<String> competenciesRequired;
+  public Map<String, String> competenciesRequired;
+
+  @NotEmpty
+  public String supervisor;
 
   @Min(1)
+  @NotNull
   public Integer internNumber;
 
 }

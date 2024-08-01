@@ -3,10 +3,13 @@ package com.capgemini.Internship_Management_Backend.subject.entity;
 import com.capgemini.Internship_Management_Backend.common.entity.BaseEntity;
 import com.capgemini.Internship_Management_Backend.subject.dto.AddSubjectDTO;
 import com.capgemini.Internship_Management_Backend.subject.model.InternType;
+import com.capgemini.Internship_Management_Backend.subject.model.SubjectStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Year;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -16,6 +19,7 @@ import java.util.List;
 @Entity
 @Table(name = "subjects")
 public class Subject extends BaseEntity {
+  @Column(unique = true)
   private String title;
 
   @ElementCollection
@@ -24,14 +28,27 @@ public class Subject extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private InternType internType;
 
-  private String targetSchools;
-
-  private String targetSpecialities;
+  @ElementCollection
+  private List<String> targetSchools;
 
   @ElementCollection
-  private List<String> competenciesRequired;
+  private List<String> targetSpecialities;
+
+  @ElementCollection
+  private Map<String, String> competenciesRequired;
+
+  private String supervisor;
 
   private Integer internNumber;
+
+  private String path;
+
+  @Enumerated(EnumType.STRING)
+  private SubjectStatus subjectStatus = SubjectStatus.PENDING;
+
+  private int year = Year.now().getValue();
+
+  private String specialistComment;
 
   public Subject(AddSubjectDTO addSubjectDTO) {
     this.title = addSubjectDTO.getTitle();
@@ -40,6 +57,28 @@ public class Subject extends BaseEntity {
     this.targetSchools = addSubjectDTO.getTargetSchools();
     this.targetSpecialities = addSubjectDTO.getTargetSpecialities();
     this.competenciesRequired = addSubjectDTO.getCompetenciesRequired();
+    this.supervisor = addSubjectDTO.getSupervisor();
     this.internNumber = addSubjectDTO.getInternNumber();
+  }
+
+  @Override
+  public String toString() {
+    return "Subject{" +
+            "specialistComment='" + specialistComment + '\'' +
+            ", title='" + title + '\'' +
+            ", tasks=" + tasks +
+            ", internType=" + internType +
+            ", targetSchools=" + targetSchools +
+            ", targetSpecialities=" + targetSpecialities +
+            ", competenciesRequired=" + competenciesRequired +
+            ", supervisor='" + supervisor + '\'' +
+            ", internNumber=" + internNumber +
+            ", path='" + path + '\'' +
+            ", subjectStatus=" + subjectStatus +
+            ", year=" + year +
+            ", id=" + id +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            '}';
   }
 }
