@@ -40,8 +40,8 @@ public class User extends BaseEntity {
   public User(RegisterDTO registerDTO) {
     this.email = registerDTO.getEmail();
     this.password = registerDTO.getPassword();
-    this.firstName = registerDTO.getFirstName();
-    this.lastName = registerDTO.getLastName();
+    this.firstName = registerDTO.getFirstName().substring(0, 1).toUpperCase() + registerDTO.getFirstName().substring(1).toLowerCase();
+    this.lastName = registerDTO.getLastName().substring(0, 1).toUpperCase() + registerDTO.getLastName().substring(1).toLowerCase();
     this.userRole = registerDTO.getUserRole();
   }
 

@@ -12,12 +12,15 @@ public class SubjectService {
   private final SubjectRepository subjectRepository;
   private final SubjectWordGeneratorService subjectWordGeneratorService;
 
-  public void addSubject(AddSubjectDTO addSubjectDTO) {
+  public Boolean isTitleUsed(String title) {
+    Subject subject = subjectRepository.findByTitle(title);
+    return subject != null;
+  }
+
+  public void saveSubject(AddSubjectDTO addSubjectDTO) {
     Subject subject = new Subject(addSubjectDTO);
     subject = subjectRepository.save(subject);
     subject.setPath(subjectWordGeneratorService.generateSubjectFile(subject));
     subjectRepository.save(subject);
-
-
   }
 }
