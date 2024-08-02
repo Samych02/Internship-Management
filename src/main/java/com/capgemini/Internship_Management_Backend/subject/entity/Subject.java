@@ -1,7 +1,9 @@
 package com.capgemini.Internship_Management_Backend.subject.entity;
 
+import com.capgemini.Internship_Management_Backend.User.entity.User;
 import com.capgemini.Internship_Management_Backend.common.entity.BaseEntity;
 import com.capgemini.Internship_Management_Backend.subject.dto.AddSubjectDTO;
+import com.capgemini.Internship_Management_Backend.subject.model.Competency;
 import com.capgemini.Internship_Management_Backend.subject.model.InternType;
 import com.capgemini.Internship_Management_Backend.subject.model.SubjectStatus;
 import jakarta.persistence.*;
@@ -9,7 +11,6 @@ import lombok.*;
 
 import java.time.Year;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -19,6 +20,14 @@ import java.util.Map;
 @Entity
 @Table(name = "subjects")
 public class Subject extends BaseEntity {
+  @ManyToOne
+  @JoinColumn(nullable = false)
+  private User poster;
+
+  @ManyToOne
+  @JoinColumn()
+  private User specialist;
+
   @Column(unique = true)
   private String title;
 
@@ -35,7 +44,7 @@ public class Subject extends BaseEntity {
   private List<String> targetSpecialities;
 
   @ElementCollection
-  private Map<String, String> competenciesRequired;
+  private List<Competency> competenciesRequired;
 
   private String supervisor;
 
@@ -51,6 +60,7 @@ public class Subject extends BaseEntity {
   private String specialistComment;
 
   public Subject(AddSubjectDTO addSubjectDTO) {
+    this.poster = new User(addSubjectDTO.getId());
     this.title = addSubjectDTO.getTitle();
     this.tasks = addSubjectDTO.getTasks();
     this.internType = addSubjectDTO.getInternType();

@@ -45,6 +45,10 @@ public class User extends BaseEntity {
     this.userRole = registerDTO.getUserRole();
   }
 
+  public User(Integer id) {
+    this.id = id;
+  }
+
   public String getFullName() {
     return firstName + " " + lastName;
   }

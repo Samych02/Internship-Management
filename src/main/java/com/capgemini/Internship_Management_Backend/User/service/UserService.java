@@ -14,7 +14,7 @@ public class UserService {
   private final UserRepository userRepository;
 
   public Boolean isEmailUsed(String email) {
-    User user = userRepository.findByEmail(email);
+    User user = userRepository.findByEmailIgnoreCase(email);
     return user != null;
   }
 
@@ -25,7 +25,7 @@ public class UserService {
   }
 
   public LoginDTO.response login(LoginDTO.request request) {
-    User user = userRepository.findByEmail(request.getEmail());
+    User user = userRepository.findByEmailIgnoreCase(request.getEmail());
     if (user != null && new BCryptPasswordEncoder().matches(request.getPassword(), user.getPassword())) {
       return new LoginDTO.response(user);
     }

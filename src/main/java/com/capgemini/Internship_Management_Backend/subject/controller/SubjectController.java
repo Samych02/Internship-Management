@@ -34,6 +34,13 @@ public class SubjectController {
     return ResponseEntity.status(HttpStatus.CREATED).body(ResponseUtil.successResponse("User created successfully", Collections.singletonMap("created", true)));
   }
 
+  @GetMapping("")
+  public ResponseEntity<?> getAllUserSubjects(@RequestParam @Valid @NotNull Integer id) {
+    return ResponseEntity.status(HttpStatus.OK).body(subjectService.getAllUserSubjects(id));
+  }
+
+
+
 //  @GetMapping("test")
 //  public void test() {
 //    subjectWordGeneratorService.generateSubjectFile();

@@ -2,6 +2,9 @@ package com.capgemini.Internship_Management_Backend.subject.service;
 
 import com.capgemini.Internship_Management_Backend.subject.entity.Subject;
 import com.capgemini.Internship_Management_Backend.subject.model.InternType;
+import com.documents4j.api.DocumentType;
+import com.documents4j.api.IConverter;
+import com.documents4j.job.LocalConverter;
 import lombok.SneakyThrows;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,8 +12,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -39,7 +41,7 @@ public class SubjectWordGeneratorService {
     document = replaceText(document, "$targetSchools", String.join(", ", subject.getTargetSchools()));
     document = replaceText(document, "$targetSpecialities", String.join(", ", subject.getTargetSpecialities()));
     document = replaceText(document, "$targetSpecialities", String.join(", ", subject.getTargetSpecialities()));
-    document = replaceText(document, "$competenciesRequired", "• " + subject.getCompetenciesRequired().entrySet().stream().map(entry -> entry.getKey() + ": " + entry.getValue()).collect(Collectors.joining("\n• ")));
+    document = replaceText(document, "$competenciesRequired", "• " + subject.getCompetenciesRequired().stream().map(c -> c.getCategory() + ": " + String.join(", ", c.getDetails())).collect(Collectors.joining("\n• ")));
     document = replaceText(document, "$supervisor", subject.getSupervisor());
     document = replaceText(document, "$internNumber", String.valueOf(subject.getInternNumber()));
 
@@ -49,7 +51,7 @@ public class SubjectWordGeneratorService {
     if (subject.getPath() != null) {
       partialPath = subject.getPath();
     } else {
-      partialPath = "\\subjects\\" + subject.getYear() + "\\" + subject.getTitle() + "\\";
+      partialPath = "\\sujets\\" + subject.getYear() + "\\" + subject.getTitle() + "\\";
     }
     try {
       Files.createDirectories(Paths.get(resourcesDirectory + partialPath));
@@ -60,7 +62,21 @@ public class SubjectWordGeneratorService {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+    ConvertToPDF(resourcesDirectory + partialPath);
     return partialPath;
+  }
+
+  private void ConvertToPDF(String path) {
+    try {
+      InputStream docxInputStream = new FileInputStream(path + "sujet.docx");
+      OutputStream outputStream = new FileOutputStream(path + "sujet.pdf");
+      IConverter converter = LocalConverter.builder().build();
+      converter.convert(docxInputStream).as(DocumentType.DOCX).to(outputStream).as(DocumentType.PDF).execute();
+      outputStream.close();
+      converter.shutDown();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private XWPFDocument replaceText(XWPFDocument doc, String originalText, String updatedText) {
