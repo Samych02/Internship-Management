@@ -1,21 +1,32 @@
 "use server"
 
-export async function registerAction(data: {
-  email: string,
-  password: string,
-  userRole: string,
-  firstName: string,
-  lastName: string
+import {auth} from "@/auth";
+
+export async function addSubjectAction(data: {
+  title: string,
+  tasks: [],
+  internType: string,
+  targetSchools: [],
+  targetSpecialities: [],
+  competenciesRequired: [],
+  supervisor: string,
+  internNumber: number
 }) {
   "use server"
-  let response = await fetch('http://localhost:8081/api/users/register', {
+  const session = await auth()
+  console.log(1)
+  let response = await fetch('http://localhost:8081/api/subjects', {
     method: "POST",
     body: JSON.stringify({
-      email: data.email,
-      password: data.password,
-      userRole: data.userRole,
-      firstName: data.firstName,
-      lastName: data.lastName
+      id: parseInt(<string>session?.user.id),
+      title: data.title,
+      tasks: data.tasks.map(t => t.task),
+      internType: data.internType,
+      targetSchools: data.targetSchools,
+      targetSpecialities: data.targetSpecialities,
+      competenciesRequired: data.competenciesRequired,
+      supervisor: data.supervisor,
+      internNumber: data.internNumber,
     }),
     headers: {
       'Content-type': 'application/json'

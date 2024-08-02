@@ -149,6 +149,7 @@ export default function RegisterForm() {
                 }}>Suivant</Button>
                 : <Button
                     type="submit"
+                    disabled={loading}
                 >
                   {loading
                       ? <Loader color="white" type="bars" size="20"/>

@@ -1,12 +1,15 @@
-import {auth} from "@/auth";
-import roles from "@/app/lib/roles";
+"use client"
 
-export default async function Users() {
-  const session = await auth()
-  for (let rolesKey in roles) {
-  }
-  return (<>
-        <h1>supervisor</h1>
-      </>
+export default function Users() {
+
+  return (
+      <div>
+        <object
+            data="http://localhost/Subjects/2024/Gestion des stagiaires/sujet.pdf#zoom=300"
+            type="application/pdf"
+            width="1000"
+            height="500"
+        />
+      </div>
   )
 }

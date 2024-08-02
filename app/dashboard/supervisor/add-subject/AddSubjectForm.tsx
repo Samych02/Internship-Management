@@ -1,19 +1,28 @@
 "use client"
 import {FormEvent, useState} from 'react';
-import {ActionIcon, Alert, Button, Group, Loader, Stepper, Text, TextInput} from '@mantine/core';
+import {
+  ActionIcon,
+  Alert,
+  Button,
+  Group,
+  Loader,
+  NumberInput,
+  Radio,
+  Stepper,
+  TagsInput,
+  Text,
+  TextInput
+} from '@mantine/core';
 import {useForm} from '@mantine/form';
-import {registerAction} from "@/app/dashboard/admin/register/actions";
-import {useDisclosure} from "@mantine/hooks";
+import {randomId, useDisclosure} from "@mantine/hooks";
 import {IconAlertCircle, IconTrash} from "@tabler/icons-react";
-import {checkTitleUsedAction} from "@/app/dashboard/supervisor/add-subject/actions";
+import {addSubjectAction, checkTitleUsedAction} from "@/app/dashboard/supervisor/add-subject/actions";
 
 export default function AddSubjectForm() {
   const [active, setActive] = useState(0);
-  let titleUsed = true
+  let titleUsed = false
   const [opened, {open, close}] = useDisclosure(false);
   const [loading, setLoading] = useState(false);
-  const [targetSchools, setTargetSchools] = useState<string[]>([]);
-  const [targetSpecialities, setTargetSpecialities] = useState<string[]>([]);
 
 
   const form = useForm({
@@ -22,18 +31,29 @@ export default function AddSubjectForm() {
           title: '',
           tasks: [{task: ''}],
           internType: '',
-          targetSchools: targetSchools,
-          targetSpecialities: targetSpecialities,
-          competenciesRequired: {},
+          targetSchools: [],
+          targetSpecialities: [],
+          competenciesRequired: [{category: "", details: []}],
           supervisor: '',
-          internNumber: 0
+          internNumber: null
         },
 
         validate: {
-          title: (value) => active === 0 && value.length < 1 ? "Champ requis" : null,
+          title: (value) => active === 0 && value.length < 1 ? "Champ requis"
+              : titleUsed ? "Sujet déjà existant" : null,
           tasks: {
             task: (value) => active === 0 && value.length < 1 ? "Champ requis" : null,
-          }
+          },
+          internType: (value) => active === 1 && value.length < 1 ? "Champ requis" : null,
+          targetSchools: (value) => active === 1 && value.length < 1 ? "Champ requis" : null,
+          targetSpecialities: (value) => active === 1 && value.length < 1 ? "Champ requis" : null,
+          competenciesRequired: {
+            details: (value) => active === 1 && value.length < 1 ? "Champ requis" : null,
+            category: (value) => active === 1 && value.length < 1 ? "Champ requis" : null,
+          },
+          supervisor: (value) => active === 2 && value.length < 1 ? "Champ requis" : null,
+          internNumber: (value) => active === 2 && value < 1 && value == null ? "Champ requis" : null,
+
         }
       }
   )
@@ -46,7 +66,7 @@ export default function AddSubjectForm() {
     event.preventDefault()
     form.onSubmit(async (data) => {
       setLoading(true)
-      if (await registerAction(data)) {
+      if (await addSubjectAction(data)) {
         open()
         setLoading(false)
         form.reset()
@@ -56,10 +76,9 @@ export default function AddSubjectForm() {
   }
 
   const tasksField = form.getValues().tasks.map((item, index) => (
-      <Group key={index} mt="xs">
+      <Group key={randomId()} mt="xs">
         <TextInput
             placeholder="Tâche"
-            withAsterisk
             key={form.key(`tasks.${index}.task`)}
             {...form.getInputProps(`tasks.${index}.task`)}
             className="flex-1 self-start"
@@ -68,6 +87,27 @@ export default function AddSubjectForm() {
         <ActionIcon color="red" onClick={() => {
           if (form.getValues().tasks.length > 1) form.removeListItem('tasks', index)
         }} size="lg" className="self-start" opacity={form.getValues().tasks.length > 1 ? 1 : 0}>
+          <IconTrash size="1.5rem"/>
+        </ActionIcon>
+      </Group>
+  ));
+  const competenciesRequiredField = form.getValues().competenciesRequired.map((item, index) => (
+      <Group key={randomId()} mt="xs">
+        <TextInput
+            placeholder="Catégorie"
+            key={form.key(`competenciesRequired.${index}.category`)}
+            {...form.getInputProps(`competenciesRequired.${index}.category`)}
+            className="flex-3 self-start"
+        />
+        <TagsInput placeholder="Saisissez le nom d'une compétence puis appuyer sur entrer"
+                   {...form.getInputProps(`competenciesRequired.${index}.details`)}
+                   key={form.key(`competenciesRequired.${index}.details`)}
+                   className="flex-1 self-start"
+        />
+
+        <ActionIcon color="red" onClick={() => {
+          if (form.getValues().competenciesRequired.length > 1) form.removeListItem('competenciesRequired', index)
+        }} size="lg" className="self-start" opacity={form.getValues().competenciesRequired.length > 1 ? 1 : 0}>
           <IconTrash size="1.5rem"/>
         </ActionIcon>
       </Group>
@@ -111,21 +151,61 @@ export default function AddSubjectForm() {
 
             </Stepper.Step>
 
-            <Stepper.Step label="Informations personnelles">
+            <Stepper.Step label="Identification du profil">
+              <Radio.Group
+                  label="Type du profil"
+                  {...form.getInputProps('internType')}
+                  key={form.key('internType')}
+                  className="mb-5"
+              >
+                <Group mt="xs" mb="xs">
+                  <Radio value="TECHNICIAN" label="Technicien"/>
+                  <Radio value="ENGINEER" label="Ingénieur"/>
+                </Group>
+              </Radio.Group>
+
+              <TagsInput label="Ecoles cibles"
+                         placeholder="Saisissez le nom d'une école puis appuyer sur entrer"
+                         {...form.getInputProps('targetSchools')}
+                         key={form.key('targetSchools')}
+                         className="mb-5"/>
+              <TagsInput label="Spécialités cibles"
+                         placeholder="Saisissez le nom d'une spécialité puis appuyer sur entrer"
+                         {...form.getInputProps('targetSpecialities')}
+                         key={form.key('targetSpecialities')}
+                         className="mb-5"/>
+              <Text fw={500} size="sm" style={{flex: 1}}>Compétences recherchées</Text>
+              {competenciesRequiredField}
+
+              <Group justify="center" mt="md">
+                <Button
+                    onClick={() =>
+                        form.insertListItem('competenciesRequired', {category: "", details: []})
+                    }
+                    color="cb.3"
+                >
+                  Ajouter une nouvelle catégorie
+                </Button>
+              </Group>
+            </Stepper.Step>
+            <Stepper.Step label="Informations sur le stage">
               <TextInput
-                  label="Prénom"
-                  placeholder="Prénom"
-                  key={form.key('firstName')}
-                  {...form.getInputProps('firstName')}
+                  {...form.getInputProps('supervisor')}
+                  key={form.key('supervisor')}
+                  label="Nom de l'encadrant"
+                  placeholder="Nom de l'encadrant"
                   className="mb-5"
               />
-              <TextInput
-                  label="Nom"
-                  placeholder="Nom"
-                  key={form.key('lastName')}
-                  {...form.getInputProps('lastName')}
+              <NumberInput
+                  {...form.getInputProps('internNumber')}
+                  key={form.key('internNumber')}
+                  label="Nombre de stagiaires à mettre sur le sujet"
+                  placeholder="Nombre de stagiaires à mettre sur le sujet :"
+                  min={1}
+                  max={1000}
                   className="mb-8"
               />
+
             </Stepper.Step>
           </Stepper>
 
@@ -135,14 +215,17 @@ export default function AddSubjectForm() {
                   Précédent
                 </Button>
             )}
-            {active === 0
+            {active !== 2
                 ? <Button onClick={async () => {
-                  titleUsed = await checkTitleUsedAction(form.getValues().title)
+                  if (active === 0) {
+                    titleUsed = await checkTitleUsedAction(form.getValues().title)
+                  }
                   close()
                   nextStep()
                 }}>Suivant</Button>
                 : <Button
                     type="submit"
+                    disabled={loading}
                 >
                   {loading
                       ? <Loader color="white" type="bars" size="20"/>

@@ -1,10 +1,10 @@
 "use server"
-import AddSubjectForm from "@/app/dashboard/supervisor/add-subject/AddSubjectForm";
+import RegisterForm from "@/app/dashboard/admin/register/RegisterForm";
 
 export default async function RegisterPage() {
   return (
       <div className="flex flex-col items-center">
-        <AddSubjectForm/>
+        <RegisterForm/>
       </div>
   )
 }
