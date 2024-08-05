@@ -2,7 +2,7 @@ import '@mantine/core/styles.css';
 import {ColorSchemeScript, MantineProvider} from '@mantine/core';
 import "./globals.css"
 
-export default function RootLayout({children,}: { children: React.ReactNode; }) {
+export default function RootLayout({children,}) {
   return (
       <html lang="fr">
       <head>

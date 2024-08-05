@@ -4,15 +4,10 @@ import Image from "next/image";
 import React from "react";
 import {usePathname} from "next/navigation";
 import {IconChevronRight, IconPower} from "@tabler/icons-react";
-import {Session} from "next-auth";
 import {logout} from "@/app/dashboard/layout";
 
-export default function AppLayout({children, data, session,}: {
-  children: React.ReactNode,
-  data: any,
-  session: Session | null
-}) {
-  function NavItem({item}: { item: any }) {
+export default function AppLayout({children, data, session,}) {
+  function NavItem({item}) {
     const pathname = usePathname()
     return (
         <NavLink
@@ -52,21 +47,8 @@ export default function AppLayout({children, data, session,}: {
         <AppShell.Navbar p="md">{
           <div className="flex flex-col h-full justify-between">
             <div>
-              {data?.map((item: any, key: React.Key | null | undefined) => (<NavItem item={item} key={key}/>))}
+              {data?.map((item, key) => (<NavItem item={item} key={key}/>))}
             </div>
-            {/*<NavLink*/}
-            {/*    onClick={() => {*/}
-            {/*      logout()*/}
-            {/*    }}*/}
-            {/*    active={true}*/}
-            {/*    color="red"*/}
-            {/*    label="Se déconnecter"*/}
-            {/*    leftSection={<IconPower size="1rem" stroke={1.5}/>}*/}
-            {/*    styles={{*/}
-            {/*      root: {*/}
-            {/*        marginBottom: "1rem", borderRadius: 5,*/}
-            {/*      },*/}
-            {/*    }}/>*/}
             <Menu shadow="md" position="right-end">
               <Menu.Target>
                 <div className="flex justify-between cursor-pointer items-center border-t-2 pt-3">

@@ -1,5 +1,5 @@
 "use client"
-import {FormEvent, useState} from 'react';
+import {useState} from 'react';
 import {
   ActionIcon,
   Alert,
@@ -62,7 +62,7 @@ export default function AddSubjectForm() {
 
   const prevStep = () => setActive((current) => (current - 1));
 
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const submit = (event) => {
     event.preventDefault()
     form.onSubmit(async (data) => {
       setLoading(true)

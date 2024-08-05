@@ -2,7 +2,7 @@
 import {signIn} from "@/auth";
 import {AuthError} from "next-auth";
 
-export async function loginAction(data: { email: string, password: string }) {
+export async function loginAction(data) {
   "use server"
   try {
     await signIn('credentials', {

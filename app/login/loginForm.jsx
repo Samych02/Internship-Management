@@ -3,7 +3,7 @@
 import {hasLength, isEmail, useForm} from "@mantine/form";
 import {Alert, Button, Loader, PasswordInput, TextInput} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
-import {FormEvent, useState} from "react";
+import {useState} from "react";
 import {loginAction} from "@/app/login/actions";
 import {IconAlertCircle} from "@tabler/icons-react";
 
@@ -20,7 +20,7 @@ export default function LoginForm() {
     },
   });
 
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const submit = (event) => {
     event.preventDefault()
     form.onSubmit(async (data) => {
       setLoading(true)

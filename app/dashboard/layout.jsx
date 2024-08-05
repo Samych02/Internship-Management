@@ -1,7 +1,7 @@
 "use server"
 import React from "react";
 import {auth, signOut} from "@/auth";
-import {IconGauge, IconTextPlus, IconUserPlus, IconUsersGroup} from "@tabler/icons-react";
+import {IconGauge, IconList, IconTextPlus, IconUserPlus, IconUsersGroup} from "@tabler/icons-react";
 import AppLayout from "@/app/dashboard/appLayout";
 
 export async function logout() {
@@ -9,7 +9,7 @@ export async function logout() {
   await signOut({redirectTo: "/login"});
 }
 
-export default async function Layout({children}: { children: React.ReactNode }) {
+export default async function Layout({children}) {
   const session = await auth()
   const adminNav = [
     {
@@ -25,8 +25,8 @@ export default async function Layout({children}: { children: React.ReactNode }) 
   ]
   const supervisorNav = [
     {
-      icon: <IconUsersGroup size="1rem" stroke={1.5}/>,
-      label: 'Liste des sujets',
+      icon: <IconList size="1rem" stroke={1.5}/>,
+      label: 'Mes sujets',
       href: "/dashboard/supervisor",
     },
     {

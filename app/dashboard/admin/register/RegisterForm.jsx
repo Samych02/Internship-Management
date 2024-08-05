@@ -1,5 +1,5 @@
 "use client"
-import {FormEvent, useState} from 'react';
+import {useState} from 'react';
 import {Alert, Button, Group, Loader, NativeSelect, PasswordInput, Stepper, TextInput} from '@mantine/core';
 import {useForm} from '@mantine/form';
 import ROLES from "@/app/lib/roles";
@@ -63,7 +63,7 @@ export default function RegisterForm() {
 
   const prevStep = () => setActive((current) => (current - 1));
 
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const submit = (event) => {
     event.preventDefault()
     form.onSubmit(async (data) => {
       setLoading(true)

@@ -1,12 +1,6 @@
 "use server"
 
-export async function registerAction(data: {
-  email: string,
-  password: string,
-  userRole: string,
-  firstName: string,
-  lastName: string
-}) {
+export async function registerAction(data) {
   "use server"
   let response = await fetch('http://localhost:8081/api/users/register', {
     method: "POST",
@@ -24,7 +18,7 @@ export async function registerAction(data: {
   return response.ok
 }
 
-export async function checkEmailUsedAction(email: string) {
+export async function checkEmailUsedAction(email) {
   let response = await fetch(`http://localhost:8081/api/users/check-email-used?email=${email}`, {
     method: "GET",
   })

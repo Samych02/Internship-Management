@@ -2,23 +2,14 @@
 
 import {auth} from "@/auth";
 
-export async function addSubjectAction(data: {
-  title: string,
-  tasks: [],
-  internType: string,
-  targetSchools: [],
-  targetSpecialities: [],
-  competenciesRequired: [],
-  supervisor: string,
-  internNumber: number
-}) {
+export async function addSubjectAction(data) {
   "use server"
   const session = await auth()
   console.log(1)
   let response = await fetch('http://localhost:8081/api/subjects', {
     method: "POST",
     body: JSON.stringify({
-      id: parseInt(<string>session?.user.id),
+      id: parseInt(session?.user.id),
       title: data.title,
       tasks: data.tasks.map(t => t.task),
       internType: data.internType,
@@ -35,7 +26,7 @@ export async function addSubjectAction(data: {
   return response.ok
 }
 
-export async function checkTitleUsedAction(title: string) {
+export async function checkTitleUsedAction(title) {
   let response = await fetch(`http://localhost:8081/api/subjects/check-title-used?title=${title}`, {
     method: "GET",
   })
