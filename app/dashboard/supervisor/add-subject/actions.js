@@ -5,7 +5,6 @@ import {auth} from "@/auth";
 export async function addSubjectAction(data) {
   "use server"
   const session = await auth()
-  console.log(1)
   let response = await fetch('http://localhost:8081/api/subjects', {
     method: "POST",
     body: JSON.stringify({
@@ -31,6 +30,5 @@ export async function checkTitleUsedAction(title) {
     method: "GET",
   })
   response = await response.json()
-  // @ts-ignore
   return response.body?.isTitleUsed
 }
