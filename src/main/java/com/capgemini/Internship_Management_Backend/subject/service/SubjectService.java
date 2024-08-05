@@ -4,10 +4,12 @@ import com.capgemini.Internship_Management_Backend.User.entity.User;
 import com.capgemini.Internship_Management_Backend.subject.dto.AddSubjectDTO;
 import com.capgemini.Internship_Management_Backend.subject.entity.Subject;
 import com.capgemini.Internship_Management_Backend.subject.repository.SubjectRepository;
+import com.capgemini.Internship_Management_Backend.subject.repository.projection.SubjectProjection;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,9 +29,12 @@ public class SubjectService {
     subjectRepository.save(subject);
   }
 
-  public List<Subject> getAllUserSubjects(Integer id) {
+  public Page<SubjectProjection> getAllUserSubjects(Integer id, String title, int page, int size) {
     User user = new User(id);
-    return (subjectRepository.findAllByPoster(user));
-
+    Pageable pageable = PageRequest.of(page, size);
+    if (title == null || title.isEmpty()) {
+      return (subjectRepository.findAllByPosterOrderByCreatedAtDesc(user, pageable));
+    }
+    return subjectRepository.findAllByPosterAndTitleContainingOrderByCreatedAtDesc(user, title, pageable);
   }
 }

@@ -35,10 +35,12 @@ public class SubjectController {
   }
 
   @GetMapping("")
-  public ResponseEntity<?> getAllUserSubjects(@RequestParam @Valid @NotNull Integer id) {
-    return ResponseEntity.status(HttpStatus.OK).body(subjectService.getAllUserSubjects(id));
+  public ResponseEntity<?> getAllUserSubjects(@RequestParam @Valid @NotNull Integer id,
+                                              @RequestParam @Valid @NotNull int page,
+                                              @RequestParam(required = false) String title,
+                                              @RequestParam(required = false, defaultValue = "10") int size) {
+    return ResponseEntity.status(HttpStatus.OK).body(subjectService.getAllUserSubjects(id, title, page, size));
   }
-
 
 
 //  @GetMapping("test")
