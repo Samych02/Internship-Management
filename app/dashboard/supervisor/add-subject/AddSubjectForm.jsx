@@ -200,7 +200,7 @@ export default function AddSubjectForm() {
                   {...form.getInputProps('internNumber')}
                   key={form.key('internNumber')}
                   label="Nombre de stagiaires à mettre sur le sujet"
-                  placeholder="Nombre de stagiaires à mettre sur le sujet :"
+                  placeholder="Nombre de stagiaires à mettre sur le sujet"
                   min={1}
                   max={1000}
                   className="mb-8"
@@ -215,16 +215,16 @@ export default function AddSubjectForm() {
                   Précédent
                 </Button>
             )}
-            {active !== 2
-                ? <Button onClick={async () => {
+            {active < 2 &&
+                <Button onClick={async () => {
                   if (active === 0) {
+                    close()
                     titleUsed = await checkTitleUsedAction(form.getValues().title)
                   }
-                  close()
                   nextStep()
-                }}>Suivant</Button>
-                : <Button
-                    type="submit"
+                }}>Suivant</Button>}
+            {active === 2 &&
+                <Button type="submit"
                     disabled={loading}
                 >
                   {loading

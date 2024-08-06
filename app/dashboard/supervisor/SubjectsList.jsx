@@ -67,7 +67,7 @@ export default function SubjectsList({withEditButton}) {
       close()
     }} centered size="auto">
       <object
-          data={"http://localhost" + path + "sujet.pdf#view=FitH"}
+          data={"http://localhost" + path + ".pdf#view=FitH"}
           type="application/pdf"
           width="600"
           height="700"
