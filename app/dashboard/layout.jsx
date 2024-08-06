@@ -3,6 +3,8 @@ import React from "react";
 import {auth, signOut} from "@/auth";
 import {IconGauge, IconList, IconTextPlus, IconUserPlus, IconUsersGroup} from "@tabler/icons-react";
 import AppLayout from "@/app/dashboard/appLayout";
+import {Badge} from "@mantine/core";
+import {getNumberOfPendingSubjects} from "@/app/dashboard/actions";
 
 export async function logout() {
   "use server"
@@ -11,6 +13,8 @@ export async function logout() {
 
 export default async function Layout({children}) {
   const session = await auth()
+  let numberOfPendingSubjects = 0
+  if (session.user.userRole === "SPECIALIST") numberOfPendingSubjects = await getNumberOfPendingSubjects()
   const adminNav = [
     {
       icon: <IconUsersGroup size="1rem" stroke={1.5}/>,
@@ -36,11 +40,12 @@ export default async function Layout({children}) {
     },
   ]
 
-  const managerNav = [
+  const specialistNav = [
     {
       icon: <IconGauge size="1rem" stroke={1.5}/>,
-      label: 'Liste des sujets',
-      href: "/dashboard/manager",
+      label: 'Approbation des sujets',
+      href: "/dashboard/specialist",
+      badge: <Badge size="sm" circle>{numberOfPendingSubjects}</Badge>
     },
   ]
 
@@ -50,8 +55,8 @@ export default async function Layout({children}) {
       data = adminNav
       break
     }
-    case "MANAGER": {
-      data = managerNav
+    case "SPECIALIST": {
+      data = specialistNav
       break
     }
     case "SUPERVISOR": {

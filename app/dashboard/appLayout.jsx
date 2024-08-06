@@ -16,6 +16,7 @@ export default function AppLayout({children, data, session,}) {
             active={pathname === item.href}
             label={item.label}
             leftSection={item.icon}
+            rightSection={item.badge}
             styles={{
               root: {
                 marginBottom: "1rem", borderRadius: 5,
