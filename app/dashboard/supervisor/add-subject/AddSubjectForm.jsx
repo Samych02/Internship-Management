@@ -18,7 +18,7 @@ import {randomId, useDisclosure} from "@mantine/hooks";
 import {IconAlertCircle, IconTrash} from "@tabler/icons-react";
 import {addSubjectAction, checkTitleUsedAction} from "@/app/dashboard/supervisor/add-subject/actions";
 
-export default function AddSubjectForm() {
+export default function AddSubjectForm({initialValues = null, setRefresh}) {
   const [active, setActive] = useState(0);
   let titleUsed = false
   const [opened, {open, close}] = useDisclosure(false);
@@ -27,13 +27,14 @@ export default function AddSubjectForm() {
 
   const form = useForm({
         mode: 'uncontrolled',
-        initialValues: {
+    initialValues: initialValues ?? {
           title: '',
           tasks: [{task: ''}],
           internType: '',
           targetSchools: [],
           targetSpecialities: [],
           competenciesRequired: [{category: "", details: []}],
+      internshipType: "",
           supervisor: '',
           internNumber: null
         },
@@ -51,6 +52,7 @@ export default function AddSubjectForm() {
             details: (value) => active === 1 && value.length < 1 ? "Champ requis" : null,
             category: (value) => active === 1 && value.length < 1 ? "Champ requis" : null,
           },
+          internshipType: (value) => active === 2 && value.length < 1 ? "Champ requis" : null,
           supervisor: (value) => active === 2 && value.length < 1 ? "Champ requis" : null,
           internNumber: (value) => active === 2 && value < 1 && value == null ? "Champ requis" : null,
 
@@ -73,6 +75,7 @@ export default function AddSubjectForm() {
         setActive(0);
       }
     })()
+    setRefresh((refresh) => !refresh)
   }
 
   const tasksField = form.getValues().tasks.map((item, index) => (
@@ -113,7 +116,7 @@ export default function AddSubjectForm() {
       </Group>
   ));
 
-  return (<div className="w-[50%]">
+  return (<div className="">
 
         <form onSubmit={submit}>
           {opened && <Alert
@@ -189,6 +192,17 @@ export default function AddSubjectForm() {
               </Group>
             </Stepper.Step>
             <Stepper.Step label="Informations sur le stage">
+              <Radio.Group
+                  label="Type du stage"
+                  {...form.getInputProps('internshipType')}
+                  key={form.key('internshipType')}
+                  className="mb-5"
+              >
+                <Group mt="xs" mb="xs">
+                  <Radio value="PFE" label="PFE"/>
+                  <Radio value="PFA" label="PFA"/>
+                </Group>
+              </Radio.Group>
               <TextInput
                   {...form.getInputProps('supervisor')}
                   key={form.key('supervisor')}
@@ -225,7 +239,7 @@ export default function AddSubjectForm() {
                 }}>Suivant</Button>}
             {active === 2 &&
                 <Button type="submit"
-                    disabled={loading}
+                        disabled={loading}
                 >
                   {loading
                       ? <Loader color="white" type="bars" size="20"/>

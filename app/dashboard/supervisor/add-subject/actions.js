@@ -8,7 +8,7 @@ export async function addSubjectAction(data) {
   let response = await fetch('http://localhost:8081/api/subjects', {
     method: "POST",
     body: JSON.stringify({
-      id: parseInt(session?.user.id),
+      posterId: parseInt(session?.user.id),
       title: data.title,
       tasks: data.tasks.map(t => t.task),
       internType: data.internType,
@@ -17,6 +17,7 @@ export async function addSubjectAction(data) {
       competenciesRequired: data.competenciesRequired,
       supervisor: data.supervisor,
       internNumber: data.internNumber,
+      internshipType: data.internshipType,
     }),
     headers: {
       'Content-type': 'application/json'
