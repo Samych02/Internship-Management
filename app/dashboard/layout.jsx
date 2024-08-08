@@ -1,7 +1,7 @@
 "use server"
 import React from "react";
 import {auth, signOut} from "@/auth";
-import {IconGauge, IconList, IconUserPlus, IconUsersGroup} from "@tabler/icons-react";
+import {IconHourglassLow, IconList, IconUserPlus, IconUsersGroup} from "@tabler/icons-react";
 import AppLayout from "@/app/dashboard/appLayout";
 import {Badge} from "@mantine/core";
 import {getNumberOfPendingSubjects} from "@/app/dashboard/actions";
@@ -30,21 +30,25 @@ export default async function Layout({children}) {
   const supervisorNav = [
     {
       icon: <IconList size="1rem" stroke={1.5}/>,
-      label: 'Mes sujets',
+      label: 'Liste des sujets',
       href: "/dashboard/supervisor",
+    }, {
+      icon: <IconList size="1rem" stroke={1.5}/>,
+      label: 'Mes sujets',
+      href: "/dashboard/supervisor/mes-sujets",
     },
-    // {
-    //   icon: <IconTextPlus size="1rem" stroke={1.5}/>,
-    //   label: 'Ajouter un nouveau sujet',
-    //   href: "/dashboard/supervisor/add-subject"
-    // },
   ]
 
   const specialistNav = [
     {
-      icon: <IconGauge size="1rem" stroke={1.5}/>,
-      label: 'Approbation des sujets',
+      icon: <IconList size="1rem" stroke={1.5}/>,
+      label: 'Liste des sujets',
       href: "/dashboard/specialist",
+    },
+    {
+      icon: <IconHourglassLow size="1rem" stroke={1.5}/>,
+      label: 'Approbation des sujets',
+      href: "/dashboard/specialist/approbation",
       badge: <Badge size="sm" circle>{numberOfPendingSubjects}</Badge>
     },
   ]

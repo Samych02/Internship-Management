@@ -16,11 +16,7 @@ import {
 import {useForm} from '@mantine/form';
 import {randomId, useDisclosure} from "@mantine/hooks";
 import {IconAlertCircle, IconTrash} from "@tabler/icons-react";
-import {
-  addSubjectAction,
-  checkTitleUsedAction,
-  editSubjectAction
-} from "@/app/dashboard/supervisor/add-subject/actions";
+import {addSubjectAction, checkTitleUsedAction, editSubjectAction} from "@/app/dashboard/supervisor/mes-sujets/actions";
 
 export default function AddSubjectForm({existingSubject = null, setRefresh}) {
   const [active, setActive] = useState(0);

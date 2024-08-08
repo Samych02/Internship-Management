@@ -3,7 +3,6 @@
 import {auth} from "@/auth";
 
 export async function addSubjectAction(data) {
-  "use server"
   const session = await auth()
   let response = await fetch('http://localhost:8081/api/subjects', {
     method: "POST",
@@ -27,10 +26,9 @@ export async function addSubjectAction(data) {
 }
 
 export async function editSubjectAction(subjectId, data) {
-  "use server"
   const session = await auth()
   let response = await fetch(`http://localhost:8081/api/subjects/${subjectId}`, {
-    method: "PUT",
+    method: "PATCH",
     body: JSON.stringify({
       posterId: parseInt(session?.user.id),
       title: data.title,
@@ -65,4 +63,12 @@ export async function getSubjectById(subjectId) {
   response = await response.json()
   response.body.tasks = response.body.tasks.map(task => ({task}))
   return response.body
+}
+
+export async function editSubjectStatus(subjectId, subjectStatus, specialistComment = null) {
+  let response = await fetch(`http://localhost:8081/api/subjects/${subjectId}/${subjectStatus}`, {
+    method: "PATCH",
+    body: specialistComment ?? ""
+  })
+
 }

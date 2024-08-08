@@ -2,13 +2,13 @@
 import 'mantine-react-table/styles.css'; //make sure MRT styles were imported in your app root (once)
 import {useEffect, useMemo, useState} from 'react';
 import {MantineReactTable, useMantineReactTable,} from 'mantine-react-table';
-import {IconEdit, IconEye} from "@tabler/icons-react";
+import {IconCheck, IconEdit, IconEye, IconX} from "@tabler/icons-react";
 import {ActionIcon, Box, Button, Modal, Stack, Title, Tooltip} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
 import {fetchSubjects} from "@/app/lib/fetchSubjects";
-import AddSubjectForm from "@/app/dashboard/supervisor/add-subject/AddSubjectForm";
-import {getSubjectById} from "@/app/dashboard/supervisor/add-subject/actions";
+import AddSubjectForm from "@/app/dashboard/supervisor/mes-sujets/AddSubjectForm";
+import {editSubjectStatus, getSubjectById} from "@/app/dashboard/supervisor/mes-sujets/actions";
 
 function statusConverter(status) {
   let statusFriendly
@@ -31,11 +31,14 @@ function statusConverter(status) {
 export default function SubjectsList({listType}) {
   const [pdfModalOpened, togglePDFModal] = useDisclosure(false);
   const [editModalOpened, toggleEditModal] = useDisclosure(false);
+  const [acceptModalOpened, toggleAcceptModal] = useDisclosure(false);
+  const [RejectModalOpened, RejectAcceptModal] = useDisclosure(false);
   const [path, setPath] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([])
   const [refresh, setRefresh] = useState(false)
   const [existingSubject, setExistingSubject] = useState(null)
+  const [subjectId, setSubjectId] = useState(null)
 
 
   useEffect(() => {
@@ -43,6 +46,7 @@ export default function SubjectsList({listType}) {
       await setIsLoading(true)
       if (listType === "SUPERVISOR") await setData(await fetchSubjects(true))
       if (listType === "SPECIALIST") await setData(await fetchSubjects(false, "PENDING"))
+      else await setData(await fetchSubjects())
       await setIsLoading(false)
     }
     fetchData()
@@ -59,20 +63,21 @@ export default function SubjectsList({listType}) {
     accessorKey: (row) => `${row.subjectStatus}`,
     header: 'Status',
     filterVariant: 'multi-select',
-    Cell: ({renderedCellValue, row}) => (<Tooltip label={row.original.specialistComment}>
+    Cell: ({renderedCellValue, row}) => (
+        <Tooltip label={row.original.specialistComment} disabled={!row.original.specialistComment}>
 
-      <Box
-          style={(theme) => ({
-            backgroundColor: renderedCellValue === "En attente d'approbation" ? theme.colors.gray[5] : renderedCellValue === "Accepté" ? theme.colors.blue[9] : renderedCellValue === "Rejeté" ? theme.colors.red[9] : theme.colors.green[9],
-            borderRadius: '4px',
-            color: '#fff',
-            padding: '4px',
-            width: "fit-content"
-          })}
-      >
-        {renderedCellValue}
-      </Box>
-    </Tooltip>),
+          <Box
+              style={(theme) => ({
+                backgroundColor: renderedCellValue === "En attente d'approbation" ? theme.colors.gray[5] : renderedCellValue === "Accepté" ? theme.colors.blue[9] : renderedCellValue === "Rejeté" ? theme.colors.red[9] : theme.colors.green[9],
+                borderRadius: '4px',
+                color: '#fff',
+                padding: '4px',
+                width: "fit-content"
+              })}
+          >
+            {renderedCellValue}
+          </Box>
+        </Tooltip>),
     accessorFn: (row) => statusConverter(row.subjectStatus),
 
   },
@@ -134,6 +139,28 @@ export default function SubjectsList({listType}) {
       }}
           disabled={row.original.subjectStatus !== "PENDING"}><IconEdit></IconEdit></ActionIcon>
       </Tooltip>}
+      {listType === "SPECIALIST" && <Tooltip
+          label="Accepter le sujet"><ActionIcon
+          mr={20} variant="filled" color="green" onClick={async () => {
+        if (confirm("Êtes-vous sûr(e) de vouloir accepter ce sujet?")) {
+          await editSubjectStatus(row.original.id, "ACCEPTED")
+          setRefresh((refresh) => !refresh)
+        }
+      }}><IconCheck></IconCheck></ActionIcon>
+      </Tooltip>}
+      {listType === "SPECIALIST" && <Tooltip
+          label="Rejeter le sujet"><ActionIcon
+          variant="filled" color="red" onClick={async () => {
+        if (confirm("Êtes-vous sûr(e) de vouloir rejeter ce sujet?")) {
+          let specialistComment = null
+          do {
+            specialistComment = prompt('Saisissez la raison');
+          } while (specialistComment !== null && specialistComment === "")
+          await editSubjectStatus(row.original.id, "REJECTED", specialistComment)
+          setRefresh((refresh) => !refresh)
+        }
+      }}><IconX></IconX></ActionIcon>
+      </Tooltip>}
 
     </Box>),
     localization: MRT_Localization_FR,
@@ -159,6 +186,15 @@ export default function SubjectsList({listType}) {
            overlayProps={{blur: 4, backgroundOpacity: 0.55}}>
       <AddSubjectForm setRefresh={setRefresh} existingSubject={existingSubject}/>
     </Modal>
+
+    <Modal opened={acceptModalOpened} onClose={() => {
+      toggleAcceptModal.close()
+      setExistingSubject(null)
+    }} size="60%" withCloseButton={true}
+           overlayProps={{blur: 4, backgroundOpacity: 0.55}}>
+      <AddSubjectForm setRefresh={setRefresh} existingSubject={existingSubject}/>
+    </Modal>
+
     <MantineReactTable table={table}/>
   </>)
 }

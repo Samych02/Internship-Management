@@ -6,7 +6,7 @@ export default async function Users() {
 
 
   return (
-      <SubjectsList/>
+      <SubjectsList listType="SUPERVISOR"/>
   )
 
 
