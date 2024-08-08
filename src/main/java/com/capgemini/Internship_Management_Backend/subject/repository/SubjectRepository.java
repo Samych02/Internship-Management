@@ -2,18 +2,28 @@ package com.capgemini.Internship_Management_Backend.subject.repository;
 
 import com.capgemini.Internship_Management_Backend.User.entity.User;
 import com.capgemini.Internship_Management_Backend.subject.entity.Subject;
+import com.capgemini.Internship_Management_Backend.subject.model.SubjectStatus;
 import com.capgemini.Internship_Management_Backend.subject.repository.projection.SubjectProjection;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.capgemini.Internship_Management_Backend.subject.repository.projection.SubjectProjectionForEdit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface SubjectRepository extends JpaRepository<Subject, Integer>, JpaSpecificationExecutor<Subject> {
   Subject findByTitleIgnoreCase(String title);
 
-  Page<SubjectProjection> findAllByPosterOrderByCreatedAtDesc(User poster, Pageable pageable);
+  List<SubjectProjection> findAllProjectedByOrderByCreatedAtDesc();
 
-  Page<SubjectProjection> findAllByPosterAndTitleContainingOrderByCreatedAtDesc(User poster, String title, Pageable pageable);
+  List<SubjectProjection> findAllProjectedBySubjectStatusOrderByCreatedAtDesc(SubjectStatus subjectStatus);
+
+  List<SubjectProjection> findAllProjectedByPosterOrderByCreatedAtDesc(User poster);
+
+  List<SubjectProjection> findAllProjectedBySubjectStatusAndPosterOrderByCreatedAtDesc(SubjectStatus subjectStatus, User poster);
+
+  Integer countBySubjectStatus(SubjectStatus subjectStatus);
+
+  SubjectProjectionForEdit findProjectedById(Integer Id);
 }

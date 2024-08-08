@@ -16,6 +16,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,28 +49,36 @@ public class SubjectWordGeneratorService {
 
     // the path after the base folder
     String partialPath = null;
+    String fileNameWithoutExtension = null;
     if (subject.getPath() != null) {
-      partialPath = subject.getPath();
+      int lastIndex = subject.getPath().lastIndexOf('\\');
+      partialPath = subject.getPath().substring(0, lastIndex + 1);
+      fileNameWithoutExtension = subject.getPath().substring(lastIndex + 1);
+
     } else {
-      partialPath = "\\sujets\\" + subject.getYear() + "\\" + subject.getTitle() + "\\";
+      partialPath = "\\sujets\\" + subject.getYear();
+      // the subject file should have this naming convention Cap Eng Sujet de stage_09_AIS_RBSE
+      //first we get the index of the subject from subject folder then we append the rest of the path to partialPath
+      fileNameWithoutExtension = "Cap Eng Sujet de stage_" + String.format("%02d", getSubjectIndex(resourcesDirectory + partialPath) + 1) + "_AIS_RBSE";
+      partialPath += "\\" + subject.getTitle() + "\\";
     }
     try {
       Files.createDirectories(Paths.get(resourcesDirectory + partialPath));
-      try (FileOutputStream out = new FileOutputStream(Paths.get(resourcesDirectory + partialPath + "sujet.docx").toFile())) {
+      try (FileOutputStream out = new FileOutputStream(Paths.get(resourcesDirectory + partialPath + fileNameWithoutExtension + ".docx").toFile())) {
         document.write(out);
         document.close();
       }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    ConvertToPDF(resourcesDirectory + partialPath);
-    return partialPath;
+    ConvertToPDF(resourcesDirectory + partialPath, fileNameWithoutExtension);
+    return partialPath + fileNameWithoutExtension;
   }
 
-  private void ConvertToPDF(String path) {
+  private void ConvertToPDF(String path, String fileNameWithoutExtension) {
     try {
-      InputStream docxInputStream = new FileInputStream(path + "sujet.docx");
-      OutputStream outputStream = new FileOutputStream(path + "sujet.pdf");
+      InputStream docxInputStream = new FileInputStream(path + fileNameWithoutExtension + ".docx");
+      OutputStream outputStream = new FileOutputStream(path + fileNameWithoutExtension + ".pdf");
       IConverter converter = LocalConverter.builder().build();
       converter.convert(docxInputStream).as(DocumentType.DOCX).to(outputStream).as(DocumentType.PDF).execute();
       outputStream.close();
@@ -137,12 +146,29 @@ public class SubjectWordGeneratorService {
           XWPFRun newRun = paragraph.createRun();
           newRun.setText(lines[i]);
           newRun.setColor("246F86");
-          newRun.setFontSize(20);
+          newRun.setFontSize(12);
           if (i < lines.length - 1) {
             newRun.addBreak();
           }
         }
       }
     });
+  }
+
+  // We are using this method to get the index of a subject based on the number of subfolder existing
+  // It ain't 100% reliable, but we know that subjects can't be removed
+  private int getSubjectIndex(String path) {
+    try {
+      File file = new File(path);
+      File[] files = file.listFiles(new FileFilter() {
+        @Override
+        public boolean accept(File f) {
+          return f.isDirectory();
+        }
+      });
+      return Objects.requireNonNull(files).length;
+    } catch (NullPointerException e) {
+      return 0;
+    }
   }
 }

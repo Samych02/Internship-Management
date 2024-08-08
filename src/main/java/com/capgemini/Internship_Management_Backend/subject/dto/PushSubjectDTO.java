@@ -2,6 +2,7 @@ package com.capgemini.Internship_Management_Backend.subject.dto;
 
 import com.capgemini.Internship_Management_Backend.subject.model.Competency;
 import com.capgemini.Internship_Management_Backend.subject.model.InternType;
+import com.capgemini.Internship_Management_Backend.subject.model.InternshipType;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -10,9 +11,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class AddSubjectDTO {
+public class PushSubjectDTO {
   @NotNull
-  private Integer id;
+  private Integer posterId;
 
   @NotEmpty
   private String title;
@@ -31,6 +32,9 @@ public class AddSubjectDTO {
 
   @NotNull
   public List<Competency> competenciesRequired;
+
+  @NotNull
+  public InternshipType internshipType;
 
   @NotEmpty
   public String supervisor;

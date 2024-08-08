@@ -1,7 +1,8 @@
 package com.capgemini.Internship_Management_Backend.subject.controller;
 
 import com.capgemini.Internship_Management_Backend.common.httpresponse.util.ResponseUtil;
-import com.capgemini.Internship_Management_Backend.subject.dto.AddSubjectDTO;
+import com.capgemini.Internship_Management_Backend.subject.dto.PushSubjectDTO;
+import com.capgemini.Internship_Management_Backend.subject.model.SubjectStatus;
 import com.capgemini.Internship_Management_Backend.subject.service.SubjectService;
 import com.capgemini.Internship_Management_Backend.subject.service.SubjectWordGeneratorService;
 import jakarta.validation.Valid;
@@ -29,22 +30,41 @@ public class SubjectController {
   }
 
   @PostMapping("")
-  public ResponseEntity<?> addSubject(@RequestBody @Valid AddSubjectDTO addSubjectDTO) {
-    subjectService.saveSubject(addSubjectDTO);
-    return ResponseEntity.status(HttpStatus.CREATED).body(ResponseUtil.successResponse("User created successfully", Collections.singletonMap("created", true)));
+  public ResponseEntity<?> addSubject(@RequestBody @Valid PushSubjectDTO pushSubjectDTO) {
+    subjectService.saveSubject(pushSubjectDTO);
+    return ResponseEntity.status(HttpStatus.CREATED).body(ResponseUtil.successResponse("Subject created successfully", Collections.singletonMap("created", true)));
   }
 
   @GetMapping("")
-  public ResponseEntity<?> getAllUserSubjects(@RequestParam @Valid @NotNull Integer id,
-                                              @RequestParam @Valid @NotNull int page,
-                                              @RequestParam(required = false) String title,
-                                              @RequestParam(required = false, defaultValue = "10") int size) {
-    return ResponseEntity.status(HttpStatus.OK).body(subjectService.getAllUserSubjects(id, title, page, size));
+  public ResponseEntity<?> getAllSubjects(
+          @RequestParam(required = false) Integer posterId,
+          @RequestParam(required = false) SubjectStatus subjectStatus
+  ) {
+    return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Subjects fetched successfully", subjectService.getAllSubjects(posterId, subjectStatus)));
+  }
+
+  @GetMapping("count-pending")
+  public ResponseEntity<?> countPendingSubjects() {
+    return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Subjects fetched successfully", Collections.singletonMap("numberOfPendingSubjects", subjectService.countPendingSubjects())));
   }
 
 
-//  @GetMapping("test")
-//  public void test() {
-//    subjectWordGeneratorService.generateSubjectFile();
-//  }
+  @GetMapping("{subjectId}")
+  public ResponseEntity<?> getSubject(@PathVariable Integer subjectId) {
+    return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Subjects fetched successfully", subjectService.getSubjectById(subjectId)));
+  }
+
+  @PutMapping("{subjectId}")
+  public ResponseEntity<?> updateSubject(@PathVariable Integer subjectId, @RequestBody @Valid PushSubjectDTO pushSubjectDTO) {
+    subjectService.updateSubject(subjectId, pushSubjectDTO);
+    return ResponseEntity.status(HttpStatus.CREATED).body(ResponseUtil.successResponse("Subject updated successfully", Collections.singletonMap("created", true)));
+
+
+  }
+
+  @GetMapping("test")
+  public void test(@RequestParam(required = false) SubjectStatus id) {
+    System.out.println(1111);
+    System.out.println(id);
+  }
 }
