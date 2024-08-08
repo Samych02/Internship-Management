@@ -1,3 +1,5 @@
+import SubjectsList from "@/app/dashboard/supervisor/SubjectsList";
+
 export default async function Subjects() {
-  return (<h1>test</h1>)
+  return (<SubjectsList listType="SPECIALIST"/>)
 }

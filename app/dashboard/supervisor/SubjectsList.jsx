@@ -8,6 +8,7 @@ import {useDisclosure} from "@mantine/hooks";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
 import {fetchSubjects} from "@/app/lib/fetchSubjects";
 import AddSubjectForm from "@/app/dashboard/supervisor/add-subject/AddSubjectForm";
+import {getSubjectById} from "@/app/dashboard/supervisor/add-subject/actions";
 
 function statusConverter(status) {
   let statusFriendly
@@ -27,32 +28,21 @@ function statusConverter(status) {
   return statusFriendly
 }
 
-// const rows = (content, withEditButton, open, setPath) => {
-//
-//   return content.map((row) => (<Table.Tr key={row.id}>
-//     <Table.Td>{row.title}</Table.Td>
-//     <Table.Td>{statusConverter(row.subjectStatus, row.specialistComment)}</Table.Td>
-//     <Table.Td className="w-[120px]">
-//       <Tooltip label="Afficher les détails"><ActionIcon variant="filled"
-//                                                         mr={25} onClick={() => {
-//         setPath(row.path)
-//         open()
-//       }}><IconEye/></ActionIcon></Tooltip>
-//     </Table.Td>
-//   </Table.Tr>))
-// }
-
 export default function SubjectsList({listType}) {
-  const [opened, {open, close}] = useDisclosure(false);
+  const [pdfModalOpened, togglePDFModal] = useDisclosure(false);
+  const [editModalOpened, toggleEditModal] = useDisclosure(false);
   const [path, setPath] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([])
   const [refresh, setRefresh] = useState(false)
+  const [existingSubject, setExistingSubject] = useState(null)
+
 
   useEffect(() => {
     const fetchData = async () => {
       await setIsLoading(true)
-      await setData(await fetchSubjects(true))
+      if (listType === "SUPERVISOR") await setData(await fetchSubjects(true))
+      if (listType === "SPECIALIST") await setData(await fetchSubjects(false, "PENDING"))
       await setIsLoading(false)
     }
     fetchData()
@@ -98,11 +88,11 @@ export default function SubjectsList({listType}) {
       }
 
     },
-    renderCreateRowModalContent: () => (<Stack>
+    renderCreateRowModalContent: () => (listType === "SUPERVISOR" && <Stack>
       <Title order={3}>Ajouter un nouveau sujet</Title>
       <AddSubjectForm setRefresh={setRefresh}/>
     </Stack>),
-    renderTopToolbarCustomActions: ({table}) => (
+    renderTopToolbarCustomActions: ({table}) => (listType === "SUPERVISOR" &&
         <Button onClick={() => table.setCreatingRow(true)}>Ajouter un sujet</Button>),
     createDisplayMode: 'modal',
     enableHiding: false,
@@ -132,13 +122,16 @@ export default function SubjectsList({listType}) {
       <Tooltip label="Afficher les détails">
         <ActionIcon variant="filled" mr={20} onClick={() => {
           setPath(row.original.path)
-          open()
+          togglePDFModal.open()
         }}><IconEye/></ActionIcon></Tooltip>
 
 
       {listType === "SUPERVISOR" && <Tooltip
           label={row.original.subjectStatus === "PENDING" ? "Modifier" : "Vous ne pouvez plus modifier ce sujet"}><ActionIcon
-          variant="filled" color="yellow"
+          variant="filled" color="yellow" onClick={async () => {
+        await setExistingSubject(await getSubjectById(row.original.id))
+        toggleEditModal.open()
+      }}
           disabled={row.original.subjectStatus !== "PENDING"}><IconEdit></IconEdit></ActionIcon>
       </Tooltip>}
 
@@ -148,16 +141,23 @@ export default function SubjectsList({listType}) {
 
 
   return (<>
-    <Modal opened={opened} onClose={() => {
+    <Modal opened={pdfModalOpened} onClose={() => {
       setPath("")
-      close()
+      togglePDFModal.close()
     }} centered size="auto">
       <object
-          data={"http://localhost" + path + ".pdf#view=FitH"}
+          data={"http://localhost" + path + `.pdf?&v=${Math.random()}#view=FitH`}
           type="application/pdf"
           width="600"
           height="700"
       />
+    </Modal>
+    <Modal opened={editModalOpened} onClose={() => {
+      toggleEditModal.close()
+      setExistingSubject(null)
+    }} size="60%" withCloseButton={true}
+           overlayProps={{blur: 4, backgroundOpacity: 0.55}}>
+      <AddSubjectForm setRefresh={setRefresh} existingSubject={existingSubject}/>
     </Modal>
     <MantineReactTable table={table}/>
   </>)

@@ -16,18 +16,23 @@ import {
 import {useForm} from '@mantine/form';
 import {randomId, useDisclosure} from "@mantine/hooks";
 import {IconAlertCircle, IconTrash} from "@tabler/icons-react";
-import {addSubjectAction, checkTitleUsedAction} from "@/app/dashboard/supervisor/add-subject/actions";
+import {
+  addSubjectAction,
+  checkTitleUsedAction,
+  editSubjectAction
+} from "@/app/dashboard/supervisor/add-subject/actions";
 
-export default function AddSubjectForm({initialValues = null, setRefresh}) {
+export default function AddSubjectForm({existingSubject = null, setRefresh}) {
   const [active, setActive] = useState(0);
   let titleUsed = false
   const [opened, {open, close}] = useDisclosure(false);
   const [loading, setLoading] = useState(false);
+  console.log(existingSubject)
 
 
   const form = useForm({
         mode: 'uncontrolled',
-    initialValues: initialValues ?? {
+    initialValues: existingSubject ?? {
           title: '',
           tasks: [{task: ''}],
           internType: '',
@@ -68,7 +73,13 @@ export default function AddSubjectForm({initialValues = null, setRefresh}) {
     event.preventDefault()
     form.onSubmit(async (data) => {
       setLoading(true)
-      if (await addSubjectAction(data)) {
+      if (existingSubject == null && await addSubjectAction(data)) {
+        open()
+        setLoading(false)
+        form.reset()
+        setActive(0);
+      }
+      if (existingSubject && await editSubjectAction(existingSubject.id, data)) {
         open()
         setLoading(false)
         form.reset()
@@ -122,7 +133,7 @@ export default function AddSubjectForm({initialValues = null, setRefresh}) {
           {opened && <Alert
               color="green"
               mb="1rem"
-              title={"Sujet ajouté avec succès"}
+              title={`Sujet ${existingSubject === null ? "ajouté" : "modifié"} avec succès`}
               icon={<IconAlertCircle/>}
               withCloseButton
               onClose={close}
@@ -135,6 +146,7 @@ export default function AddSubjectForm({initialValues = null, setRefresh}) {
                   label="Sujet et contexte du stage"
                   placeholder="Sujet et contexte du stage"
                   className="mb-5"
+                  disabled={existingSubject != null}
               />
 
               <Text fw={500} size="sm" style={{flex: 1}}>Description des tâches qui seront assignées au stagiaire</Text>
@@ -225,13 +237,13 @@ export default function AddSubjectForm({initialValues = null, setRefresh}) {
 
           <Group justify="flex-end" mt="xl">
             {active !== 0 && (
-                <Button variant="default" onClick={prevStep}>
+                <Button variant="default" onClick={prevStep} disabled={loading}>
                   Précédent
                 </Button>
             )}
             {active < 2 &&
                 <Button onClick={async () => {
-                  if (active === 0) {
+                  if (active === 0 && existingSubject === null) {
                     close()
                     titleUsed = await checkTitleUsedAction(form.getValues().title)
                   }
