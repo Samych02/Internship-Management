@@ -62,4 +62,13 @@ public class SubjectService {
       subjectWordGeneratorService.generateSubjectFile(subject1);
     });
   }
+
+  public void updateSubjectStatus(Integer subjectId, SubjectStatus subjectStatus, String specialistComment) {
+    Optional<Subject> subject = subjectRepository.findById(subjectId);
+    subject.ifPresent(subject1 -> {
+      subject1.setSubjectStatus(subjectStatus);
+      if (specialistComment != null) subject1.setSpecialistComment(specialistComment);
+      subjectRepository.save(subject1);
+    });
+  }
 }
