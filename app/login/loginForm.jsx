@@ -24,7 +24,7 @@ export default function LoginForm() {
     event.preventDefault()
     form.onSubmit(async (data) => {
       setLoading(true)
-      if (await loginAction(data) == "loginError") {
+      if (await loginAction(data) === "loginError") {
         setLoading(false)
         open()
       }
