@@ -2,6 +2,7 @@ package com.capgemini.Internship_Management_Backend.subject.dto;
 
 import com.capgemini.Internship_Management_Backend.subject.model.Competency;
 import com.capgemini.Internship_Management_Backend.subject.model.InternType;
+import com.capgemini.Internship_Management_Backend.subject.model.InternshipCategory;
 import com.capgemini.Internship_Management_Backend.subject.model.InternshipType;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -23,6 +24,9 @@ public class PushSubjectDTO {
 
   @NotNull
   public InternType internType;
+
+  @NotNull
+  public InternshipCategory internshipCategory;
 
   @NotNull
   public List<String> targetSchools;

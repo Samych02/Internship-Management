@@ -71,6 +71,7 @@ public class SubjectWordGeneratorService {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+//    todo: uncomment on windows
     ConvertToPDF(resourcesDirectory + partialPath, fileNameWithoutExtension);
     return partialPath + fileNameWithoutExtension;
   }

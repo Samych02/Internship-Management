@@ -3,10 +3,7 @@ package com.capgemini.Internship_Management_Backend.subject.entity;
 import com.capgemini.Internship_Management_Backend.User.entity.User;
 import com.capgemini.Internship_Management_Backend.common.entity.BaseEntity;
 import com.capgemini.Internship_Management_Backend.subject.dto.PushSubjectDTO;
-import com.capgemini.Internship_Management_Backend.subject.model.Competency;
-import com.capgemini.Internship_Management_Backend.subject.model.InternType;
-import com.capgemini.Internship_Management_Backend.subject.model.InternshipType;
-import com.capgemini.Internship_Management_Backend.subject.model.SubjectStatus;
+import com.capgemini.Internship_Management_Backend.subject.model.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,6 +30,9 @@ public class Subject extends BaseEntity {
 
   @Enumerated(EnumType.STRING)
   private InternType internType;
+
+  @Enumerated(EnumType.STRING)
+  private InternshipCategory internshipCategory;
 
   @ElementCollection
   private List<String> targetSchools;
@@ -70,5 +70,6 @@ public class Subject extends BaseEntity {
     this.internshipType = pushSubjectDTO.getInternshipType();
     this.supervisor = pushSubjectDTO.getSupervisor();
     this.internNumber = pushSubjectDTO.getInternNumber();
+    this.internshipCategory = pushSubjectDTO.getInternshipCategory();
   }
 }

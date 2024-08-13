@@ -1,5 +1,6 @@
 package com.capgemini.Internship_Management_Backend.subject.repository.projection;
 
+import com.capgemini.Internship_Management_Backend.subject.model.InternshipCategory;
 import com.capgemini.Internship_Management_Backend.subject.model.InternshipType;
 import com.capgemini.Internship_Management_Backend.subject.model.SubjectStatus;
 
@@ -16,6 +17,6 @@ public interface SubjectProjection {
 
   InternshipType getInternshipType();
 
-  int getYear();
+  InternshipCategory getInternshipCategory();
 
 }
