@@ -2,7 +2,7 @@
 import {useState} from 'react';
 import {Alert, Button, Group, Loader, NativeSelect, PasswordInput, Stepper, TextInput} from '@mantine/core';
 import {useForm} from '@mantine/form';
-import ROLES from "@/app/lib/roles";
+import ROLES from "@/app/lib/ROLES";
 import {checkEmailUsedAction, registerAction} from "@/app/dashboard/admin/register/actions";
 import {useDisclosure} from "@mantine/hooks";
 import {IconAlertCircle} from "@tabler/icons-react";

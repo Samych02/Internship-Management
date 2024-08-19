@@ -1,7 +1,7 @@
 "use server"
 import React from "react";
 import {auth, signOut} from "@/auth";
-import {IconHourglassLow, IconList, IconUserPlus, IconUsersGroup} from "@tabler/icons-react";
+import {IconFileCv, IconHourglassLow, IconList, IconUserPlus, IconUsersGroup} from "@tabler/icons-react";
 import AppLayout from "@/app/dashboard/appLayout";
 import {Badge} from "@mantine/core";
 import {getNumberOfPendingSubjects} from "@/app/dashboard/actions";
@@ -36,6 +36,10 @@ export default async function Layout({children}) {
       icon: <IconList size="1rem" stroke={1.5}/>,
       label: 'Mes sujets',
       href: "/dashboard/supervisor/mes-sujets",
+    }, {
+      icon: <IconFileCv size="1rem" stroke={1.5}/>,
+      label: 'CVs recommandés',
+      href: "/dashboard/supervisor/CV",
     },
   ]
 

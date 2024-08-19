@@ -6,27 +6,10 @@ import {IconCheck, IconEdit, IconEye, IconX} from "@tabler/icons-react";
 import {ActionIcon, Box, Button, Modal, Stack, Title, Tooltip} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
-import {fetchSubjects} from "@/app/lib/fetchSubjects";
 import AddSubjectForm from "@/app/dashboard/supervisor/mes-sujets/AddSubjectForm";
-import {editSubjectStatus, getSubjectById} from "@/app/dashboard/supervisor/mes-sujets/actions";
-
-function statusConverter(status) {
-  let statusFriendly
-  switch (status) {
-    case "PENDING":
-      statusFriendly = "En attente d'approbation";
-      break
-    case "REJECTED":
-      statusFriendly = `Rejeté`
-      break
-    case "ACCEPTED":
-      statusFriendly = "Accepté";
-      break
-    case "COMPLETED":
-      statusFriendly = "Complété";
-  }
-  return statusFriendly
-}
+import STUDY_FIELD from "@/app/lib/STUDY_FIELD";
+import SUBJECT_STATUS from "@/app/lib/SUBJECT_STATUS";
+import {editSubjectStatus, fetchSubjects} from "@/app/components/subjects_list/actions";
 
 export default function SubjectsList({listType}) {
   const [pdfModalOpened, togglePDFModal] = useDisclosure(false);
@@ -58,7 +41,10 @@ export default function SubjectsList({listType}) {
   }, {
     accessorKey: 'internshipType', header: 'PFE/PFA', filterVariant: 'multi-select',
   }, {
-    accessorKey: 'year', header: 'Année', filterVariant: 'multi-select', accessorFn: (row) => row.year?.toString(),
+    accessorKey: 'studyField',
+    header: 'Catégorie',
+    filterVariant: 'multi-select',
+    accessorFn: (row) => STUDY_FIELD[row.studyField],
   }, {
     accessorKey: (row) => `${row.subjectStatus}`,
     header: 'Status',
@@ -78,7 +64,7 @@ export default function SubjectsList({listType}) {
             {renderedCellValue}
           </Box>
         </Tooltip>),
-    accessorFn: (row) => statusConverter(row.subjectStatus),
+    accessorFn: (row) => SUBJECT_STATUS[row.subjectStatus],
 
   },
 

@@ -1,6 +1,20 @@
 "use server"
 
 import {auth} from "@/auth";
+import {redirect} from "next/navigation";
+
+export async function fetchSubjects(sendId = false, subjectStatus = null) {
+  "use server"
+  const session = await auth()
+  let posterId = null
+  if (sendId) posterId = parseInt(session?.user.id)
+  let response = await fetch(`http://localhost:8081/api/subjects?${sendId ? `posterId=${posterId}` : ""}&${subjectStatus !== null ? `subjectStatus=${subjectStatus}` : ""}`, {
+    method: "get"
+  })
+  response = await response.json()
+  return response.body
+}
+
 
 export async function addSubjectAction(data) {
   const session = await auth()
@@ -17,6 +31,7 @@ export async function addSubjectAction(data) {
       supervisor: data.supervisor,
       internNumber: data.internNumber,
       internshipType: data.internshipType,
+      studyField: data.studyField,
     }),
     headers: {
       'Content-type': 'application/json'
@@ -40,6 +55,7 @@ export async function editSubjectAction(subjectId, data) {
       supervisor: data.supervisor,
       internNumber: data.internNumber,
       internshipType: data.internshipType,
+      studyField: data.studyField,
     }),
     headers: {
       'Content-type': 'application/json'
@@ -70,5 +86,7 @@ export async function editSubjectStatus(subjectId, subjectStatus, specialistComm
     method: "PATCH",
     body: specialistComment ?? ""
   })
+  redirect("/")
+
 
 }

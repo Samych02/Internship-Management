@@ -6,6 +6,7 @@ import {
   Button,
   Group,
   Loader,
+  NativeSelect,
   NumberInput,
   Radio,
   Stepper,
@@ -16,14 +17,14 @@ import {
 import {useForm} from '@mantine/form';
 import {randomId, useDisclosure} from "@mantine/hooks";
 import {IconAlertCircle, IconTrash} from "@tabler/icons-react";
-import {addSubjectAction, checkTitleUsedAction, editSubjectAction} from "@/app/dashboard/supervisor/mes-sujets/actions";
+import STUDY_FIELD from "@/app/lib/STUDY_FIELD";
+import {addSubjectAction, checkTitleUsedAction, editSubjectAction} from "@/app/components/subjects_list/actions";
 
 export default function AddSubjectForm({existingSubject = null, setRefresh}) {
   const [active, setActive] = useState(0);
   let titleUsed = false
   const [opened, {open, close}] = useDisclosure(false);
   const [loading, setLoading] = useState(false);
-  console.log(existingSubject)
 
 
   const form = useForm({
@@ -36,6 +37,7 @@ export default function AddSubjectForm({existingSubject = null, setRefresh}) {
           targetSpecialities: [],
           competenciesRequired: [{category: "", details: []}],
       internshipType: "",
+      studyField: "",
           supervisor: '',
           internNumber: null
         },
@@ -54,6 +56,7 @@ export default function AddSubjectForm({existingSubject = null, setRefresh}) {
             category: (value) => active === 1 && value.length < 1 ? "Champ requis" : null,
           },
           internshipType: (value) => active === 2 && value.length < 1 ? "Champ requis" : null,
+          studyField: (value) => active === 2 && value.length < 1 ? "Champ requis" : null,
           supervisor: (value) => active === 2 && value.length < 1 ? "Champ requis" : null,
           internNumber: (value) => active === 2 && value < 1 && value == null ? "Champ requis" : null,
 
@@ -211,6 +214,16 @@ export default function AddSubjectForm({existingSubject = null, setRefresh}) {
                   <Radio value="PFA" label="PFA"/>
                 </Group>
               </Radio.Group>
+              <NativeSelect
+                  label="Catégorie du stage"
+                  data={[
+                    {label: "Choisissez une option", value: ""},
+                    ...Object.entries(STUDY_FIELD).map(([key, value]) => ({label: value, value: key}))
+                  ]}
+                  {...form.getInputProps('studyField')}
+                  key={form.key('studyField')}
+                  className="mb-5"
+              />
               <TextInput
                   {...form.getInputProps('supervisor')}
                   key={form.key('supervisor')}
@@ -251,7 +264,7 @@ export default function AddSubjectForm({existingSubject = null, setRefresh}) {
                 >
                   {loading
                       ? <Loader color="white" type="bars" size="20"/>
-                      : "Ajouter"}
+                      : existingSubject === null ? "Ajouter" : "Modifier"}
                 </Button>}
           </Group>
         </form>
