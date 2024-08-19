@@ -1,9 +1,9 @@
-package com.capgemini.Internship_Management_Backend.User.service;
+package com.capgemini.Internship_Management_Backend.user.service;
 
-import com.capgemini.Internship_Management_Backend.User.dto.LoginDTO;
-import com.capgemini.Internship_Management_Backend.User.dto.RegisterDTO;
-import com.capgemini.Internship_Management_Backend.User.entity.User;
-import com.capgemini.Internship_Management_Backend.User.repository.UserRepository;
+import com.capgemini.Internship_Management_Backend.user.dto.LoginDTO;
+import com.capgemini.Internship_Management_Backend.user.dto.RegisterDTO;
+import com.capgemini.Internship_Management_Backend.user.entity.User;
+import com.capgemini.Internship_Management_Backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

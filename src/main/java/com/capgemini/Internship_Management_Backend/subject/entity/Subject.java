@@ -1,9 +1,9 @@
 package com.capgemini.Internship_Management_Backend.subject.entity;
 
-import com.capgemini.Internship_Management_Backend.User.entity.User;
 import com.capgemini.Internship_Management_Backend.common.entity.BaseEntity;
 import com.capgemini.Internship_Management_Backend.subject.dto.PushSubjectDTO;
 import com.capgemini.Internship_Management_Backend.subject.model.*;
+import com.capgemini.Internship_Management_Backend.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,7 +32,7 @@ public class Subject extends BaseEntity {
   private InternType internType;
 
   @Enumerated(EnumType.STRING)
-  private InternshipCategory internshipCategory;
+  private StudyField studyField;
 
   @ElementCollection
   private List<String> targetSchools;
@@ -70,6 +70,6 @@ public class Subject extends BaseEntity {
     this.internshipType = pushSubjectDTO.getInternshipType();
     this.supervisor = pushSubjectDTO.getSupervisor();
     this.internNumber = pushSubjectDTO.getInternNumber();
-    this.internshipCategory = pushSubjectDTO.getInternshipCategory();
+    this.studyField = pushSubjectDTO.getStudyField();
   }
 }

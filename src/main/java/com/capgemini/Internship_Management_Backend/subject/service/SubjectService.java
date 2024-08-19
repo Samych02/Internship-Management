@@ -1,12 +1,12 @@
 package com.capgemini.Internship_Management_Backend.subject.service;
 
-import com.capgemini.Internship_Management_Backend.User.entity.User;
 import com.capgemini.Internship_Management_Backend.subject.dto.PushSubjectDTO;
 import com.capgemini.Internship_Management_Backend.subject.entity.Subject;
 import com.capgemini.Internship_Management_Backend.subject.model.SubjectStatus;
 import com.capgemini.Internship_Management_Backend.subject.repository.SubjectRepository;
 import com.capgemini.Internship_Management_Backend.subject.repository.projection.SubjectProjection;
 import com.capgemini.Internship_Management_Backend.subject.repository.projection.SubjectProjectionForEdit;
+import com.capgemini.Internship_Management_Backend.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
-package com.capgemini.Internship_Management_Backend.User.entity;
+package com.capgemini.Internship_Management_Backend.user.entity;
 
-import com.capgemini.Internship_Management_Backend.User.dto.RegisterDTO;
 import com.capgemini.Internship_Management_Backend.common.entity.BaseEntity;
+import com.capgemini.Internship_Management_Backend.user.dto.RegisterDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

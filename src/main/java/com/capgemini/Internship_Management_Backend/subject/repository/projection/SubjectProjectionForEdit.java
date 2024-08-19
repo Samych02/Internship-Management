@@ -2,8 +2,8 @@ package com.capgemini.Internship_Management_Backend.subject.repository.projectio
 
 import com.capgemini.Internship_Management_Backend.subject.model.Competency;
 import com.capgemini.Internship_Management_Backend.subject.model.InternType;
-import com.capgemini.Internship_Management_Backend.subject.model.InternshipCategory;
 import com.capgemini.Internship_Management_Backend.subject.model.InternshipType;
+import com.capgemini.Internship_Management_Backend.subject.model.StudyField;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public interface SubjectProjectionForEdit {
 
   InternshipType getInternshipType();
 
-  InternshipCategory getInternshipCategory();
+  StudyField getStudyField();
 
   String getSupervisor();
 

@@ -18,4 +18,10 @@ spring:
     hibernate:
       ddl-auto: update
 
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 15MB
+      max-request-size: 15MB
+
 resources-directory: C:\Users\scherif\OneDrive - Capgemini\InternshipManagementResources

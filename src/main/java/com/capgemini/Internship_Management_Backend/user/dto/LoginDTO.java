@@ -1,6 +1,6 @@
-package com.capgemini.Internship_Management_Backend.User.dto;
+package com.capgemini.Internship_Management_Backend.user.dto;
 
-import com.capgemini.Internship_Management_Backend.User.entity.User;
+import com.capgemini.Internship_Management_Backend.user.entity.User;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Data;

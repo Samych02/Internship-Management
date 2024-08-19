@@ -1,9 +1,9 @@
-package com.capgemini.Internship_Management_Backend.User.controller;
+package com.capgemini.Internship_Management_Backend.user.controller;
 
-import com.capgemini.Internship_Management_Backend.User.dto.LoginDTO;
-import com.capgemini.Internship_Management_Backend.User.dto.RegisterDTO;
-import com.capgemini.Internship_Management_Backend.User.service.UserService;
 import com.capgemini.Internship_Management_Backend.common.httpresponse.util.ResponseUtil;
+import com.capgemini.Internship_Management_Backend.user.dto.LoginDTO;
+import com.capgemini.Internship_Management_Backend.user.dto.RegisterDTO;
+import com.capgemini.Internship_Management_Backend.user.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;

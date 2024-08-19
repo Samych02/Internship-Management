@@ -1,6 +1,6 @@
-package com.capgemini.Internship_Management_Backend.User.repository;
+package com.capgemini.Internship_Management_Backend.user.repository;
 
-import com.capgemini.Internship_Management_Backend.User.entity.User;
+import com.capgemini.Internship_Management_Backend.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

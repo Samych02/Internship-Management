@@ -1,4 +1,4 @@
-package com.capgemini.Internship_Management_Backend.User.dto;
+package com.capgemini.Internship_Management_Backend.user.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

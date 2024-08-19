@@ -1,10 +1,10 @@
 package com.capgemini.Internship_Management_Backend.subject.repository;
 
-import com.capgemini.Internship_Management_Backend.User.entity.User;
 import com.capgemini.Internship_Management_Backend.subject.entity.Subject;
 import com.capgemini.Internship_Management_Backend.subject.model.SubjectStatus;
 import com.capgemini.Internship_Management_Backend.subject.repository.projection.SubjectProjection;
 import com.capgemini.Internship_Management_Backend.subject.repository.projection.SubjectProjectionForEdit;
+import com.capgemini.Internship_Management_Backend.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
