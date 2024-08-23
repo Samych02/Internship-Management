@@ -1,5 +1,6 @@
 package com.capgemini.Internship_Management_Backend.course.service;
 
+import com.capgemini.Internship_Management_Backend.course.dto.PushCourseDTO;
 import com.capgemini.Internship_Management_Backend.course.entity.Course;
 import com.capgemini.Internship_Management_Backend.course.model.CourseStatus;
 import com.capgemini.Internship_Management_Backend.course.model.CourseType;
@@ -20,6 +21,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CourseService {
   private final CourseRepository courseRepository;
+
+  public void addCourse(PushCourseDTO pushCourseDTO) {
+    Course course = new Course(pushCourseDTO);
+    courseRepository.save(course);
+  }
 
   public List<CourseProjection> getAllPersonalCoursesOfIntern(Integer internId) {
     return courseRepository.findAllProjectedByUserAndCourseTypeOrderByCourseStatusDesc(new User(internId), CourseType.PERSONAL);
