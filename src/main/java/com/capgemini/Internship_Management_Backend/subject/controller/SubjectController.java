@@ -63,7 +63,7 @@ public class SubjectController {
   @PatchMapping("{subjectId}/{subjectStatus}")
   public ResponseEntity<?> updateSubjectStatus(@PathVariable Integer subjectId, @PathVariable SubjectStatus subjectStatus, @RequestBody(required = false) String specialistComment) {
     subjectService.updateSubjectStatus(subjectId, subjectStatus, specialistComment);
-    return ResponseEntity.status(HttpStatus.CREATED).body(ResponseUtil.successResponse("Subject status updated successfully", Collections.singletonMap("created", true)));
+    return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Subject status updated successfully", Collections.singletonMap("updated", true)));
   }
 
   @GetMapping("test")
@@ -71,4 +71,6 @@ public class SubjectController {
     System.out.println(1111);
     System.out.println(id);
   }
+
+
 }
