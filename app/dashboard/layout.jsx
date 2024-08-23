@@ -66,6 +66,10 @@ export default async function Layout({children}) {
       icon: <IconList size="1rem" stroke={1.5}/>,
       label: 'Formations personnelles',
       href: "/dashboard/intern/formations-personnelles",
+    }, {
+      icon: <IconList size="1rem" stroke={1.5}/>,
+      label: 'Comptes Rendus',
+      href: "/dashboard/intern/comptes-rendus",
     },
   ]
 

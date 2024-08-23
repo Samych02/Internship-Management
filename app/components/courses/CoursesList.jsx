@@ -174,9 +174,9 @@ export default function CoursesList({coursesType}) {
             onClose={close}
         />}
         {!isLoading && data.length !== 0 &&
-            <div style={{position: "absolute", right: 10, zIndex: 99}}><DonutChart size={130} data={pieData}
+            <div style={{position: "absolute", right: 50, top: 120, zIndex: 99}}><DonutChart size={140} data={pieData}
                                                                                    tooltipDataSource="segment"
-                                                                                   withLabelsLine={false} withLabels
+                                                                                             withLabelsLine={false}
                                                                                    chartLabel={`Progrès: ${pieData.find(item => item.name === COURSE_STATUS["COMPLETED"])?.value ?? 0}/${data.length}`}
                                                                                    strokeWidth={pieData.length === 1 ? 0 : 1} // to remove the white stroke when there is only one item in the pie, for aesthetic reasons
             /></div>}
