@@ -8,11 +8,11 @@ import {DonutChart} from "@mantine/charts";
 import {MantineReactTable, useMantineReactTable} from "mantine-react-table";
 import {Alert, Anchor, Box, Button, Menu, Stack, Title} from "@mantine/core";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
-import AddSubjectForm from "@/app/dashboard/supervisor/mes-sujets/AddSubjectForm";
 import {IconAlertCircle, IconChevronDown} from "@tabler/icons-react";
 import {useDisclosure} from "@mantine/hooks";
+import AddCourseForm from "@/app/components/courses/AddCourseForm";
 
-export default function CoursesPage({coursesType}) {
+export default function CoursesList({coursesType}) {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([])
   const [pieData, setPieData] = useState([])
@@ -99,8 +99,7 @@ export default function CoursesPage({coursesType}) {
     },
     renderCreateRowModalContent: () => (coursesType === "personal" && <Stack>
       <Title order={3}>Ajouter une nouvelle formation</Title>
-      {/*todo: create form*/}
-      <AddSubjectForm setRefresh={setRefresh}/>
+      <AddCourseForm setRefresh={setRefresh}/>
     </Stack>),
     renderTopToolbarCustomActions: ({table}) => (coursesType === "personal" &&
         <Button onClick={() => table.setCreatingRow(true)}>Ajouter une nouvelle formation</Button>),
@@ -144,7 +143,7 @@ export default function CoursesPage({coursesType}) {
         <Button rightSection={<IconChevronDown stroke={1.5}/>} variant="default">Marquer comme</Button>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item color="gray.5" onClick={async () => {
+        <Menu.Item color="gray.9" onClick={async () => {
           await updateCourseStatus(row.original.id, "NOT_STARTED")
           setRefresh((refresh) => !refresh)
           open()

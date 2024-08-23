@@ -19,3 +19,21 @@ export async function updateCourseStatus(courseID, status) {
   })
   return response.ok
 }
+
+export async function addCourse(data) {
+  const session = await auth()
+  let response = await fetch('http://localhost:8081/api/courses', {
+    method: "POST",
+    body: JSON.stringify({
+      internID: parseInt(session?.user.id),
+      title: data.title,
+      link: data.link,
+      organism: data.organism,
+      courseStatus: data.courseStatus,
+    }),
+    headers: {
+      'Content-type': 'application/json'
+    }
+  })
+  return response.ok
+}

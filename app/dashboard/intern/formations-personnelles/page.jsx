@@ -1,7 +1,7 @@
-import CoursesPage from "@/app/components/courses/CoursesPage";
+import CoursesList from "@/app/components/courses/CoursesList";
 
 export default async function ObligatoryCourses() {
   return (
-      <CoursesPage coursesType="personal"/>
+      <CoursesList coursesType="personal"/>
   )
 }
