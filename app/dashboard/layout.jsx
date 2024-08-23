@@ -57,6 +57,18 @@ export default async function Layout({children}) {
     },
   ]
 
+  const internNav = [
+    {
+      icon: <IconList size="1rem" stroke={1.5}/>,
+      label: 'Formations obligatoires',
+      href: "/dashboard/intern",
+    }, {
+      icon: <IconList size="1rem" stroke={1.5}/>,
+      label: 'Formations personnelles',
+      href: "/dashboard/intern/formations-personnelles",
+    },
+  ]
+
   let data
   switch (session?.user.userRole) {
     case "ADMIN": {
@@ -69,6 +81,10 @@ export default async function Layout({children}) {
     }
     case "SUPERVISOR": {
       data = supervisorNav
+      break
+    }
+    case "INTERN": {
+      data = internNav
       break
     }
   }

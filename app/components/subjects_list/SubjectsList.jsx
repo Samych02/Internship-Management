@@ -1,5 +1,5 @@
 "use client"
-import 'mantine-react-table/styles.css'; //make sure MRT styles were imported in your app root (once)
+import 'mantine-react-table/styles.css';
 import {useEffect, useMemo, useState} from 'react';
 import {MantineReactTable, useMantineReactTable,} from 'mantine-react-table';
 import {IconCheck, IconEdit, IconEye, IconX} from "@tabler/icons-react";
