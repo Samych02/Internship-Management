@@ -7,8 +7,8 @@ import {ActionIcon, Box, Button, Modal, Stack, Title, Tooltip} from "@mantine/co
 import {useDisclosure} from "@mantine/hooks";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
 import AddSubjectForm from "@/app/components/subjects_list/AddSubjectForm";
-import STUDY_FIELD from "@/app/lib/STUDY_FIELD";
-import SUBJECT_STATUS from "@/app/lib/SUBJECT_STATUS";
+import STUDY_FIELD from "@/app/constants/STUDY_FIELD";
+import SUBJECT_STATUS from "@/app/constants/SUBJECT_STATUS";
 import {editSubjectStatus, fetchSubjects} from "@/app/components/subjects_list/actions";
 
 export default function SubjectsList({listType}) {

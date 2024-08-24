@@ -6,7 +6,7 @@ import {useForm} from "@mantine/form";
 import {Alert, Button, Group, Loader, NativeSelect, TextInput} from "@mantine/core";
 import {IconAlertCircle} from "@tabler/icons-react";
 import {addCourse} from "@/app/components/courses/actions";
-import COURSE_STATUS from "@/app/lib/COURSE_STATUS";
+import COURSE_STATUS from "@/app/constants/COURSE_STATUS";
 
 export default function AddCourseForm({setRefresh}) {
   const [opened, {open, close}] = useDisclosure(false);

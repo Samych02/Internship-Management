@@ -1,5 +1,5 @@
 import {auth} from "@/auth";
-import roles from "@/app/lib/ROLES";
+import roles from "@/app/constants/ROLES";
 
 export default async function Users() {
   const session = await auth()

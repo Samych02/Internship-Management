@@ -3,7 +3,7 @@ import 'mantine-react-table/styles.css';
 import React, {useEffect, useMemo, useState} from "react";
 import {fetchCourses, updateCourseStatus} from "@/app/components/courses/actions";
 import '@mantine/charts/styles.css';
-import COURSE_STATUS from "@/app/lib/COURSE_STATUS";
+import COURSE_STATUS from "@/app/constants/COURSE_STATUS";
 import {DonutChart} from "@mantine/charts";
 import {MantineReactTable, useMantineReactTable} from "mantine-react-table";
 import {Alert, Anchor, Box, Button, Menu, Stack, Title} from "@mantine/core";

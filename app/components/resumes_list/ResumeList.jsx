@@ -2,7 +2,7 @@
 import {useDisclosure} from "@mantine/hooks";
 import {useEffect, useMemo, useState} from "react";
 import {fetchResumes} from "@/app/components/resumes_list/actions";
-import STUDY_FIELD from "@/app/lib/STUDY_FIELD";
+import STUDY_FIELD from "@/app/constants/STUDY_FIELD";
 import {MantineReactTable, useMantineReactTable} from "mantine-react-table";
 import {ActionIcon, Box, Button, Modal, Stack, Title, Tooltip} from "@mantine/core";
 import {IconEye} from "@tabler/icons-react";

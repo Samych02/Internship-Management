@@ -6,7 +6,7 @@ import {useForm} from "@mantine/form";
 import {addResumeAction} from "@/app/components/resumes_list/actions";
 import {Alert, Button, FileInput, Group, Loader, NativeSelect, TextInput} from "@mantine/core";
 import {IconAlertCircle} from "@tabler/icons-react";
-import STUDY_FIELD from "@/app/lib/STUDY_FIELD";
+import STUDY_FIELD from "@/app/constants/STUDY_FIELD";
 
 export default function AddResumeForm({setRefresh}) {
   const [opened, {open, close}] = useDisclosure(false);
