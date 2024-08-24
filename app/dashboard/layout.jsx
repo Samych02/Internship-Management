@@ -1,7 +1,19 @@
 "use server"
 import React from "react";
 import {auth, signOut} from "@/auth";
-import {IconFileCv, IconHourglassLow, IconList, IconUserPlus, IconUsersGroup} from "@tabler/icons-react";
+import {
+  IconBrowserCheck,
+  IconCertificate,
+  IconChecklist,
+  IconFileCv,
+  IconHourglassLow,
+  IconList,
+  IconListSearch,
+  IconSchool,
+  IconThumbUp,
+  IconUserPlus,
+  IconUsersGroup
+} from "@tabler/icons-react";
 import AppLayout from "@/app/dashboard/appLayout";
 import {Badge} from "@mantine/core";
 import {getNumberOfPendingSubjects} from "@/app/dashboard/actions";
@@ -33,7 +45,7 @@ export default async function Layout({children}) {
       label: 'Liste des sujets',
       href: "/dashboard/supervisor",
     }, {
-      icon: <IconList size="1rem" stroke={1.5}/>,
+      icon: <IconListSearch size="1rem" stroke={1.5}/>,
       label: 'Mes sujets',
       href: "/dashboard/supervisor/mes-sujets",
     }, {
@@ -57,19 +69,35 @@ export default async function Layout({children}) {
     },
   ]
 
+  const responsibleNav = [
+    {
+      icon: <IconFileCv size="1rem" stroke={1.5}/>,
+      label: 'CVs recommandés',
+      href: "/dashboard/responsible/CV",
+    },
+  ]
+
   const internNav = [
     {
-      icon: <IconList size="1rem" stroke={1.5}/>,
+      icon: <IconSchool size="1rem" stroke={1.5}/>,
       label: 'Formations obligatoires',
       href: "/dashboard/intern",
     }, {
-      icon: <IconList size="1rem" stroke={1.5}/>,
+      icon: <IconCertificate size="1rem" stroke={1.5}/>,
       label: 'Formations personnelles',
       href: "/dashboard/intern/formations-personnelles",
     }, {
-      icon: <IconList size="1rem" stroke={1.5}/>,
-      label: 'Comptes Rendus',
+      icon: <IconChecklist size="1rem" stroke={1.5}/>,
+      label: 'Mes comptes Rendus',
       href: "/dashboard/intern/comptes-rendus",
+    }, {
+      icon: <IconBrowserCheck size="1rem" stroke={1.5}/>,
+      label: 'Liens utiles',
+      href: "/dashboard/intern/liens-utiles",
+    }, {
+      icon: <IconThumbUp size="1rem" stroke={1.5}/>,
+      label: 'Les bonnes pratiques',
+      href: "/dashboard/intern/bonnes-pratiques",
     },
   ]
 
@@ -85,6 +113,10 @@ export default async function Layout({children}) {
     }
     case "SUPERVISOR": {
       data = supervisorNav
+      break
+    }
+    case "RESPONSIBLE": {
+      data = responsibleNav
       break
     }
     case "INTERN": {
