@@ -8,7 +8,7 @@ import {ActionIcon, Box, Button, Modal, Stack, Title, Tooltip} from "@mantine/co
 import {IconEye} from "@tabler/icons-react";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
 import AddResumeForm from "@/app/components/resumes_list/AddResumeForm";
-import 'mantine-react-table/styles.css'; //make sure MRT styles were imported in your app root (once)
+import 'mantine-react-table/styles.css';
 
 export default function ResumeList() {
   const [pdfModalOpened, togglePDFModal] = useDisclosure(false);

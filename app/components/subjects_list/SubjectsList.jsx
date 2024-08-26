@@ -9,7 +9,7 @@ import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
 import AddSubjectForm from "@/app/components/subjects_list/AddSubjectForm";
 import STUDY_FIELD from "@/app/constants/STUDY_FIELD";
 import SUBJECT_STATUS from "@/app/constants/SUBJECT_STATUS";
-import {editSubjectStatus, fetchSubjects} from "@/app/components/subjects_list/actions";
+import {editSubjectStatus, fetchSubjects, getSubjectById} from "@/app/components/subjects_list/actions";
 
 export default function SubjectsList({listType}) {
   const [pdfModalOpened, togglePDFModal] = useDisclosure(false);

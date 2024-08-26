@@ -2,6 +2,7 @@
 import React from "react";
 import {auth, signOut} from "@/auth";
 import {
+  IconArchive,
   IconBrowserCheck,
   IconCertificate,
   IconChecklist,
@@ -66,6 +67,10 @@ export default async function Layout({children}) {
       label: 'Approbation des sujets',
       href: "/dashboard/specialist/approbation",
       badge: <Badge size="sm" circle>{numberOfPendingSubjects}</Badge>
+    }, {
+      icon: <IconArchive size="1rem" stroke={1.5}/>,
+      label: 'Archive des stages',
+      href: "/dashboard/specialist/archive-des-stages",
     },
   ]
 
