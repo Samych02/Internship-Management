@@ -40,17 +40,17 @@ export default function InternshipArchivesList() {
     data,
     columns,
     mantineCreateRowModalProps: {
-      size: "60%", withCloseButton: true, overlayProps: {
+      size: "80%", withCloseButton: true, overlayProps: {
         backgroundOpacity: 0.55, blur: 4,
       }
 
     },
     renderCreateRowModalContent: () => (<Stack>
-      <Title order={3}>Ajouter un stage aux archives</Title>
+      <Title order={3}>Ajouter un ancien sujet de stage</Title>
       <ArchiveInternshipForm setRefresh={setRefresh}/>
     </Stack>),
     renderTopToolbarCustomActions: ({table}) => (
-        <Button onClick={() => table.setCreatingRow(true)}>Ajouter un stage aux archives</Button>),
+        <Button onClick={() => table.setCreatingRow(true)}>Ajouter un ancien sujet de stage</Button>),
     createDisplayMode: 'modal',
     enableHiding: false,
     enableGlobalFilterModes: false,
@@ -61,6 +61,11 @@ export default function InternshipArchivesList() {
     enableFacetedValues: true,
     enableRowActions: true,
     enableColumnActions: false,
+    displayColumnDefOptions: {
+      'mrt-row-actions': {
+        header: '',
+      },
+    },
     state: {
       showSkeletons: isLoading
     },

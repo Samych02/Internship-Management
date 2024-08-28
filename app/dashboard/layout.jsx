@@ -59,7 +59,7 @@ export default async function Layout({children}) {
   const specialistNav = [
     {
       icon: <IconList size="1rem" stroke={1.5}/>,
-      label: 'Liste des sujets',
+      label: "Liste des sujets de l'année",
       href: "/dashboard/specialist",
     },
     {
@@ -89,7 +89,7 @@ export default async function Layout({children}) {
       href: "/dashboard/intern",
     }, {
       icon: <IconCertificate size="1rem" stroke={1.5}/>,
-      label: 'Formations personnelles',
+      label: 'Cours certifiés',
       href: "/dashboard/intern/formations-personnelles",
     }, {
       icon: <IconChecklist size="1rem" stroke={1.5}/>,

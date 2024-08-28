@@ -15,7 +15,7 @@ export default function InternshipDetail({row}) {
       </Accordion.Panel>
     </Accordion.Item>
     <Accordion.Item value="2">
-      <Accordion.Control>Informations ?</Accordion.Control>
+      <Accordion.Control>Informations sur l&apos;équipe</Accordion.Control>
       <Accordion.Panel>
         <List>
           <List.Item>Équipe: {row.team ?? "-"}</List.Item>

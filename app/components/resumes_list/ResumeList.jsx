@@ -31,7 +31,7 @@ export default function ResumeList() {
     accessorKey: 'internFullName', header: 'Nom du candidat', filterVariant: 'text', size: 250,
   }, {
     accessorKey: 'studyField',
-    header: 'Catégorie',
+    header: 'Domaine',
     filterVariant: 'multi-select',
     accessorFn: (row) => STUDY_FIELD[row.studyField],
   },], [])
@@ -39,6 +39,11 @@ export default function ResumeList() {
   const table = useMantineReactTable({
     data,
     columns,
+    displayColumnDefOptions: {
+      'mrt-row-actions': {
+        header: '',
+      },
+    },
     mantineCreateRowModalProps: {
       size: "60%", withCloseButton: true, overlayProps: {
         backgroundOpacity: 0.55, blur: 4,

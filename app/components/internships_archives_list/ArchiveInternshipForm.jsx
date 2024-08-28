@@ -33,8 +33,8 @@ export default function ArchiveInternshipForm({setRefresh}) {
           title: (value) => active === 0 && value.length < 1 ? "Champ requis" : null,
           year: (value) => active === 0 && value === null ? "Champ requis" : null,
           internshipType: (value) => active === 0 && value.length < 1 ? "Champ requis" : null,
-          reportFile: (value) => active === 3 && value === null ? "Champ requis" : value.size > 10240000 ? "Fichier très volumineux" : null,
-          presentationFile: (value) => active === 3 && value !== null && value.size > 10240000 ? "Fichier très volumineux" : null,
+          reportFile: (value) => active === 3 && value === null ? "Champ requis" : value?.size > 10240000 ? "Fichier très volumineux" : null,
+          presentationFile: (value) => active === 3 && value !== null && value?.size > 10240000 ? "Fichier très volumineux" : null,
         }
       }
   )
@@ -107,7 +107,7 @@ export default function ArchiveInternshipForm({setRefresh}) {
 
             </Stepper.Step>
 
-            <Stepper.Step label="Informations ?">
+            <Stepper.Step label="Informations sur l'équipe">
               <TextInput
                   {...form.getInputProps('team')}
                   key={form.key('team')}
@@ -118,15 +118,15 @@ export default function ArchiveInternshipForm({setRefresh}) {
               <TextInput
                   {...form.getInputProps('managerFullName')}
                   key={form.key('managerFullName')}
-                  label="Nom compet du manager"
-                  placeholder="Nom compet du manager"
+                  label="Nom complet du manager"
+                  placeholder="Nom complet du manager"
                   className="mb-5"
               />
               <TextInput
                   {...form.getInputProps('supervisorFullName')}
                   key={form.key('supervisorFullName')}
-                  label="Nom compet de l'encadrant"
-                  placeholder="Nom compet de l'encadrant"
+                  label="Nom complet de l'encadrant"
+                  placeholder="Nom complet de l'encadrant"
                   className="mb-8"
               />
             </Stepper.Step>
@@ -134,8 +134,8 @@ export default function ArchiveInternshipForm({setRefresh}) {
               <TextInput
                   {...form.getInputProps('internFullName')}
                   key={form.key('internFullName')}
-                  label="Nom compet du stagiaire"
-                  placeholder="Nom compet du stagiaire"
+                  label="Nom complet du stagiaire"
+                  placeholder="Nom complet du stagiaire"
                   className="mb-5"
               />
               <TextInput

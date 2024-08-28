@@ -51,7 +51,7 @@ export default function CoursesList({coursesType}) {
       await setIsLoading(false)
     }
     fetchData()
-  }, [refresh])
+  }, [coursesType, refresh])
 
   const columns = useMemo(() => [{
     accessorKey: 'title', header: 'Titre de la formation', filterVariant: 'text', size: 400
@@ -174,7 +174,8 @@ export default function CoursesList({coursesType}) {
             onClose={close}
         />}
         {!isLoading && data.length !== 0 &&
-            <div style={{position: "absolute", right: 50, top: 120, zIndex: 99}}><DonutChart size={140} data={pieData}
+            <div style={{position: "absolute", right: 50, top: opened ? 200 : 120, zIndex: 99}}><DonutChart size={140}
+                                                                                                            data={pieData}
                                                                                    tooltipDataSource="segment"
                                                                                              withLabelsLine={false}
                                                                                    chartLabel={`Progrès: ${pieData.find(item => item.name === COURSE_STATUS["COMPLETED"])?.value ?? 0}/${data.length}`}

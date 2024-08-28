@@ -56,6 +56,11 @@ export default function ReportsList({listType}) {
     </Stack>),
     renderTopToolbarCustomActions: ({table}) => (
         <Button onClick={() => table.setCreatingRow(true)}>Ajouter un compte rendu</Button>),
+    displayColumnDefOptions: {
+      'mrt-row-actions': {
+        header: '',
+      },
+    },
     createDisplayMode: 'modal',
     enableHiding: false,
     enableGlobalFilterModes: false,

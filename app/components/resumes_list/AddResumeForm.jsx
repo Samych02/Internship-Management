@@ -64,7 +64,7 @@ export default function AddResumeForm({setRefresh}) {
           className="mb-5"
       />
       <NativeSelect
-          label="Catégorie du stage"
+          label="Domaine de stage"
           data={[{
             label: "Choisissez une option", value: ""
           }, ...Object.entries(STUDY_FIELD).map(([key, value]) => ({label: value, value: key}))]}

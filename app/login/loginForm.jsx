@@ -33,10 +33,10 @@ export default function LoginForm() {
 
 
   return (<>
-        <div className="flex flex-col items-center w-full mt-[10rem]">
+        <div className="flex flex-col items-center w-full ">
           <form
               onSubmit={submit}
-              className="flex flex-col w-[25rem] justify-items-center border-2 p-5 rounded-lg mt-3 border-[var(--mantine-color-cb-9)]"
+              className="bg-gray-100 flex flex-col w-[25rem] justify-items-center border-2 p-5 rounded-lg border-[var(--mantine-color-cb-9)]"
           >
             {opened && <Alert
                 color="red"

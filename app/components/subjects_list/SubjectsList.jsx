@@ -33,7 +33,7 @@ export default function SubjectsList({listType}) {
       await setIsLoading(false)
     }
     fetchData()
-  }, [refresh])
+  }, [listType, refresh])
 
 
   const columns = useMemo(() => [{
@@ -101,6 +101,11 @@ export default function SubjectsList({listType}) {
     initialState: {
       showColumnFilters: true, columnPinning: {
         left: ['mrt-row-expand', 'mrt-row-select'], right: ['mrt-row-actions'],
+      },
+    },
+    displayColumnDefOptions: {
+      'mrt-row-actions': {
+        header: '',
       },
     },
 
