@@ -8,6 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class PushResumeDTO {
+  @NotNull
+  private Integer posterID;
+
   @NotEmpty
   private String internFullName;
 

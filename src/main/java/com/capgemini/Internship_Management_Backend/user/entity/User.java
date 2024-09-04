@@ -2,9 +2,8 @@ package com.capgemini.Internship_Management_Backend.user.entity;
 
 import com.capgemini.Internship_Management_Backend.common.entity.BaseEntity;
 import com.capgemini.Internship_Management_Backend.user.dto.RegisterDTO;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.capgemini.Internship_Management_Backend.user.model.UserRole;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Data
@@ -27,7 +26,8 @@ public class User extends BaseEntity {
   @Column(nullable = false)
   private String lastName;
 
-  private String userRole;
+  @Enumerated(EnumType.STRING)
+  private UserRole userRole;
 
   private String phoneNumber;
 

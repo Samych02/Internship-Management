@@ -17,15 +17,15 @@ import java.util.Collections;
 public class ResumeController {
   private final ResumeService resumeService;
 
-  @PostMapping("")
+  @PostMapping
   public ResponseEntity<?> addResume(@ModelAttribute @Valid PushResumeDTO pushResumeDTO) {
     resumeService.saveResume(pushResumeDTO);
     return ResponseEntity.status(HttpStatus.CREATED).body(ResponseUtil.successResponse("Resume added successfully", Collections.singletonMap("created", true)));
   }
 
   @GetMapping
-  public ResponseEntity<?> getAllResumes() {
+  public ResponseEntity<?> getAllResumes(@RequestParam(required = false) Integer posterID) {
     return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseUtil.successResponse("Resumes fetched successfully", resumeService.getAllResume()));
+            .body(ResponseUtil.successResponse("Resumes fetched successfully", resumeService.getAllResume(posterID)));
   }
 }

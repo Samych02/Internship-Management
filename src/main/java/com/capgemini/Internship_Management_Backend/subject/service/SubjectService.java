@@ -71,4 +71,8 @@ public class SubjectService {
       subjectRepository.save(subject1);
     });
   }
+
+  public void deleteSubject(Integer subjectID) {
+    subjectRepository.deleteById(subjectID);
+  }
 }

@@ -1,6 +1,7 @@
 package com.capgemini.Internship_Management_Backend.user.dto;
 
 import com.capgemini.Internship_Management_Backend.user.entity.User;
+import com.capgemini.Internship_Management_Backend.user.model.UserRole;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class LoginDTO {
 
     private String email;
 
-    private String userRole;
+    private UserRole userRole;
 
     private String name;
 
