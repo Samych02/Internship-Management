@@ -10,7 +10,7 @@ import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
 import AddResumeForm from "@/app/components/resumes_list/AddResumeForm";
 import 'mantine-react-table/styles.css';
 
-export default function ResumeList() {
+export default function ResumeList({listType}) {
   const [pdfModalOpened, togglePDFModal] = useDisclosure(false);
   const [path, setPath] = useState("");
   const [refresh, setRefresh] = useState(false)
@@ -20,9 +20,10 @@ export default function ResumeList() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await setIsLoading(true)
-      await setData(await fetchResumes())
-      await setIsLoading(false)
+      setIsLoading(true)
+      if (listType === "RESPONSIBLE") setData(await fetchResumes())
+      else setData(await fetchResumes(true))
+      setIsLoading(false)
     }
     fetchData()
   }, [refresh])

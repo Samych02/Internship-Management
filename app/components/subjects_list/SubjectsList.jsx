@@ -2,33 +2,36 @@
 import 'mantine-react-table/styles.css';
 import {useEffect, useMemo, useState} from 'react';
 import {MantineReactTable, useMantineReactTable,} from 'mantine-react-table';
-import {IconCheck, IconEdit, IconEye, IconX} from "@tabler/icons-react";
-import {ActionIcon, Box, Button, Modal, Stack, Title, Tooltip} from "@mantine/core";
+import {IconAlertCircle, IconCheck, IconEdit, IconEye, IconX} from "@tabler/icons-react";
+import {ActionIcon, Alert, Box, Button, Modal, Stack, Title, Tooltip} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
 import AddSubjectForm from "@/app/components/subjects_list/AddSubjectForm";
 import STUDY_FIELD from "@/app/constants/STUDY_FIELD";
 import SUBJECT_STATUS from "@/app/constants/SUBJECT_STATUS";
-import {editSubjectStatus, fetchSubjects, getSubjectById} from "@/app/components/subjects_list/actions";
+import {fetchSubjects, getSubjectById} from "@/app/components/subjects_list/actions";
+import AcceptSubjectModal from "@/app/components/subjects_list/AcceptSubjectModal";
+import RejectSubjectModal from "@/app/components/subjects_list/RejectSubjectModal";
 
 export default function SubjectsList({listType}) {
   const [pdfModalOpened, togglePDFModal] = useDisclosure(false);
   const [editModalOpened, toggleEditModal] = useDisclosure(false);
   const [acceptModalOpened, toggleAcceptModal] = useDisclosure(false);
-  const [RejectModalOpened, RejectAcceptModal] = useDisclosure(false);
+  const [rejectModalOpened, toggleRejectModal] = useDisclosure(false);
   const [path, setPath] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([])
   const [refresh, setRefresh] = useState(false)
   const [existingSubject, setExistingSubject] = useState(null)
-  const [subjectId, setSubjectId] = useState(null)
+  const [subjectID, setSubjectID] = useState(null)
+  const [feedbackMessage, setFeedbackMessage] = useState("")
 
 
   useEffect(() => {
     const fetchData = async () => {
       await setIsLoading(true)
       if (listType === "SUPERVISOR") await setData(await fetchSubjects(true))
-      if (listType === "SPECIALIST") await setData(await fetchSubjects(false, "PENDING"))
+      else if (listType === "SPECIALIST") await setData(await fetchSubjects(false, "PENDING"))
       else await setData(await fetchSubjects())
       await setIsLoading(false)
     }
@@ -37,7 +40,7 @@ export default function SubjectsList({listType}) {
 
 
   const columns = useMemo(() => [{
-    accessorKey: 'title', header: 'Sujet', filterVariant: 'text', size: 250,
+    accessorKey: 'title', header: 'Sujet', filterVariant: 'text',
   }, {
     accessorKey: 'internshipType', header: 'PFE/PFA', filterVariant: 'multi-select',
   }, {
@@ -45,6 +48,11 @@ export default function SubjectsList({listType}) {
     header: 'Catégorie',
     filterVariant: 'multi-select',
     accessorFn: (row) => STUDY_FIELD[row.studyField],
+  }, {
+    accessorKey: 'poster',
+    header: 'Ajouté par',
+    filterVariant: 'text',
+    accessorFn: (row) => row.poster?.fullName,
   }, {
     accessorKey: (row) => `${row.subjectStatus}`,
     header: 'Status',
@@ -102,6 +110,9 @@ export default function SubjectsList({listType}) {
       showColumnFilters: true, columnPinning: {
         left: ['mrt-row-expand', 'mrt-row-select'], right: ['mrt-row-actions'],
       },
+      columnVisibility: {
+        poster: listType !== "SUPERVISOR"
+      },
     },
     displayColumnDefOptions: {
       'mrt-row-actions': {
@@ -132,24 +143,16 @@ export default function SubjectsList({listType}) {
       </Tooltip>}
       {listType === "SPECIALIST" && <Tooltip
           label="Accepter le sujet"><ActionIcon
-          mr={20} variant="filled" color="green" onClick={async () => {
-        if (confirm("Êtes-vous sûr(e) de vouloir accepter ce sujet?")) {
-          await editSubjectStatus(row.original.id, "ACCEPTED")
-          setRefresh((refresh) => !refresh)
-        }
+          mr={20} variant="filled" color="green" onClick={() => {
+        setSubjectID(row.original.id)
+        toggleAcceptModal.open()
       }}><IconCheck></IconCheck></ActionIcon>
       </Tooltip>}
       {listType === "SPECIALIST" && <Tooltip
           label="Rejeter le sujet"><ActionIcon
-          variant="filled" color="red" onClick={async () => {
-        if (confirm("Êtes-vous sûr(e) de vouloir rejeter ce sujet?")) {
-          let specialistComment = null
-          do {
-            specialistComment = prompt('Saisissez la raison');
-          } while (specialistComment !== null && specialistComment === "")
-          await editSubjectStatus(row.original.id, "REJECTED", specialistComment)
-          setRefresh((refresh) => !refresh)
-        }
+          variant="filled" color="red" onClick={() => {
+        setSubjectID(row.original.id)
+        toggleRejectModal.open()
       }}><IconX></IconX></ActionIcon>
       </Tooltip>}
 
@@ -159,6 +162,16 @@ export default function SubjectsList({listType}) {
 
 
   return (<>
+    {feedbackMessage !== "" && <Alert
+        color="green"
+        mb="1rem"
+        title={feedbackMessage}
+        icon={<IconAlertCircle/>}
+        withCloseButton
+        onClose={() => {
+          setFeedbackMessage("")
+        }}
+    />}
     <Modal opened={pdfModalOpened} onClose={() => {
       setPath("")
       togglePDFModal.close()
@@ -178,14 +191,10 @@ export default function SubjectsList({listType}) {
       <AddSubjectForm setRefresh={setRefresh} existingSubject={existingSubject}/>
     </Modal>
 
-    <Modal opened={acceptModalOpened} onClose={() => {
-      toggleAcceptModal.close()
-      setExistingSubject(null)
-    }} size="60%" withCloseButton={true}
-           overlayProps={{blur: 4, backgroundOpacity: 0.55}}>
-      <AddSubjectForm setRefresh={setRefresh} existingSubject={existingSubject}/>
-    </Modal>
-
+    <AcceptSubjectModal close={toggleAcceptModal.close} opened={acceptModalOpened} subjectID={subjectID}
+                        setSubjectID={setSubjectID} setRefresh={setRefresh} setFeedbackMessage={setFeedbackMessage}/>
+    <RejectSubjectModal close={toggleRejectModal.close} opened={rejectModalOpened} subjectID={subjectID}
+                        setSubjectID={setSubjectID} setRefresh={setRefresh} setFeedbackMessage={setFeedbackMessage}/>
     <MantineReactTable table={table}/>
   </>)
 }

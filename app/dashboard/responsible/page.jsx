@@ -1,8 +1,12 @@
 "use server"
-import ResumeList from "@/app/components/resumes_list/ResumeList";
 
-export default async function Resume() {
+import SubjectsList from "@/app/components/subjects_list/SubjectsList";
+
+export default async function Subjects() {
+
+
   return (
-      <ResumeList/>
+      <SubjectsList/>
   )
+
 }

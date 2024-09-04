@@ -76,6 +76,11 @@ export default async function Layout({children}) {
 
   const responsibleNav = [
     {
+      icon: <IconList size="1rem" stroke={1.5}/>,
+      label: 'Liste des sujets',
+      href: "/dashboard/supervisor",
+    },
+    {
       icon: <IconFileCv size="1rem" stroke={1.5}/>,
       label: 'CVs recommandés',
       href: "/dashboard/responsible/CV",

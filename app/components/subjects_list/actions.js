@@ -1,7 +1,6 @@
 "use server"
 
 import {auth} from "@/auth";
-import {redirect} from "next/navigation";
 
 export async function fetchSubjects(sendId = false, subjectStatus = null) {
   "use server"
@@ -82,11 +81,8 @@ export async function getSubjectById(subjectId) {
 }
 
 export async function editSubjectStatus(subjectId, subjectStatus, specialistComment = null) {
-  let response = await fetch(`http://localhost:8081/api/subjects/${subjectId}/${subjectStatus}`, {
+  let response = await fetch(`http://localhost:8081/api/subjects/${parseInt(subjectId)}/${subjectStatus}`, {
     method: "PATCH",
     body: specialistComment ?? ""
   })
-  redirect("/")
-
-
 }
