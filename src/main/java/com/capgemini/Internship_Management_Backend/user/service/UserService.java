@@ -2,11 +2,14 @@ package com.capgemini.Internship_Management_Backend.user.service;
 
 import com.capgemini.Internship_Management_Backend.user.dto.LoginDTO;
 import com.capgemini.Internship_Management_Backend.user.dto.RegisterDTO;
+import com.capgemini.Internship_Management_Backend.user.dto.UpdatePasswordDTO;
 import com.capgemini.Internship_Management_Backend.user.entity.User;
 import com.capgemini.Internship_Management_Backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +33,17 @@ public class UserService {
       return new LoginDTO.response(user);
     }
     return null;
+  }
+
+  public Boolean updatePassword(UpdatePasswordDTO updatePasswordDTO) {
+    Optional<User> user = userRepository.findById(updatePasswordDTO.getUserID());
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    if (user.isPresent() && encoder.matches(updatePasswordDTO.getOldPassword(), user.get().getPassword())) {
+      user.get().setPassword(encoder.encode(updatePasswordDTO.getNewPassword()));
+      userRepository.save(user.get());
+      return true;
+    }
+    return false;
   }
 
 }
