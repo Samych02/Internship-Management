@@ -3,11 +3,10 @@
 import {auth} from "@/auth";
 
 export async function fetchSubjects(sendId = false, subjectStatus = null) {
-  "use server"
   const session = await auth()
   let posterId = null
   if (sendId) posterId = parseInt(session?.user.id)
-  let response = await fetch(`http://localhost:8081/api/subjects?${sendId ? `posterId=${posterId}` : ""}&${subjectStatus !== null ? `subjectStatus=${subjectStatus}` : ""}`, {
+  let response = await fetch(`${process.env.API_URL}/subjects?${sendId ? `posterId=${posterId}` : ""}&${subjectStatus !== null ? `subjectStatus=${subjectStatus}` : ""}`, {
     method: "get"
   })
   response = await response.json()
@@ -17,7 +16,7 @@ export async function fetchSubjects(sendId = false, subjectStatus = null) {
 
 export async function addSubjectAction(data) {
   const session = await auth()
-  let response = await fetch('http://localhost:8081/api/subjects', {
+  let response = await fetch(`${process.env.API_URL}/subjects`, {
     method: "POST",
     body: JSON.stringify({
       posterId: parseInt(session?.user.id),
@@ -41,7 +40,7 @@ export async function addSubjectAction(data) {
 
 export async function editSubjectAction(subjectId, data) {
   const session = await auth()
-  let response = await fetch(`http://localhost:8081/api/subjects/${subjectId}`, {
+  let response = await fetch(`${process.env.API_URL}/subjects/${subjectId}`, {
     method: "PATCH",
     body: JSON.stringify({
       posterId: parseInt(session?.user.id),
@@ -64,7 +63,7 @@ export async function editSubjectAction(subjectId, data) {
 }
 
 export async function checkTitleUsedAction(title) {
-  let response = await fetch(`http://localhost:8081/api/subjects/check-title-used?title=${title}`, {
+  let response = await fetch(`${process.env.API_URL}/subjects/check-title-used?title=${title}`, {
     method: "GET",
   })
   response = await response.json()
@@ -72,7 +71,7 @@ export async function checkTitleUsedAction(title) {
 }
 
 export async function getSubjectById(subjectId) {
-  let response = await fetch(`http://localhost:8081/api/subjects/${subjectId}`, {
+  let response = await fetch(`${process.env.API_URL}/subjects/${subjectId}`, {
     method: "GET",
   })
   response = await response.json()
@@ -81,8 +80,9 @@ export async function getSubjectById(subjectId) {
 }
 
 export async function editSubjectStatus(subjectId, subjectStatus, specialistComment = null) {
-  let response = await fetch(`http://localhost:8081/api/subjects/${parseInt(subjectId)}/${subjectStatus}`, {
+  let response = await fetch(`${process.env.API_URL}/subjects/${parseInt(subjectId)}/${subjectStatus}`, {
     method: "PATCH",
     body: specialistComment ?? ""
   })
+  return response.ok
 }

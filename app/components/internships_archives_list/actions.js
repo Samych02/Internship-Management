@@ -1,7 +1,7 @@
 "use server"
 
 export async function fetchInternships() {
-  let response = await fetch(`http://localhost:8081/api/internships`, {
+  let response = await fetch(`${process.env.API_URL}/internships`, {
     method: "get"
   })
   response = await response.json()
@@ -9,10 +9,9 @@ export async function fetchInternships() {
 }
 
 export async function addInternshipAction(formData) {
-  let response = await fetch(`http://localhost:8081/api/internships`, {
+  let response = await fetch(`${process.env.API_URL}/internships`, {
     method: "POST",
     body: formData
-
   })
   return response.ok
 }

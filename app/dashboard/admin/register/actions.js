@@ -2,7 +2,7 @@
 
 export async function registerAction(data) {
   "use server"
-  let response = await fetch('http://localhost:8081/api/users/register', {
+  let response = await fetch(`${process.env.API_URL}/users/register`, {
     method: "POST",
     body: JSON.stringify({
       email: data.email,
@@ -19,7 +19,7 @@ export async function registerAction(data) {
 }
 
 export async function checkEmailUsedAction(email) {
-  let response = await fetch(`http://localhost:8081/api/users/check-email-used?email=${email}`, {
+  let response = await fetch(`${process.env.API_URL}/users/check-email-used?email=${email}`, {
     method: "GET",
   })
   response = await response.json()

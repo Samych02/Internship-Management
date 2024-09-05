@@ -8,7 +8,6 @@ import {ActionIcon, Box, Button, Modal, Stack, Title, Tooltip} from "@mantine/co
 import {IconEye} from "@tabler/icons-react";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
 import AddResumeForm from "@/app/components/resumes_list/AddResumeForm";
-import 'mantine-react-table/styles.css';
 
 export default function ResumeList({listType}) {
   const [pdfModalOpened, togglePDFModal] = useDisclosure(false);
@@ -26,37 +25,36 @@ export default function ResumeList({listType}) {
       setIsLoading(false)
     }
     fetchData()
-  }, [refresh])
+  }, [listType, refresh])
 
-  const columns = useMemo(() => [{
-    accessorKey: 'internFullName', header: 'Nom du candidat', filterVariant: 'text', size: 250,
-  }, {
-    accessorKey: 'studyField',
-    header: 'Domaine',
-    filterVariant: 'multi-select',
-    accessorFn: (row) => STUDY_FIELD[row.studyField],
-  },], [])
+  const columns = useMemo(() => [
+    {
+      accessorKey: 'internFullName',
+      header: 'Nom du candidat',
+      filterVariant: 'text',
+    }, {
+      accessorKey: 'studyField',
+      header: 'Domaine',
+      filterVariant: 'multi-select',
+      accessorFn: (row) => STUDY_FIELD[row.studyField],
+    },
+  ], [])
 
   const table = useMantineReactTable({
     data,
     columns,
-    displayColumnDefOptions: {
-      'mrt-row-actions': {
-        header: '',
-      },
+    paginationDisplayMode: 'pages',
+    positionToolbarAlertBanner: 'bottom',
+    mantinePaginationProps: {
+      radius: 'xl',
+      size: 'lg',
     },
+    localization: MRT_Localization_FR,
     mantineCreateRowModalProps: {
-      size: "60%", withCloseButton: true, overlayProps: {
-        backgroundOpacity: 0.55, blur: 4,
-      }
-
+      size: "60%",
+      withCloseButton: true,
+      overlayProps: {backgroundOpacity: 0.55, blur: 4,}
     },
-    renderCreateRowModalContent: () => (<Stack>
-      <Title order={3}>Recommander un CV</Title>
-      <AddResumeForm setRefresh={setRefresh}/>
-    </Stack>),
-    renderTopToolbarCustomActions: ({table}) => (
-        <Button onClick={() => table.setCreatingRow(true)}>Recommander un CV</Button>),
     createDisplayMode: 'modal',
     enableHiding: false,
     enableGlobalFilterModes: false,
@@ -70,41 +68,74 @@ export default function ResumeList({listType}) {
     state: {
       showSkeletons: isLoading
     },
+    displayColumnDefOptions: {
+      'mrt-row-actions': {
+        header: '',
+      },
+    },
     initialState: {
       showColumnFilters: true, columnPinning: {
         left: ['mrt-row-expand', 'mrt-row-select'], right: ['mrt-row-actions'],
       },
     },
+    renderCreateRowModalContent: () => (
+        <Stack>
+          <Title
+              order={3}
+          >
+            Recommander un CV
+          </Title>
 
-    paginationDisplayMode: 'pages',
-    positionToolbarAlertBanner: 'bottom',
-    mantinePaginationProps: {
-      radius: 'xl', size: 'lg',
-    },
-    renderRowActions: ({row}) => (<Box className="flex flex-row">
-      <Tooltip label="Afficher le CV">
-        <ActionIcon variant="filled" mr={20} onClick={() => {
-          setPath(row.original.path)
-          togglePDFModal.open()
-        }}><IconEye/></ActionIcon></Tooltip>
-    </Box>),
-    localization: MRT_Localization_FR,
+          <AddResumeForm
+              setRefresh={setRefresh}
+          />
+        </Stack>
+    ),
+    renderTopToolbarCustomActions: ({table}) => (
+        <Button
+            onClick={() => table.setCreatingRow(true)}
+        >
+          Recommander un CV
+        </Button>
+    ),
+    renderRowActions: ({row}) => (
+        <Box>
+          <Tooltip
+              label="Afficher le CV"
+          >
+            <ActionIcon
+                variant="filled"
+                onClick={() => {
+                  setPath(row.original.path)
+                  togglePDFModal.open()
+                }}
+            >
+              <IconEye/>
+            </ActionIcon>
+          </Tooltip>
+        </Box>),
   });
 
-  return (<>
-    <Modal opened={pdfModalOpened} onClose={() => {
-      setPath("")
-      togglePDFModal.close()
-    }} centered size="auto">
-      <object
-          data={"http://localhost" + path + `?&v=${Math.random()}#view=FitH`}
-          type="application/pdf"
-          width="600"
-          height="700"
-      />
-    </Modal>
+  return (
+      <>
+        <Modal
+            opened={pdfModalOpened}
+            onClose={() => {
+              setPath("")
+              togglePDFModal.close()
+            }}
+            centered
+            size="auto"
+        >
+          <object
+              data={process.env.NEXT_PUBLIC_STATIC_FILES_URL + path + `?&v=${Math.random()}#view=FitH`}
+              type="application/pdf"
+              width="600"
+              height="700"
+          />
+        </Modal>
 
-    <MantineReactTable table={table}/>
-  </>)
-
+        <MantineReactTable table={table}/>
+      </>
+  )
 }

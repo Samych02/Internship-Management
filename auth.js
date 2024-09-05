@@ -1,8 +1,6 @@
 // noinspection ES6UnusedImports
-
 import NextAuth, {DefaultSession} from "next-auth"
 import Credentials from "next-auth/providers/credentials"
-import {JWT} from "next-auth/jwt"
 
 
 export const {handlers, signIn, signOut, auth} = NextAuth({
@@ -18,7 +16,7 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
       authorize: async (credentials) => {
         const {email, password} = credentials
 
-        let response = await fetch('http://localhost:8081/api/users/login', {
+        let response = await fetch(`${process.env.API_URL}/users/login`, {
           method: "POST",
           body: JSON.stringify({
             email: email,

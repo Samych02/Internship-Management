@@ -1,13 +1,20 @@
 import '@mantine/core/styles.css';
+import 'mantine-react-table/styles.css';
+import '@mantine/dates/styles.css';
+import '@mantine/carousel/styles.css';
 import {ColorSchemeScript, MantineProvider} from '@mantine/core';
-import "./globals.css"
 
-export default function RootLayout({children,}) {
+export default function RootLayout({children}) {
   return (
-      <html lang="fr">
+      <html
+          lang="fr"
+      >
       <head>
-        <ColorSchemeScript/><
-          title>Internship Management</title>
+        <ColorSchemeScript/>
+
+        <title>
+          Internship Management
+        </title>
       </head>
       <body>
       <MantineProvider

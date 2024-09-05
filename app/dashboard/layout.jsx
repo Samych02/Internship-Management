@@ -1,4 +1,3 @@
-"use server"
 import React from "react";
 import {auth, signOut} from "@/auth";
 import {
@@ -20,8 +19,7 @@ import {Badge} from "@mantine/core";
 import {getNumberOfPendingSubjects} from "@/app/dashboard/actions";
 
 export async function logout() {
-  "use server"
-  await signOut({redirectTo: "/login"});
+  await signOut({redirectTo: "/login"})
 }
 
 export default async function Layout({children}) {
@@ -43,7 +41,7 @@ export default async function Layout({children}) {
   const supervisorNav = [
     {
       icon: <IconList size="1rem" stroke={1.5}/>,
-      label: 'Liste des sujets',
+      label: "Liste des sujets de l'année",
       href: "/dashboard/supervisor",
     }, {
       icon: <IconListSearch size="1rem" stroke={1.5}/>,
@@ -53,6 +51,11 @@ export default async function Layout({children}) {
       icon: <IconFileCv size="1rem" stroke={1.5}/>,
       label: 'CVs recommandés',
       href: "/dashboard/supervisor/CV",
+    },
+    {
+      icon: <IconArchive size="1rem" stroke={1.5}/>,
+      label: 'Archive des stages',
+      href: "/dashboard/supervisor/archive-des-stages",
     },
   ]
 
@@ -77,13 +80,18 @@ export default async function Layout({children}) {
   const responsibleNav = [
     {
       icon: <IconList size="1rem" stroke={1.5}/>,
-      label: 'Liste des sujets',
-      href: "/dashboard/supervisor",
+      label: "Liste des sujets de l'année",
+      href: "/dashboard/responsible",
     },
     {
       icon: <IconFileCv size="1rem" stroke={1.5}/>,
       label: 'CVs recommandés',
       href: "/dashboard/responsible/CV",
+    },
+    {
+      icon: <IconArchive size="1rem" stroke={1.5}/>,
+      label: 'Archive des stages',
+      href: "/dashboard/responsible/archive-des-stages",
     },
   ]
 
@@ -100,6 +108,11 @@ export default async function Layout({children}) {
       icon: <IconChecklist size="1rem" stroke={1.5}/>,
       label: 'Mes comptes Rendus',
       href: "/dashboard/intern/comptes-rendus",
+    },
+    {
+      icon: <IconArchive size="1rem" stroke={1.5}/>,
+      label: 'Archive des stages',
+      href: "/dashboard/intern/archive-des-stages",
     }, {
       icon: <IconBrowserCheck size="1rem" stroke={1.5}/>,
       label: 'Liens utiles',
@@ -136,7 +149,11 @@ export default async function Layout({children}) {
   }
 
   return (
-      <AppLayout data={data} session={session}>{children}</AppLayout>
-
+      <AppLayout
+          data={data}
+          session={session}
+      >
+        {children}
+      </AppLayout>
   )
 }

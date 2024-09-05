@@ -2,15 +2,14 @@
 import {useForm} from "@mantine/form";
 import {useState} from "react";
 import {useDisclosure} from "@mantine/hooks";
-import {Alert, Button, FileInput, Group, Loader, Radio, Stepper, TextInput} from "@mantine/core";
-import {IconAlertCircle} from "@tabler/icons-react";
-import '@mantine/dates/styles.css';
+import {Button, FileInput, Group, Loader, Radio, Stack, Stepper, TextInput} from "@mantine/core";
 import {YearPickerInput} from "@mantine/dates";
 import {addInternshipAction} from "@/app/components/internships_archives_list/actions";
+import SuccessAlert from "@/app/components/feedback/SuccessAlert";
 
 export default function ArchiveInternshipForm({setRefresh}) {
   const [active, setActive] = useState(0);
-  const [opened, {open, close}] = useDisclosure(false);
+  const [openedSuccess, toggleSuccess] = useDisclosure(false);
   const [loading, setLoading] = useState(false);
 
 
@@ -28,7 +27,6 @@ export default function ArchiveInternshipForm({setRefresh}) {
           reportFile: null,
           presentationFile: null
         },
-
         validate: {
           title: (value) => active === 0 && value.length < 1 ? "Champ requis" : null,
           year: (value) => active === 0 && value === null ? "Champ requis" : null,
@@ -53,7 +51,7 @@ export default function ArchiveInternshipForm({setRefresh}) {
         if (data[dataKey] !== "" && data[dataKey] !== null && dataKey !== "year") formData.append(dataKey, data[dataKey]);
       }
       if (await addInternshipAction(formData)) {
-        open()
+        toggleSuccess.open()
         setLoading(false)
         form.reset()
         setActive(0);
@@ -62,25 +60,31 @@ export default function ArchiveInternshipForm({setRefresh}) {
     setRefresh((refresh) => !refresh)
   }
 
-  return (<div className="">
+  return (
+      <form
+          onSubmit={submit}
+      >
+        <SuccessAlert
+            title="Stage archivé avec succès"
+            close={toggleSuccess.close}
+            opened={openedSuccess}
+        />
 
-        <form onSubmit={submit}>
-          {opened && <Alert
-              color="green"
-              mb="1rem"
-              title={`Stage archivé avec succès`}
-              icon={<IconAlertCircle/>}
-              withCloseButton
-              onClose={close}
-          />}
-          <Stepper active={active}>
-            <Stepper.Step label="Identification sur le sujet">
+        <Stepper
+            active={active}
+        >
+          <Stepper.Step
+              label="Identification sur le sujet"
+          >
+            <Stack
+                gap="xl"
+            >
+
               <TextInput
                   {...form.getInputProps('title')}
                   key={form.key('title')}
                   label="Sujet du stage"
                   placeholder="Sujet du stage"
-                  className="mb-5"
               />
 
               <YearPickerInput
@@ -88,7 +92,6 @@ export default function ArchiveInternshipForm({setRefresh}) {
                   key={form.key('year')}
                   label="Année"
                   placeholder="Année"
-                  className="mb-5"
                   maxDate={new Date()}
 
               />
@@ -97,56 +100,65 @@ export default function ArchiveInternshipForm({setRefresh}) {
                   label="Type du stage"
                   {...form.getInputProps('internshipType')}
                   key={form.key('internshipType')}
-                  className="mb-8"
               >
-                <Group mt="xs" mb="xs">
+                <Group mt="xs">
                   <Radio value="PFE" label="PFE"/>
                   <Radio value="PFA" label="PFA"/>
                 </Group>
               </Radio.Group>
+            </Stack>
+          </Stepper.Step>
 
-            </Stepper.Step>
-
-            <Stepper.Step label="Informations sur l'équipe">
+          <Stepper.Step label="Informations sur l'équipe">
+            <Stack
+                gap="xl"
+            >
               <TextInput
                   {...form.getInputProps('team')}
                   key={form.key('team')}
                   label="Équipe"
                   placeholder="Équipe"
-                  className="mb-5"
               />
+
               <TextInput
                   {...form.getInputProps('managerFullName')}
                   key={form.key('managerFullName')}
                   label="Nom complet du manager"
                   placeholder="Nom complet du manager"
-                  className="mb-5"
               />
+
               <TextInput
                   {...form.getInputProps('supervisorFullName')}
                   key={form.key('supervisorFullName')}
                   label="Nom complet de l'encadrant"
                   placeholder="Nom complet de l'encadrant"
-                  className="mb-8"
               />
-            </Stepper.Step>
-            <Stepper.Step label="Informations sur le stagiaire">
+            </Stack>
+          </Stepper.Step>
+
+          <Stepper.Step label="Informations sur le stagiaire">
+            <Stack
+                gap="xl"
+            >
               <TextInput
                   {...form.getInputProps('internFullName')}
                   key={form.key('internFullName')}
                   label="Nom complet du stagiaire"
                   placeholder="Nom complet du stagiaire"
-                  className="mb-5"
               />
               <TextInput
                   {...form.getInputProps('schoolName')}
                   key={form.key('schoolName')}
                   label="Nom de l'école"
                   placeholder="Nom de l'école"
-                  className="mb-8"
               />
-            </Stepper.Step>
-            <Stepper.Step label="Dépot des fichiers">
+            </Stack>
+          </Stepper.Step>
+
+          <Stepper.Step label="Dépot des fichiers">
+            <Stack
+                gap="xl"
+            >
               <FileInput
                   clearable
                   label="Rapport"
@@ -154,7 +166,6 @@ export default function ArchiveInternshipForm({setRefresh}) {
                   accept="application/pdf"
                   {...form.getInputProps('reportFile')}
                   key={form.key('reportFile')}
-                  mb={5}
               />
               <FileInput
                   clearable
@@ -163,31 +174,41 @@ export default function ArchiveInternshipForm({setRefresh}) {
                   accept="application/vnd.openxmlformats-officedocument.presentationml.presentation"
                   {...form.getInputProps('presentationFile')}
                   key={form.key('presentationFile')}
-                  mb={8}
               />
-            </Stepper.Step>
-          </Stepper>
+            </Stack>
+          </Stepper.Step>
+        </Stepper>
 
-          <Group justify="flex-end" mt="xl">
-            {active !== 0 && (
-                <Button variant="default" onClick={prevStep} disabled={loading}>
-                  Précédent
-                </Button>
-            )}
-            {active < 3 &&
-                <Button onClick={() => {
-                  nextStep()
-                }}>Suivant</Button>}
-            {active === 3 &&
-                <Button type="submit"
-                        disabled={loading}
-                >
-                  {loading
-                      ? <Loader color="white" type="bars" size="20"/>
-                      : "Archiver"}
-                </Button>}
-          </Group>
-        </form>
-      </div>
-  );
+        <Group justify="flex-end" mt="xl">
+          {active !== 0 &&
+              <Button
+                  variant="default"
+                  onClick={prevStep}
+                  disabled={loading}
+              >
+                Précédent
+              </Button>
+          }
+
+          {active < 3 &&
+              <Button
+                  onClick={nextStep}
+              >
+                Suivant
+              </Button>
+          }
+
+          {active === 3 &&
+              <Button
+                  type="submit"
+                  disabled={loading}
+              >
+                {loading
+                    ? <Loader color="white" type="bars" size="20"/>
+                    : "Archiver"}
+              </Button>
+          }
+        </Group>
+      </form>
+  )
 }

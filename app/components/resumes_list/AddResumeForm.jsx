@@ -4,19 +4,20 @@ import {useDisclosure} from "@mantine/hooks";
 import {useState} from "react";
 import {useForm} from "@mantine/form";
 import {addResumeAction} from "@/app/components/resumes_list/actions";
-import {Alert, Button, FileInput, Group, Loader, NativeSelect, TextInput} from "@mantine/core";
-import {IconAlertCircle} from "@tabler/icons-react";
+import {Button, FileInput, Group, Loader, NativeSelect, Stack, TextInput} from "@mantine/core";
 import STUDY_FIELD from "@/app/constants/STUDY_FIELD";
+import SuccessAlert from "@/app/components/feedback/SuccessAlert";
 
 export default function AddResumeForm({setRefresh}) {
-  const [opened, {open, close}] = useDisclosure(false);
+  const [openedSuccess, toggleSuccess] = useDisclosure(false);
   const [loading, setLoading] = useState(false);
-
   const form = useForm({
-    mode: 'uncontrolled', initialValues: {
-      internFullName: '', studyField: "", file: null
+    mode: 'uncontrolled',
+    initialValues: {
+      internFullName: '',
+      studyField: "",
+      file: null,
     },
-
     validate: {
       internFullName: (value) => value.length < 1 ? "Champ requis" : null,
       studyField: (value) => value.length < 1 ? "Champ requis" : null,
@@ -36,58 +37,64 @@ export default function AddResumeForm({setRefresh}) {
       formData.append("studyField", data.studyField)
       formData.append("file", data.file)
       if (await addResumeAction(formData)) {
-        open()
+        toggleSuccess.open()
         setLoading(false)
         form.reset()
       }
 
     })()
     setRefresh((refresh) => !refresh)
-
   }
-  return (<div className="">
-
-    <form onSubmit={submit}>
-      {opened && <Alert
-          color="green"
-          mb="1rem"
-          title={`CV recommandé avec succès`}
-          icon={<IconAlertCircle/>}
-          withCloseButton
-          onClose={close}
-      />}
-      <TextInput
-          {...form.getInputProps('internFullName')}
-          key={form.key('internFullName')}
-          label="Nom complet du stagiaire"
-          placeholder="Nom complet du stagiaire"
-          className="mb-5"
-      />
-      <NativeSelect
-          label="Domaine de stage"
-          data={[{
-            label: "Choisissez une option", value: ""
-          }, ...Object.entries(STUDY_FIELD).map(([key, value]) => ({label: value, value: key}))]}
-          {...form.getInputProps('studyField')}
-          key={form.key('studyField')}
-          className="mb-5"
-      />
-      <FileInput
-          clearable
-          label="CV"
-          placeholder="Choisir un fichier PDF (max 10mo)"
-          accept="application/pdf"
-          {...form.getInputProps('file')}
-          key={form.key('file')}
-      />
-
-      <Group justify="flex-end" mt="xl">
-        <Button type="submit"
-                disabled={loading}
+  return (
+      <form onSubmit={submit}>
+        <SuccessAlert
+            opened={openedSuccess}
+            close={toggleSuccess.close}
+            title="CV recommandé avec succès"
+        />
+        <Stack
+            gap="xl"
         >
-          {loading ? <Loader color="white" type="bars" size="20"/> : "Ajouter"}
-        </Button>
-      </Group>
-    </form>
-  </div>);
+
+          <TextInput
+              {...form.getInputProps('internFullName')}
+              key={form.key('internFullName')}
+              label="Nom complet du stagiaire"
+              placeholder="Nom complet du stagiaire"
+          />
+
+          <NativeSelect
+              label="Domaine de stage"
+              data={[
+                {
+                  label: "Choisissez une option", value: ""
+                },
+                ...Object.entries(STUDY_FIELD).map(([key, value]) => ({label: value, value: key}))
+              ]}
+              {...form.getInputProps('studyField')}
+              key={form.key('studyField')}
+          />
+
+          <FileInput
+              clearable
+              label="CV"
+              placeholder="Choisir un fichier PDF (max 10mo)"
+              accept="application/pdf"
+              {...form.getInputProps('file')}
+              key={form.key('file')}
+          />
+
+          <Group
+              justify="flex-end"
+          >
+            <Button
+                type="submit"
+                disabled={loading}
+            >
+              {loading ? <Loader color="white" type="bars" size="20"/> : "Ajouter"}
+            </Button>
+          </Group>
+        </Stack>
+      </form>
+  );
 }

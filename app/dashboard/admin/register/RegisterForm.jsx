@@ -1,16 +1,16 @@
 "use client"
 import {useState} from 'react';
-import {Alert, Button, Group, Loader, NativeSelect, PasswordInput, Stepper, TextInput} from '@mantine/core';
+import {Button, Group, Loader, NativeSelect, PasswordInput, Stack, Stepper, TextInput} from '@mantine/core';
 import {useForm} from '@mantine/form';
 import ROLES from "@/app/constants/ROLES";
 import {checkEmailUsedAction, registerAction} from "@/app/dashboard/admin/register/actions";
 import {useDisclosure} from "@mantine/hooks";
-import {IconAlertCircle} from "@tabler/icons-react";
+import SuccessAlert from "@/app/components/feedback/SuccessAlert";
 
 export default function RegisterForm() {
   const [active, setActive] = useState(0);
   let mailUsed = true
-  const [opened, {open, close}] = useDisclosure(false);
+  const [openedSuccess, toggleSuccess] = useDisclosure(false);
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
@@ -68,7 +68,7 @@ export default function RegisterForm() {
     form.onSubmit(async (data) => {
       setLoading(true)
       if (await registerAction(data)) {
-        open()
+        toggleSuccess.open()
         setLoading(false)
         form.reset()
         setActive(0);
@@ -76,25 +76,26 @@ export default function RegisterForm() {
     })()
   }
 
-  return (<div className="w-[50%]">
+  return (
+      <form
+          onSubmit={submit}
+      >
+        <SuccessAlert
+            title="Utilisateur ajouté avec succès"
+            close={toggleSuccess.close}
+            opened={openedSuccess}
+        />
 
-        <form onSubmit={submit}>
-          {opened && <Alert
-              color="green"
-              mb="1rem"
-              title={"Utilisateur ajouté avec succès"}
-              icon={<IconAlertCircle/>}
-              withCloseButton
-              onClose={close}
-          />}
-          <Stepper active={active}>
-            <Stepper.Step label="Identifiants">
+        <Stepper active={active}>
+          <Stepper.Step label="Identifiants">
+            <Stack
+                gap="xl"
+            >
               <TextInput
                   {...form.getInputProps('email')}
                   key={form.key('email')}
                   label="Email"
                   placeholder="Email"
-                  className="mb-5"
               />
 
               <PasswordInput
@@ -102,7 +103,6 @@ export default function RegisterForm() {
                   key={form.key('password')}
                   label="Mot de passe"
                   placeholder="Mot de passe"
-                  className="mb-5"
               />
               <NativeSelect
                   label="Role"
@@ -112,51 +112,60 @@ export default function RegisterForm() {
                   ]}
                   {...form.getInputProps('userRole')}
                   key={form.key('userRole')}
-                  className="mb-8"
               />
+            </Stack>
+          </Stepper.Step>
 
-            </Stepper.Step>
-
-            <Stepper.Step label="Informations personnelles">
+          <Stepper.Step label="Informations personnelles">
+            <Stack
+                gap="xl"
+            >
               <TextInput
                   label="Prénom"
                   placeholder="Prénom"
                   key={form.key('firstName')}
                   {...form.getInputProps('firstName')}
-                  className="mb-5"
               />
               <TextInput
                   label="Nom"
                   placeholder="Nom"
                   key={form.key('lastName')}
                   {...form.getInputProps('lastName')}
-                  className="mb-8"
               />
-            </Stepper.Step>
-          </Stepper>
+            </Stack>
+          </Stepper.Step>
+        </Stepper>
 
-          <Group justify="flex-end" mt="xl">
-            {active !== 0 && (
-                <Button variant="default" onClick={prevStep}>
-                  Précédent
-                </Button>
-            )}
-            {active === 0
-                ? <Button onClick={async () => {
-                  mailUsed = await checkEmailUsedAction(form.getValues().email)
-                  close()
-                  nextStep()
-                }}>Suivant</Button>
-                : <Button
-                    type="submit"
-                    disabled={loading}
-                >
-                  {loading
-                      ? <Loader color="white" type="bars" size="20"/>
-                      : "Ajouter"}
-                </Button>}
-          </Group>
-        </form>
-      </div>
+        <Group
+            justify="flex-end"
+        >
+          {active !== 0 &&
+              <Button
+                  onClick={prevStep}
+              >
+                Précédent
+              </Button>
+          }
+
+          {active === 0
+              ? <Button
+                  onClick={async () => {
+                    mailUsed = await checkEmailUsedAction(form.getValues().email)
+                    nextStep()
+                  }}
+              >
+                Suivant
+              </Button>
+              : <Button
+                  type="submit"
+                  disabled={loading}
+              >
+                {loading
+                    ? <Loader color="white" type="bars" size="20"/>
+                    : "Ajouter"}
+              </Button>
+          }
+        </Group>
+      </form>
   );
 }
