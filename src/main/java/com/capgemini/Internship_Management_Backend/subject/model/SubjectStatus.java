@@ -4,5 +4,6 @@ public enum SubjectStatus {
   PENDING,
   ACCEPTED,
   REJECTED,
+  IN_PROGRESS,
   COMPLETED
 }

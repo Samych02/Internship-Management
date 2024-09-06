@@ -24,8 +24,12 @@ public class ResumeService {
 
   public void saveResume(PushResumeDTO pushResumeDTO) {
     Resume resume = new Resume(pushResumeDTO);
-    fileUtility.createFolder("CV\\" + pushResumeDTO.getInternFullName());
-    fileUtility.saveUploadFile(pushResumeDTO.getFile(), "CV\\" + pushResumeDTO.getInternFullName() + "\\cv.pdf");
+    fileUtility.createFolder("CV\\" + resume.getInternFullName());
+    fileUtility.saveUploadFile(pushResumeDTO.getFile(), "CV\\" + resume.getInternFullName() + "\\cv.pdf");
     resumeRepository.save(resume);
+  }
+
+  public Boolean checkProfileExisting(String firstName, String lastName) {
+    return resumeRepository.countByInternFirstNameIgnoreCaseAndInternLastNameIgnoreCase(firstName, lastName) > 0;
   }
 }

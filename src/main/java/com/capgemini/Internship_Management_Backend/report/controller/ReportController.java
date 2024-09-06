@@ -4,7 +4,6 @@ import com.capgemini.Internship_Management_Backend.common.httpresponse.util.Resp
 import com.capgemini.Internship_Management_Backend.report.dto.PushReportDTO;
 import com.capgemini.Internship_Management_Backend.report.service.ReportService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +24,8 @@ public class ReportController {
   }
 
   @GetMapping
-  public ResponseEntity<?> getAllInternReports(@RequestParam @NotNull Integer internID) {
+  public ResponseEntity<?> getAllReports(@RequestParam(required = false) Integer internID) {
     return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseUtil.successResponse("Reports fetched successfully", reportService.getAllReportsByInternID(internID)));
+            .body(ResponseUtil.successResponse("Reports fetched successfully", reportService.getAllReports(internID)));
   }
 }

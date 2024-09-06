@@ -72,4 +72,8 @@ public class Subject extends BaseEntity {
     this.internNumber = pushSubjectDTO.getInternNumber();
     this.studyField = pushSubjectDTO.getStudyField();
   }
+
+  public Subject(Integer id) {
+    this.id = id;
+  }
 }

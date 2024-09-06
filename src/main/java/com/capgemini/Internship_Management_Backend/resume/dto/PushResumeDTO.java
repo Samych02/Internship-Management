@@ -12,7 +12,10 @@ public class PushResumeDTO {
   private Integer posterID;
 
   @NotEmpty
-  private String internFullName;
+  private String internFirstName;
+
+  @NotEmpty
+  private String internLastName;
 
   @NotNull
   private StudyField studyField;

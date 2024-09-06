@@ -17,8 +17,9 @@ public class ReportService {
   private final ReportRepository reportRepository;
   private final FileUtility fileUtility;
 
-  public List<ReportProjection> getAllReportsByInternID(Integer internID) {
-    return reportRepository.findAllProjectedByInternOrderByDateDesc(new User(internID));
+  public List<ReportProjection> getAllReports(Integer internID) {
+    if (internID != null) return reportRepository.findAllProjectedByInternOrderByDateDesc(new User(internID));
+    return reportRepository.findAllProjectedByOrderByDateDesc();
   }
 
   public void saveReport(PushReportDTO pushReportDTO) {

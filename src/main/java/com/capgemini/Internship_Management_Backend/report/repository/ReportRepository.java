@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Integer> {
   List<ReportProjection> findAllProjectedByInternOrderByDateDesc(User intern);
+
+  List<ReportProjection> findAllProjectedByOrderByDateDesc();
 }

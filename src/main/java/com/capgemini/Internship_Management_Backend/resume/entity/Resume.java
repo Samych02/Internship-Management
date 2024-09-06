@@ -19,15 +19,25 @@ public class Resume extends BaseEntity {
   @JoinColumn(nullable = false)
   private User poster;
 
-  private String internFullName;
+  private String internFirstName;
+  private String internLastName;
   @Enumerated(EnumType.STRING)
   private StudyField studyField;
   private String path;
 
+  public String getInternFullName() {
+    return internFirstName + " " + internLastName;
+  }
+
   public Resume(PushResumeDTO pushResumeDTO) {
     this.poster = new User(pushResumeDTO.getPosterID());
-    this.internFullName = pushResumeDTO.getInternFullName();
+    this.internFirstName = pushResumeDTO.getInternFirstName().substring(0, 1).toUpperCase() + pushResumeDTO.getInternFirstName().substring(1).toLowerCase();
+    this.internLastName = pushResumeDTO.getInternLastName().substring(0, 1).toUpperCase() + pushResumeDTO.getInternLastName().substring(1).toLowerCase();
     this.studyField = pushResumeDTO.getStudyField();
-    this.path = "\\CV\\" + pushResumeDTO.getInternFullName() + "\\CV.pdf";
+    this.path = "\\CV\\" + getInternFullName() + "\\CV.pdf";
+  }
+
+  public Resume(Integer id) {
+    this.id = id;
   }
 }

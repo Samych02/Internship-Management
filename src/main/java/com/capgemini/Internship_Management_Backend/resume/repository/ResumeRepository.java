@@ -13,4 +13,6 @@ public interface ResumeRepository extends JpaRepository<Resume, Integer> {
   List<ResumeProjection> findAllProjectedByPosterOrderByCreatedAtDesc(User poster);
 
   List<ResumeProjection> findAllProjectedByOrderByCreatedAtDesc();
+
+  Integer countByInternFirstNameIgnoreCaseAndInternLastNameIgnoreCase(String internFirstName, String internLastName);
 }

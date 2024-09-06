@@ -15,6 +15,8 @@ public class PushReportDTO {
   @NotEmpty
   private String summary;
 
+  //the intern's name is used to create a folder
+  // it is being automatically sent by the client and not from a form
   @NotEmpty
   private String fullName;
 
