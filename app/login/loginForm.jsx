@@ -43,8 +43,8 @@ export default function LoginForm() {
             bd="2px solid cb"
             py="1rem"
             justify="center"
-            classNames={{
-              root: "rounded-xl"
+            style={{
+              borderRadius: "8px"
             }}
         >
           <ErrorAlert

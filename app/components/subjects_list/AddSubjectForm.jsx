@@ -5,9 +5,9 @@ import {
   Button,
   Group,
   Loader,
-  NativeSelect,
   NumberInput,
   Radio,
+  Select,
   Stack,
   Stepper,
   TagsInput,
@@ -284,12 +284,10 @@ export default function AddSubjectForm({existingSubject = null, setRefresh}) {
                 </Group>
               </Radio.Group>
 
-              <NativeSelect
+              <Select
                   label="Catégorie du stage"
-                  data={[
-                    {label: "Choisissez une option", value: ""},
-                    ...Object.entries(STUDY_FIELD).map(([key, value]) => ({label: value, value: key}))
-                  ]}
+                  placeholder="Choisissez une option"
+                  data={[...Object.entries(STUDY_FIELD).map(([key, value]) => ({label: value, value: key}))]}
                   {...form.getInputProps('studyField')}
                   key={form.key('studyField')}
               />

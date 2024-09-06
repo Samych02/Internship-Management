@@ -1,3 +1,4 @@
+"use server"
 import React from "react";
 import {auth, signOut} from "@/auth";
 import {
@@ -87,6 +88,10 @@ export default async function Layout({children}) {
       icon: <IconFileCv size="1rem" stroke={1.5}/>,
       label: 'CVs recommandés',
       href: "/dashboard/responsible/CV",
+    }, {
+      icon: <IconChecklist size="1rem" stroke={1.5}/>,
+      label: 'Liste des comptes rendus',
+      href: "/dashboard/responsible/comptes-rendus",
     },
     {
       icon: <IconArchive size="1rem" stroke={1.5}/>,
@@ -106,7 +111,7 @@ export default async function Layout({children}) {
       href: "/dashboard/intern/formations-personnelles",
     }, {
       icon: <IconChecklist size="1rem" stroke={1.5}/>,
-      label: 'Mes comptes Rendus',
+      label: 'Mes comptes rendus',
       href: "/dashboard/intern/comptes-rendus",
     },
     {

@@ -69,9 +69,10 @@ export default function SubjectsList({listType}) {
           >
             <Box
                 bg={renderedCellValue === SUBJECT_STATUS["PENDING"] ? "gray.5"
-                    : renderedCellValue === SUBJECT_STATUS["ACCEPTED"] ? "cb"
-                        : renderedCellValue === SUBJECT_STATUS["REJECTED"] ? "red"
-                            : "green"
+                    : renderedCellValue === SUBJECT_STATUS["ACCEPTED"] ? "yellow"
+                        : renderedCellValue === SUBJECT_STATUS["IN_PROGRESS"] ? "cb"
+                            : renderedCellValue === SUBJECT_STATUS["REJECTED"] ? "red"
+                                : "green"
                 }
                 c="white"
                 p="4px"

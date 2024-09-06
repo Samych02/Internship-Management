@@ -1,9 +1,9 @@
 "use server"
 import {auth} from "@/auth";
 
-export async function fetchInternReports() {
+export async function fetchReports(sendId) {
   const session = await auth()
-  let response = await fetch(`${process.env.API_URL}/reports?internID=${session?.user.id}`, {
+  let response = await fetch(`${process.env.API_URL}/reports?internID=${sendId ? session?.user.id : ""}`, {
     method: "get"
   })
   response = await response.json()

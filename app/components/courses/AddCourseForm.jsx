@@ -2,7 +2,7 @@
 import {useDisclosure} from "@mantine/hooks";
 import {useState} from "react";
 import {useForm} from "@mantine/form";
-import {Button, Group, Loader, NativeSelect, Stack, TextInput} from "@mantine/core";
+import {Button, Group, Loader, Select, Stack, TextInput} from "@mantine/core";
 import {addCourse} from "@/app/components/courses/actions";
 import COURSE_STATUS from "@/app/constants/COURSE_STATUS";
 import SuccessAlert from "@/app/components/feedback/SuccessAlert";
@@ -74,11 +74,10 @@ export default function AddCourseForm({setRefresh}) {
               placeholder="Lien de la formation"
           />
 
-          <NativeSelect
+          <Select
               label="Status de la formation"
-              data={[{
-                label: "Choisissez une option", value: ""
-              }, ...Object.entries(COURSE_STATUS).map(([key, value]) => ({label: value, value: key}))]}
+              placeholder="Choisissez une option"
+              data={[...Object.entries(COURSE_STATUS).map(([key, value]) => ({label: value, value: key}))]}
               {...form.getInputProps('courseStatus')}
               key={form.key('courseStatus')}
           />

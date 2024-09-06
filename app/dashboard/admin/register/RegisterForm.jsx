@@ -1,6 +1,6 @@
 "use client"
 import {useState} from 'react';
-import {Button, Group, Loader, NativeSelect, PasswordInput, Stack, Stepper, TextInput} from '@mantine/core';
+import {Button, Group, Loader, PasswordInput, Select, Stack, Stepper, TextInput} from '@mantine/core';
 import {useForm} from '@mantine/form';
 import ROLES from "@/app/constants/ROLES";
 import {checkEmailUsedAction, registerAction} from "@/app/dashboard/admin/register/actions";
@@ -104,12 +104,10 @@ export default function RegisterForm() {
                   label="Mot de passe"
                   placeholder="Mot de passe"
               />
-              <NativeSelect
+              <Select
                   label="Role"
-                  data={[
-                    {label: "Choisissez une option", value: ""},
-                    ...Object.entries(ROLES).map(([key, value]) => ({label: value, value: key}))
-                  ]}
+                  placeholder="Choisissez une option"
+                  data={[...Object.entries(ROLES).map(([key, value]) => ({label: value, value: key}))]}
                   {...form.getInputProps('userRole')}
                   key={form.key('userRole')}
               />

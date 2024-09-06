@@ -70,7 +70,8 @@ export default function AppLayout({children, data, session,}) {
           </AppShell.Header>
 
           <AppShell.Navbar
-              p="1rem"
+              py="1rem"
+              px="0.5rem"
           >
             <Stack
                 h="100%"
@@ -100,6 +101,7 @@ export default function AppLayout({children, data, session,}) {
                         align="center"
                         justify="space-between"
                         style={{cursor:"pointer"}}
+                        gap="10px"
                     >
                       <Avatar
                           radius="xl"

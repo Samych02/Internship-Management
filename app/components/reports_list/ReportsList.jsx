@@ -5,10 +5,10 @@ import {IconEye} from "@tabler/icons-react";
 import {ActionIcon, Button, Modal, Stack, Title, Tooltip} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
-import {fetchInternReports} from "@/app/components/reports_list/actions";
+import {fetchReports} from "@/app/components/reports_list/actions";
 import AddReportForm from "@/app/components/reports_list/AddReportForm";
 
-export default function ReportsList() {
+export default function ReportsList({listType}) {
   const [pdfModalOpened, togglePDFModal] = useDisclosure(false);
   const [path, setPath] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -17,11 +17,11 @@ export default function ReportsList() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await setData(await fetchInternReports())
+      await setData(listType === "RESPONSIBLE" ? await fetchReports(false) : await  fetchReports(true))
       await setIsLoading(false)
     }
     fetchData()
-  }, [refresh])
+  }, [listType, refresh])
 
 
   const columns = useMemo(() => [
@@ -36,7 +36,11 @@ export default function ReportsList() {
         // convert 2000-01-31 to 31-01-2000
         return `${row.date?.split("-")[2]}-${row.date?.split("-")[1]}-${row.date?.split("-")[0]}`
       },
-    }], [],);
+    }, {
+      header: 'Stagiaire',
+      filterVariant: 'select',
+      accessorFn: (row) => `${row.intern?.fullName}`
+    },], [],);
 
   const table = useMantineReactTable({
     data,
@@ -77,6 +81,9 @@ export default function ReportsList() {
         left: ['mrt-row-expand', 'mrt-row-select'],
         right: ['mrt-row-actions'],
       },
+      columnVisibility: {
+        Stagiaire: listType === "RESPONSIBLE"
+      },
     },
     renderCreateRowModalContent: () => (
         <Stack>
@@ -92,7 +99,7 @@ export default function ReportsList() {
         </Stack>
     ),
     renderTopToolbarCustomActions: ({table}) => (
-        <Button
+        listType ==="INTERN" && <Button
             onClick={() => table.setCreatingRow(true)}
         >
           Ajouter un compte rendu

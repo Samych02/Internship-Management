@@ -4,24 +4,30 @@ import {useEffect, useMemo, useState} from "react";
 import {fetchResumes} from "@/app/components/resumes_list/actions";
 import STUDY_FIELD from "@/app/constants/STUDY_FIELD";
 import {MantineReactTable, useMantineReactTable} from "mantine-react-table";
-import {ActionIcon, Box, Button, Modal, Stack, Title, Tooltip} from "@mantine/core";
-import {IconEye} from "@tabler/icons-react";
+import {ActionIcon, Button, Group, Modal, Stack, Title, Tooltip} from "@mantine/core";
+import {IconEye, IconLine} from "@tabler/icons-react";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
 import AddResumeForm from "@/app/components/resumes_list/AddResumeForm";
+import SuccessAlert from "@/app/components/feedback/SuccessAlert";
+import AssignToSubjectModal from "@/app/components/resumes_list/AssignToSubjectModal";
 
 export default function ResumeList({listType}) {
   const [pdfModalOpened, togglePDFModal] = useDisclosure(false);
+  const [assignModalOpened, toggleAssignModal] = useDisclosure(false);
   const [path, setPath] = useState("");
   const [refresh, setRefresh] = useState(false)
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([])
+  const [feedbackMessage, setFeedbackMessage] = useState("")
+  const [selectedResume, setSelectedResume] = useState(null);
 
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
-      if (listType === "RESPONSIBLE") setData(await fetchResumes())
-      else setData(await fetchResumes(true))
+      // if (listType === "RESPONSIBLE") setData(await fetchResumes())
+      // else setData(await fetchResumes(true))
+      setData(await fetchResumes())
       setIsLoading(false)
     }
     fetchData()
@@ -29,14 +35,18 @@ export default function ResumeList({listType}) {
 
   const columns = useMemo(() => [
     {
-      accessorKey: 'internFullName',
-      header: 'Nom du candidat',
+      header: 'Nom complet du candidat',
       filterVariant: 'text',
+      accessorFn: (row) => `${row.internFirstName} ${row.internLastName}`
     }, {
       accessorKey: 'studyField',
       header: 'Domaine',
       filterVariant: 'multi-select',
       accessorFn: (row) => STUDY_FIELD[row.studyField],
+    }, {
+      header: 'Recommandé par',
+      filterVariant: 'multi-select',
+      accessorFn: (row) => row.poster?.fullName,
     },
   ], [])
 
@@ -75,7 +85,8 @@ export default function ResumeList({listType}) {
     },
     initialState: {
       showColumnFilters: true, columnPinning: {
-        left: ['mrt-row-expand', 'mrt-row-select'], right: ['mrt-row-actions'],
+        left: ['mrt-row-expand', 'mrt-row-select'],
+        right: ['mrt-row-actions'],
       },
     },
     renderCreateRowModalContent: () => (
@@ -99,7 +110,7 @@ export default function ResumeList({listType}) {
         </Button>
     ),
     renderRowActions: ({row}) => (
-        <Box>
+        <Group>
           <Tooltip
               label="Afficher le CV"
           >
@@ -113,11 +124,36 @@ export default function ResumeList({listType}) {
               <IconEye/>
             </ActionIcon>
           </Tooltip>
-        </Box>),
+          {listType === "SUPERVISOR" &&
+              <Tooltip
+                  label="Choisir comme candidat potentiel"
+              >
+                <ActionIcon
+                    variant="filled"
+                    color="green"
+                    onClick={() => {
+                      setSelectedResume(row.original)
+                      toggleAssignModal.open()
+                    }}
+                >
+                  <IconLine/>
+                </ActionIcon>
+              </Tooltip>
+          }
+        </Group>
+    ),
   });
 
   return (
       <>
+        <SuccessAlert
+            opened={feedbackMessage !== ""}
+            close={() => {
+              setFeedbackMessage("")
+            }}
+            title={feedbackMessage}
+        />
+
         <Modal
             opened={pdfModalOpened}
             onClose={() => {
@@ -134,6 +170,15 @@ export default function ResumeList({listType}) {
               height="700"
           />
         </Modal>
+
+        {selectedResume !== null && <AssignToSubjectModal
+            opened={assignModalOpened}
+            close={toggleAssignModal.close}
+            setFeedbackMessage={setFeedbackMessage}
+            setRefresh={setRefresh}
+            resume={selectedResume}
+            setResume={setSelectedResume}
+        />}
 
         <MantineReactTable table={table}/>
       </>
