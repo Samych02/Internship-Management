@@ -50,5 +50,10 @@ public class UsersController {
     }
   }
 
+  @GetMapping
+  public ResponseEntity<?> getUsers() {
+    return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Users fetched successfully", userService.getUserList()));
+  }
+
 
 }

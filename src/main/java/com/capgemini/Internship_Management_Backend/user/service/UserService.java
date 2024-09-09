@@ -5,10 +5,12 @@ import com.capgemini.Internship_Management_Backend.user.dto.RegisterDTO;
 import com.capgemini.Internship_Management_Backend.user.dto.UpdatePasswordDTO;
 import com.capgemini.Internship_Management_Backend.user.entity.User;
 import com.capgemini.Internship_Management_Backend.user.repository.UserRepository;
+import com.capgemini.Internship_Management_Backend.user.repository.projection.UserProjection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,4 +48,7 @@ public class UserService {
     return false;
   }
 
+  public List<UserProjection> getUserList() {
+    return userRepository.findAllByOrderByCreatedAtDesc();
+  }
 }

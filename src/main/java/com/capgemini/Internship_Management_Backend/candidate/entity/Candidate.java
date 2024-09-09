@@ -1,6 +1,7 @@
 package com.capgemini.Internship_Management_Backend.candidate.entity;
 
-import com.capgemini.Internship_Management_Backend.candidate.dto.PushCandidateDTO;
+import com.capgemini.Internship_Management_Backend.candidate.dto.CreateCandidateDTO;
+import com.capgemini.Internship_Management_Backend.candidate.dto.UpdateCandidateDTO;
 import com.capgemini.Internship_Management_Backend.common.entity.BaseEntity;
 import com.capgemini.Internship_Management_Backend.resume.entity.Resume;
 import com.capgemini.Internship_Management_Backend.subject.entity.Subject;
@@ -27,7 +28,7 @@ public class Candidate extends BaseEntity {
 
   @ManyToOne
   @JoinColumn(nullable = false)
-  private Resume profile;
+  private Resume resume;
 
   @ManyToOne
   @JoinColumn(nullable = false)
@@ -43,9 +44,23 @@ public class Candidate extends BaseEntity {
 
   private Boolean hrValidation = false;
 
-  public Candidate(PushCandidateDTO pushCandidateDTO) {
-    this.supervisor = new User(pushCandidateDTO.getSupervisorID());
-    this.profile = new Resume(pushCandidateDTO.getResumeID());
-    this.subject = new Subject(pushCandidateDTO.getSubjectID());
+  private Boolean isFinallyAccepted = false;
+
+  public Candidate(CreateCandidateDTO createCandidateDTO) {
+    this.supervisor = new User(createCandidateDTO.getSupervisorID());
+    this.resume = new Resume(createCandidateDTO.getResumeID());
+    this.subject = new Subject(createCandidateDTO.getSubjectID());
+  }
+
+  public void update(UpdateCandidateDTO updateCandidateDTO) {
+    if (updateCandidateDTO.getFirstExchange() != null) this.setFirstExchange(updateCandidateDTO.getFirstExchange());
+    if (updateCandidateDTO.getTechnicalInterview() != null)
+      this.setTechnicalInterview(updateCandidateDTO.getTechnicalInterview());
+    if (updateCandidateDTO.getTechnicalInterviewDate() != null)
+      this.setTechnicalInterviewDate(updateCandidateDTO.getTechnicalInterviewDate());
+    if (updateCandidateDTO.getChosen() != null) this.setChosen(updateCandidateDTO.getChosen());
+    if (updateCandidateDTO.getHrValidation() != null) this.setHrValidation(updateCandidateDTO.getHrValidation());
+    if (updateCandidateDTO.getIsFinallyAccepted() != null)
+      this.setIsFinallyAccepted(updateCandidateDTO.getIsFinallyAccepted());
   }
 }

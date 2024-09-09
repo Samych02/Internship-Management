@@ -71,12 +71,4 @@ public class SubjectController {
     subjectService.updateSubjectStatus(subjectId, subjectStatus, specialistComment);
     return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Subject status updated successfully", Collections.singletonMap("updated", true)));
   }
-
-  @GetMapping("test")
-  public void test(@RequestParam(required = false) SubjectStatus id) {
-    System.out.println(1111);
-    System.out.println(id);
-  }
-
-
 }
