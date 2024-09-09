@@ -1,7 +1,14 @@
 "use server"
 
+export async function fetchUsers() {
+  let response = await fetch(`${process.env.API_URL}/users`, {
+    method: "get"
+  })
+  response = await response.json()
+  return response.body
+}
+
 export async function registerAction(data) {
-  "use server"
   let response = await fetch(`${process.env.API_URL}/users/register`, {
     method: "POST",
     body: JSON.stringify({

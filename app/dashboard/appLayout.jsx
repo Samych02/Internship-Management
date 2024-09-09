@@ -94,13 +94,15 @@ export default function AppLayout({children, data, session,}) {
                   position="right-end"
               >
                 <Menu.Target>
-                  <Stack>
+                  <Stack
+                      w="100%"
+                  >
                     <Divider/>
 
                     <Group
                         align="center"
                         justify="space-between"
-                        style={{cursor:"pointer"}}
+                        style={{cursor: "pointer"}}
                         gap="10px"
                     >
                       <Avatar
@@ -124,7 +126,7 @@ export default function AppLayout({children, data, session,}) {
                             {session?.user.name}
                           </Text>
                           <Box
-                              bg="gray.6"
+                              bg="cb.5"
                               p="2px"
                               c="white"
                               style={{

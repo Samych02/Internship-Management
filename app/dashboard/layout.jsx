@@ -12,7 +12,6 @@ import {
   IconListSearch,
   IconSchool,
   IconThumbUp,
-  IconUserPlus,
   IconUsersGroup
 } from "@tabler/icons-react";
 import AppLayout from "@/app/dashboard/appLayout";
@@ -32,11 +31,6 @@ export default async function Layout({children}) {
       icon: <IconUsersGroup size="1rem" stroke={1.5}/>,
       label: 'Liste des utilisateurs',
       href: "/dashboard/admin",
-    },
-    {
-      icon: <IconUserPlus size="1rem" stroke={1.5}/>,
-      label: 'Ajouter un nouveau utilisateur',
-      href: "/dashboard/admin/register"
     },
   ]
   const supervisorNav = [
