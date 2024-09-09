@@ -1,4 +1,4 @@
-import ResumeList from "@/app/components/resumes_list/ResumeList";
+import ResumeList from "@/app/components/resumes/ResumeList";
 
 export default async function Resume() {
   return (

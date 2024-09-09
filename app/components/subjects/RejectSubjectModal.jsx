@@ -1,7 +1,7 @@
 "use client"
 import {Button, Group, Modal, Stack, Text, TextInput} from "@mantine/core";
 import {useRouter} from "next/navigation";
-import {editSubjectStatus} from "@/app/components/subjects_list/actions";
+import {editSubjectStatus} from "@/app/components/subjects/actions";
 import {useForm} from "@mantine/form";
 
 export default function RejectSubjectModal({opened, close, subjectID, setSubjectID, setRefresh, setFeedbackMessage}) {

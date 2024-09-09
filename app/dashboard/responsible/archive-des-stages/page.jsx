@@ -1,4 +1,4 @@
-import InternshipArchivesList from "@/app/components/internships_archives_list/InternshipArchivesList";
+import InternshipArchivesList from "@/app/components/internships_archives/InternshipArchivesList";
 
 export default async function InternshipsArchive() {
   return (

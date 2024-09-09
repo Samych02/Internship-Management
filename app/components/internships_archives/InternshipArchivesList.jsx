@@ -4,10 +4,10 @@ import {MantineReactTable, useMantineReactTable} from "mantine-react-table";
 import {ActionIcon, Button, Group, Modal, Stack, Title, Tooltip} from "@mantine/core";
 import {IconEye, IconFileDescription, IconPresentationAnalytics} from "@tabler/icons-react";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
-import {fetchInternships} from "@/app/components/internships_archives_list/actions";
+import {fetchInternships} from "@/app/components/internships_archives/actions";
 import {useDisclosure} from "@mantine/hooks";
-import InternshipDetail from "@/app/components/internships_archives_list/InternshipDetail";
-import ArchiveInternshipForm from "@/app/components/internships_archives_list/ArchiveInternshipForm";
+import InternshipDetail from "@/app/components/internships_archives/InternshipDetail";
+import ArchiveInternshipForm from "@/app/components/internships_archives/ArchiveInternshipForm";
 
 
 export default function InternshipArchivesList({listType = "NORMAL"}) {

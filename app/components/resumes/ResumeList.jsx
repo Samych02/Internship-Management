@@ -1,15 +1,15 @@
 "use client"
 import {useDisclosure} from "@mantine/hooks";
 import {useEffect, useMemo, useState} from "react";
-import {fetchResumes} from "@/app/components/resumes_list/actions";
+import {fetchResumes} from "@/app/components/resumes/actions";
 import STUDY_FIELD from "@/app/constants/STUDY_FIELD";
 import {MantineReactTable, useMantineReactTable} from "mantine-react-table";
 import {ActionIcon, Button, Group, Modal, Stack, Title, Tooltip} from "@mantine/core";
 import {IconEye, IconLine} from "@tabler/icons-react";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
-import AddResumeForm from "@/app/components/resumes_list/AddResumeForm";
+import AddResumeForm from "@/app/components/resumes/AddResumeForm";
 import SuccessAlert from "@/app/components/feedback/SuccessAlert";
-import AssignToSubjectModal from "@/app/components/resumes_list/AssignToSubjectModal";
+import AssignToSubjectModal from "@/app/components/resumes/AssignToSubjectModal";
 
 export default function ResumeList({listType}) {
   const [pdfModalOpened, togglePDFModal] = useDisclosure(false);

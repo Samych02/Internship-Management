@@ -52,6 +52,10 @@ export default async function Layout({children}) {
       icon: <IconFileCv size="1rem" stroke={1.5}/>,
       label: 'CVs recommandés',
       href: "/dashboard/supervisor/CV",
+    }, {
+      icon: <IconUsersGroup size="1rem" stroke={1.5}/>,
+      label: 'Suivi des candidats',
+      href: "/dashboard/supervisor/suivi",
     },
     {
       icon: <IconArchive size="1rem" stroke={1.5}/>,

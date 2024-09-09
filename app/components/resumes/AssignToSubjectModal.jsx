@@ -2,9 +2,9 @@
 
 import {Button, Center, Group, Loader, Modal, Select, Stack} from "@mantine/core";
 import {useEffect, useState} from "react";
-import {fetchSubjects} from "@/app/components/subjects_list/actions";
+import {fetchSubjects} from "@/app/components/subjects/actions";
 import {useForm} from "@mantine/form";
-import {assignSubject} from "@/app/components/resumes_list/actions";
+import {assignSubject} from "@/app/components/resumes/actions";
 
 export default function AssignToSubjectModal({resume, setResume, setFeedbackMessage, close, opened}) {
   const [subjects, setSubjects] = useState([]);

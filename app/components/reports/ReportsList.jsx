@@ -5,8 +5,8 @@ import {IconEye} from "@tabler/icons-react";
 import {ActionIcon, Button, Modal, Stack, Title, Tooltip} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
-import {fetchReports} from "@/app/components/reports_list/actions";
-import AddReportForm from "@/app/components/reports_list/AddReportForm";
+import {fetchReports} from "@/app/components/reports/actions";
+import AddReportForm from "@/app/components/reports/AddReportForm";
 
 export default function ReportsList({listType}) {
   const [pdfModalOpened, togglePDFModal] = useDisclosure(false);

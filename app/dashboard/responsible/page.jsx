@@ -1,4 +1,4 @@
-import SubjectsList from "@/app/components/subjects_list/SubjectsList";
+import SubjectsList from "@/app/components/subjects/SubjectsList";
 
 export default async function Subjects() {
 

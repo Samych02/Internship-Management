@@ -1,4 +1,4 @@
-import ReportsList from "@/app/components/reports_list/ReportsList";
+import ReportsList from "@/app/components/reports/ReportsList";
 
 export default async function InternsReports(){
   return(

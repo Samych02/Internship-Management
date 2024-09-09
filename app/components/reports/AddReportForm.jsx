@@ -4,7 +4,7 @@ import {useDisclosure} from "@mantine/hooks";
 import {useState} from "react";
 import {useForm} from "@mantine/form";
 import {Button, FileInput, Group, Loader, Stack, TextInput} from "@mantine/core";
-import {addReport} from "@/app/components/reports_list/actions";
+import {addReport} from "@/app/components/reports/actions";
 import '@mantine/dates/styles.css';
 import {DateInput} from "@mantine/dates";
 import SuccessAlert from "@/app/components/feedback/SuccessAlert";

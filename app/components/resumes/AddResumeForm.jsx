@@ -3,7 +3,7 @@
 import {useDisclosure} from "@mantine/hooks";
 import {useState} from "react";
 import {useForm} from "@mantine/form";
-import {addResumeAction, checkProfileExisting} from "@/app/components/resumes_list/actions";
+import {addResumeAction, checkProfileExisting} from "@/app/components/resumes/actions";
 import {Button, FileInput, Group, Loader, Select, Stack, TextInput} from "@mantine/core";
 import STUDY_FIELD from "@/app/constants/STUDY_FIELD";
 import SuccessAlert from "@/app/components/feedback/SuccessAlert";

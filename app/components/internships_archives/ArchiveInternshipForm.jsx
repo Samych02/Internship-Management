@@ -4,7 +4,7 @@ import {useState} from "react";
 import {useDisclosure} from "@mantine/hooks";
 import {Button, FileInput, Group, Loader, Radio, Stack, Stepper, TextInput} from "@mantine/core";
 import {YearPickerInput} from "@mantine/dates";
-import {addInternshipAction} from "@/app/components/internships_archives_list/actions";
+import {addInternshipAction} from "@/app/components/internships_archives/actions";
 import SuccessAlert from "@/app/components/feedback/SuccessAlert";
 
 export default function ArchiveInternshipForm({setRefresh}) {

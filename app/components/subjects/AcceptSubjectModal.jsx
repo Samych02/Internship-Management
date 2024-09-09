@@ -1,7 +1,7 @@
 "use client"
 import {Button, Group, Modal, Text} from "@mantine/core";
 import {useRouter} from "next/navigation";
-import {editSubjectStatus} from "@/app/components/subjects_list/actions";
+import {editSubjectStatus} from "@/app/components/subjects/actions";
 
 export default function AcceptSubjectModal({opened, close, subjectID, setSubjectID, setRefresh, setFeedbackMessage}) {
   const router = useRouter();

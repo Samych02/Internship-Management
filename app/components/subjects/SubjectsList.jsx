@@ -5,12 +5,12 @@ import {IconCheck, IconEdit, IconEye, IconX} from "@tabler/icons-react";
 import {ActionIcon, Box, Button, Group, Modal, Stack, Title, Tooltip} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
-import AddSubjectForm from "@/app/components/subjects_list/AddSubjectForm";
+import AddSubjectForm from "@/app/components/subjects/AddSubjectForm";
 import STUDY_FIELD from "@/app/constants/STUDY_FIELD";
 import SUBJECT_STATUS from "@/app/constants/SUBJECT_STATUS";
-import {fetchSubjects, getSubjectById} from "@/app/components/subjects_list/actions";
-import AcceptSubjectModal from "@/app/components/subjects_list/AcceptSubjectModal";
-import RejectSubjectModal from "@/app/components/subjects_list/RejectSubjectModal";
+import {fetchSubjects, getSubjectById} from "@/app/components/subjects/actions";
+import AcceptSubjectModal from "@/app/components/subjects/AcceptSubjectModal";
+import RejectSubjectModal from "@/app/components/subjects/RejectSubjectModal";
 import SuccessAlert from "@/app/components/feedback/SuccessAlert";
 
 export default function SubjectsList({listType}) {

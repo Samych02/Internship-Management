@@ -18,7 +18,7 @@ import {useForm} from '@mantine/form';
 import {randomId, useDisclosure} from "@mantine/hooks";
 import {IconTrash} from "@tabler/icons-react";
 import STUDY_FIELD from "@/app/constants/STUDY_FIELD";
-import {addSubjectAction, checkTitleUsedAction, editSubjectAction} from "@/app/components/subjects_list/actions";
+import {addSubjectAction, checkTitleUsedAction, editSubjectAction} from "@/app/components/subjects/actions";
 import SuccessAlert from "@/app/components/feedback/SuccessAlert";
 
 export default function AddSubjectForm({existingSubject = null, setRefresh}) {
