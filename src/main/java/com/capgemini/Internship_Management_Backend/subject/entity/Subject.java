@@ -60,7 +60,7 @@ public class Subject extends BaseEntity {
   private String specialistComment;
 
   public Subject(PushSubjectDTO pushSubjectDTO) {
-    this.poster = new User(pushSubjectDTO.getPosterId());
+    this.poster = new User(pushSubjectDTO.getPosterID());
     this.title = pushSubjectDTO.getTitle();
     this.tasks = pushSubjectDTO.getTasks();
     this.internType = pushSubjectDTO.getInternType();
@@ -73,7 +73,7 @@ public class Subject extends BaseEntity {
     this.studyField = pushSubjectDTO.getStudyField();
   }
 
-  public Subject(Integer id) {
-    this.id = id;
+  public Subject(Integer ID) {
+    this.ID = ID;
   }
 }

@@ -3,7 +3,7 @@ package com.capgemini.Internship_Management_Backend.course.repository.projection
 import com.capgemini.Internship_Management_Backend.course.model.CourseStatus;
 
 public interface CourseProjection {
-  Integer getId();
+  Integer getID();
 
   String getTitle();
 

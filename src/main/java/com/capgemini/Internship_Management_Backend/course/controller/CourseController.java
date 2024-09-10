@@ -34,9 +34,9 @@ public class CourseController {
     return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Personal courses fetched successfully", courseService.getAllPersonalCoursesOfIntern(internID)));
   }
 
-  @PatchMapping("{courseId}/{courseStatus}")
-  public ResponseEntity<?> updateCourseStatus(@PathVariable Integer courseId, @PathVariable @Valid CourseStatus courseStatus) {
-    courseService.updateCourseStatus(courseId, courseStatus);
+  @PatchMapping("{courseID}/{courseStatus}")
+  public ResponseEntity<?> updateCourseStatus(@PathVariable Integer courseID, @PathVariable @Valid CourseStatus courseStatus) {
+    courseService.updateCourseStatus(courseID, courseStatus);
     return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Course status updated successfully", Collections.singletonMap("updated", true)));
   }
 }

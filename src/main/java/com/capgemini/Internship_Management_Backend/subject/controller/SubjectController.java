@@ -37,10 +37,17 @@ public class SubjectController {
 
   @GetMapping("")
   public ResponseEntity<?> getAllSubjects(
-          @RequestParam(required = false) Integer posterId,
+          @RequestParam(required = false) Integer posterID,
           @RequestParam(required = false) SubjectStatus subjectStatus
   ) {
-    return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Subjects fetched successfully", subjectService.getAllSubjects(posterId, subjectStatus)));
+    return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Subjects fetched successfully", subjectService.getAllSubjects(posterID, subjectStatus)));
+  }
+
+  @GetMapping("assignable")
+  public ResponseEntity<?> getAllAssociableSubjects(
+          @RequestParam @Valid Integer resumeID
+  ) {
+    return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Subjects fetched successfully", subjectService.getAllSubjectsAssignableToResume(resumeID)));
   }
 
   @GetMapping("count-pending")
@@ -51,24 +58,24 @@ public class SubjectController {
 
   @GetMapping("{subjectId}")
   public ResponseEntity<?> getSubject(@PathVariable Integer subjectId) {
-    return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Subjects fetched successfully", subjectService.getSubjectById(subjectId)));
+    return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Subjects fetched successfully", subjectService.getSubjectByID(subjectId)));
   }
 
-  @PatchMapping("{subjectId}")
-  public ResponseEntity<?> updateSubject(@PathVariable Integer subjectId, @RequestBody @Valid PushSubjectDTO pushSubjectDTO) {
-    subjectService.updateSubject(subjectId, pushSubjectDTO);
+  @PatchMapping("{subjectID}")
+  public ResponseEntity<?> updateSubject(@PathVariable Integer subjectID, @RequestBody @Valid PushSubjectDTO pushSubjectDTO) {
+    subjectService.updateSubject(subjectID, pushSubjectDTO);
     return ResponseEntity.status(HttpStatus.CREATED).body(ResponseUtil.successResponse("Subject updated successfully", Collections.singletonMap("created", true)));
   }
 
-  @DeleteMapping("{subjectId}")
-  public ResponseEntity<?> deleteSubject(@PathVariable Integer subjectId) {
-    subjectService.deleteSubject(subjectId);
+  @DeleteMapping("{subjectID}")
+  public ResponseEntity<?> deleteSubject(@PathVariable Integer subjectID) {
+    subjectService.deleteSubject(subjectID);
     return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Subject deleted successfully", Collections.singletonMap("deleted", true)));
   }
 
-  @PatchMapping("{subjectId}/{subjectStatus}")
-  public ResponseEntity<?> updateSubjectStatus(@PathVariable Integer subjectId, @PathVariable SubjectStatus subjectStatus, @RequestBody(required = false) String specialistComment) {
-    subjectService.updateSubjectStatus(subjectId, subjectStatus, specialistComment);
+  @PatchMapping("{subjectID}/{subjectStatus}")
+  public ResponseEntity<?> updateSubjectStatus(@PathVariable Integer subjectID, @PathVariable SubjectStatus subjectStatus, @RequestBody(required = false) String specialistComment) {
+    subjectService.updateSubjectStatus(subjectID, subjectStatus, specialistComment);
     return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Subject status updated successfully", Collections.singletonMap("updated", true)));
   }
 }

@@ -1,10 +1,10 @@
-package com.capgemini.Internship_Management_Backend.candidate.dto;
+package com.capgemini.Internship_Management_Backend.candidature.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class CreateCandidateDTO {
+public class AddCandidatureDTO {
   @NotNull
   private Integer supervisorID;
 

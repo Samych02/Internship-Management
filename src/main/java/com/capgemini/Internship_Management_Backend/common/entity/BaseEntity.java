@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  protected Integer id;
+  protected Integer ID;
 
   @CreatedDate
   @Column(name = "created_at")
@@ -26,7 +26,7 @@ public class BaseEntity {
   @Column(name = "updated_at")
   protected LocalDateTime updatedAt;
 
-  public BaseEntity(Integer id) {
-    this.id = id;
+  public BaseEntity(Integer ID) {
+    this.ID = ID;
   }
 }

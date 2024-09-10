@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "report")
+@Table(name = "reports")
 public class Report extends BaseEntity {
   @ManyToOne
   @JoinColumn(nullable = false)

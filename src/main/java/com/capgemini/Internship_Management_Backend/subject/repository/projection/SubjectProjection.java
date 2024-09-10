@@ -6,7 +6,7 @@ import com.capgemini.Internship_Management_Backend.subject.model.SubjectStatus;
 import com.capgemini.Internship_Management_Backend.user.repository.projection.UserFullNameProjection;
 
 public interface SubjectProjection {
-  Integer getId();
+  Integer getID();
 
   UserFullNameProjection getPoster();
 

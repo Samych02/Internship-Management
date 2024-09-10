@@ -20,10 +20,15 @@ public class Resume extends BaseEntity {
   private User poster;
 
   private String internFirstName;
+
   private String internLastName;
+
   @Enumerated(EnumType.STRING)
   private StudyField studyField;
+
   private String path;
+
+  private Boolean validated = false;
 
   public String getInternFullName() {
     return internFirstName + " " + internLastName;
@@ -37,7 +42,7 @@ public class Resume extends BaseEntity {
     this.path = "\\CV\\" + getInternFullName() + "\\CV.pdf";
   }
 
-  public Resume(Integer id) {
-    this.id = id;
+  public Resume(Integer ID) {
+    this.ID = ID;
   }
 }

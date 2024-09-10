@@ -27,8 +27,8 @@ public class CourseService {
     courseRepository.save(course);
   }
 
-  public List<CourseProjection> getAllPersonalCoursesOfIntern(Integer internId) {
-    return courseRepository.findAllProjectedByUserAndCourseTypeOrderByCourseStatusDesc(new User(internId), CourseType.PERSONAL);
+  public List<CourseProjection> getAllPersonalCoursesOfIntern(Integer internID) {
+    return courseRepository.findAllProjectedByUserAndCourseTypeOrderByCourseStatusDesc(new User(internID), CourseType.PERSONAL);
   }
 
   @SneakyThrows
@@ -53,8 +53,8 @@ public class CourseService {
     return courseRepository.findAllProjectedByUserAndCourseTypeOrderByCourseStatusDesc(new User(internID), CourseType.OBLIGATORY);
   }
 
-  public void updateCourseStatus(Integer courseId, CourseStatus courseStatus) {
-    Optional<Course> course = courseRepository.findById(courseId);
+  public void updateCourseStatus(Integer courseID, CourseStatus courseStatus) {
+    Optional<Course> course = courseRepository.findById(courseID);
     if (course.isPresent()) {
       course.get().setCourseStatus(courseStatus);
       courseRepository.save(course.get());

@@ -19,7 +19,7 @@ public class LoginDTO {
 
   @Data
   public static class response {
-    private Integer id;
+    private Integer ID;
 
     private String email;
 
@@ -30,7 +30,7 @@ public class LoginDTO {
     private String image;
 
     public response(User user) {
-      this.id = user.getId();
+      this.ID = user.getID();
       this.email = user.getEmail();
       this.userRole = user.getUserRole();
       this.image = user.getImage();

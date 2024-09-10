@@ -8,7 +8,7 @@ import com.capgemini.Internship_Management_Backend.subject.model.StudyField;
 import java.util.List;
 
 public interface SubjectProjectionForEdit {
-  Integer getId();
+  Integer getID();
 
   String getTitle();
 

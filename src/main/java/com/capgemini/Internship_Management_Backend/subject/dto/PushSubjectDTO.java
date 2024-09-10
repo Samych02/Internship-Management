@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 public class PushSubjectDTO {
   @NotNull
-  private Integer posterId;
+  private Integer posterID;
 
   @NotEmpty
   private String title;

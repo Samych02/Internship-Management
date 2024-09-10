@@ -1,12 +1,13 @@
-package com.capgemini.Internship_Management_Backend.candidate.repository.projection;
+package com.capgemini.Internship_Management_Backend.candidature.repository.projection;
 
 import com.capgemini.Internship_Management_Backend.resume.repository.projection.ResumeFullNameProjection;
+import com.capgemini.Internship_Management_Backend.subject.model.SubjectStatus;
 import com.capgemini.Internship_Management_Backend.subject.repository.projection.SubjectTitleProjection;
 
 import java.time.LocalDate;
 
-public interface CandidateProjection {
-  Integer getId();
+public interface CandidatureProjection {
+  Integer getID();
 
   ResumeFullNameProjection getResume();
 
@@ -22,6 +23,6 @@ public interface CandidateProjection {
 
   Boolean getHrValidation();
 
-  Boolean getIsFinallyAccepted();
+  SubjectStatus getStatus();
 
 }
