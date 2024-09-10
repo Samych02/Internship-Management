@@ -9,7 +9,7 @@ import {IconEye, IconLine} from "@tabler/icons-react";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
 import AddResumeForm from "@/app/components/resumes/AddResumeForm";
 import SuccessAlert from "@/app/components/feedback/SuccessAlert";
-import AssignToSubjectModal from "@/app/components/resumes/AssignToSubjectModal";
+import AssociateProfileModal from "@/app/components/resumes/AssociateProfileModal";
 
 export default function ResumeList({listType}) {
   const [pdfModalOpened, togglePDFModal] = useDisclosure(false);
@@ -19,7 +19,7 @@ export default function ResumeList({listType}) {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([])
   const [feedbackMessage, setFeedbackMessage] = useState("")
-  const [selectedResume, setSelectedResume] = useState(null);
+  const [selectedProfile, setSelectedProfile] = useState(null);
 
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function ResumeList({listType}) {
     {
       header: 'Nom complet du candidat',
       filterVariant: 'text',
-      accessorFn: (row) => `${row.internFirstName} ${row.internLastName}`
+      accessorFn: (row) => `${row.firstName} ${row.lastName}`
     }, {
       accessorKey: 'studyField',
       header: 'Domaine',
@@ -126,15 +126,16 @@ export default function ResumeList({listType}) {
           </Tooltip>
           {listType === "SUPERVISOR" &&
               <Tooltip
-                  label="Choisir comme candidat potentiel"
+                  label={row.original.validated ? "Candidat déja accepté" : "Choisir comme candidat potentiel"}
               >
                 <ActionIcon
                     variant="filled"
                     color="green"
                     onClick={() => {
-                      setSelectedResume(row.original)
+                      setSelectedProfile(row.original)
                       toggleAssignModal.open()
                     }}
+                    disabled={row.original.validated}
                 >
                   <IconLine/>
                 </ActionIcon>
@@ -171,13 +172,13 @@ export default function ResumeList({listType}) {
           />
         </Modal>
 
-        {selectedResume !== null && <AssignToSubjectModal
+        {selectedProfile !== null && <AssociateProfileModal
             opened={assignModalOpened}
             close={toggleAssignModal.close}
             setFeedbackMessage={setFeedbackMessage}
             setRefresh={setRefresh}
-            resume={selectedResume}
-            setResume={setSelectedResume}
+            profile={selectedProfile}
+            setProfile={setSelectedProfile}
         />}
 
         <MantineReactTable table={table}/>

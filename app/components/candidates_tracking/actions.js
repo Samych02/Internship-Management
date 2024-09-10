@@ -1,9 +1,8 @@
 "use server"
-import {auth} from "@/auth";
+import getCurrentUserID from "@/app/api/auth/[...nextauth]/actions";
 
 export async function fetchCandidates() {
-  const session = await auth()
-  let response = await fetch(`${process.env.API_URL}/candidates?supervisorID=${parseInt(session.user?.id)}`, {
+  let response = await fetch(`${process.env.API_URL}/candidates?supervisorID=${await getCurrentUserID()}`, {
     method: "get"
   })
   response = await response.json()

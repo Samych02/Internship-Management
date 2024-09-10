@@ -1,10 +1,8 @@
 "use server"
-import {auth} from "@/auth";
+import getCurrentUserID from "@/app/api/auth/[...nextauth]/actions";
 
 export async function fetchCourses(type) {
-  "use server"
-  const session = await auth()
-  let response = await fetch(`${process.env.API_URL}/courses/${type}?internID=${session?.user.id}`, {
+  let response = await fetch(`${process.env.API_URL}/courses/${type}?internID=${await getCurrentUserID()}`, {
     method: "get"
   })
   response = await response.json()
@@ -12,7 +10,6 @@ export async function fetchCourses(type) {
 }
 
 export async function updateCourseStatus(courseID, status) {
-  "use server"
   let response = await fetch(`${process.env.API_URL}/courses/${courseID}/${status}`, {
     method: "PATCH",
   })
@@ -20,11 +17,10 @@ export async function updateCourseStatus(courseID, status) {
 }
 
 export async function addCourse(data) {
-  const session = await auth()
   let response = await fetch(`${process.env.API_URL}/courses`, {
     method: "POST",
     body: JSON.stringify({
-      internID: parseInt(session?.user.id),
+      internID: await getCurrentUserID(),
       title: data.title,
       link: data.link,
       organism: data.organism,

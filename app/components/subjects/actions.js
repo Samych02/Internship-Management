@@ -1,12 +1,11 @@
 "use server"
 
-import {auth} from "@/auth";
+import getCurrentUserID from "@/app/api/auth/[...nextauth]/actions";
 
-export async function fetchSubjects(sendId = false, subjectStatus = null) {
-  const session = await auth()
-  let posterId = null
-  if (sendId) posterId = parseInt(session?.user.id)
-  let response = await fetch(`${process.env.API_URL}/subjects?${sendId ? `posterId=${posterId}` : ""}&${subjectStatus !== null ? `subjectStatus=${subjectStatus}` : ""}`, {
+export async function fetchSubjects(sendID = false, subjectStatus = null) {
+  let posterID = null
+  if (sendID) posterID = await getCurrentUserID()
+  let response = await fetch(`${process.env.API_URL}/subjects?${sendID ? `posterID=${posterID}` : ""}&${subjectStatus !== null ? `subjectStatus=${subjectStatus}` : ""}`, {
     method: "get"
   })
   response = await response.json()
@@ -15,11 +14,10 @@ export async function fetchSubjects(sendId = false, subjectStatus = null) {
 
 
 export async function addSubjectAction(data) {
-  const session = await auth()
   let response = await fetch(`${process.env.API_URL}/subjects`, {
     method: "POST",
     body: JSON.stringify({
-      posterId: parseInt(session?.user.id),
+      posterID: await getCurrentUserID(),
       title: data.title,
       tasks: data.tasks.map(t => t.task),
       internType: data.internType,
@@ -38,12 +36,11 @@ export async function addSubjectAction(data) {
   return response.ok
 }
 
-export async function editSubjectAction(subjectId, data) {
-  const session = await auth()
-  let response = await fetch(`${process.env.API_URL}/subjects/${subjectId}`, {
+export async function editSubjectAction(subjectID, data) {
+  let response = await fetch(`${process.env.API_URL}/subjects/${subjectID}`, {
     method: "PATCH",
     body: JSON.stringify({
-      posterId: parseInt(session?.user.id),
+      posterId: await getCurrentUserID(),
       title: data.title,
       tasks: data.tasks.map(t => t.task),
       internType: data.internType,
@@ -70,8 +67,8 @@ export async function checkTitleUsedAction(title) {
   return response.body?.isTitleUsed
 }
 
-export async function getSubjectById(subjectId) {
-  let response = await fetch(`${process.env.API_URL}/subjects/${subjectId}`, {
+export async function getSubjectById(subjectID) {
+  let response = await fetch(`${process.env.API_URL}/subjects/${subjectID}`, {
     method: "GET",
   })
   response = await response.json()
@@ -79,8 +76,8 @@ export async function getSubjectById(subjectId) {
   return response.body
 }
 
-export async function editSubjectStatus(subjectId, subjectStatus, specialistComment = null) {
-  let response = await fetch(`${process.env.API_URL}/subjects/${parseInt(subjectId)}/${subjectStatus}`, {
+export async function editSubjectStatus(subjectID, subjectStatus, specialistComment = null) {
+  let response = await fetch(`${process.env.API_URL}/subjects/${parseInt(subjectID)}/${subjectStatus}`, {
     method: "PATCH",
     body: specialistComment ?? ""
   })

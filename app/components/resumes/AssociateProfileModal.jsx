@@ -2,11 +2,10 @@
 
 import {Button, Center, Group, Loader, Modal, Select, Stack} from "@mantine/core";
 import {useEffect, useState} from "react";
-import {fetchSubjects} from "@/app/components/subjects/actions";
 import {useForm} from "@mantine/form";
-import {assignSubject} from "@/app/components/resumes/actions";
+import {associateProfile, fetchAssignableSubjects} from "@/app/components/resumes/actions";
 
-export default function AssignToSubjectModal({resume, setResume, setFeedbackMessage, close, opened}) {
+export default function AssociateProfileModal({profile, setProfile, setFeedbackMessage, close, opened}) {
   const [subjects, setSubjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const form = useForm({
@@ -26,10 +25,10 @@ export default function AssignToSubjectModal({resume, setResume, setFeedbackMess
     }
     form.onSubmit(async (data) => {
       setIsLoading(true)
-      if (await assignSubject(data.subjectID, resume.id)) {
+      if (await associateProfile(data.subjectID, profile.id)) {
         setIsLoading(false)
         close()
-        setResume(null)
+        setProfile(null)
         setFeedbackMessage("Profile assigné avec succès")
       }
 
@@ -38,27 +37,27 @@ export default function AssignToSubjectModal({resume, setResume, setFeedbackMess
 
   useEffect(() => {
     const fetchData = async () => {
-      setSubjects(await fetchSubjects(true, "ACCEPTED"))
+      setSubjects(await fetchAssignableSubjects(profile.id))
       setIsLoading(false)
     }
     fetchData()
-  }, [])
+  }, [profile.id])
   return (
       <Modal
           opened={opened}
           onClose={() => {
-            setResume(null)
+            setProfile(null)
             close()
           }}
           overlayProps={{blur: 4, backgroundOpacity: 0.55}}
           size="xl"
-          title={`Assigner un sujet au candidat(e): ${resume?.internFirstName} ${resume?.internLastName}`}
+          title={`Assigner un sujet au candidat(e): ${profile?.firstName} ${profile?.lastName}`}
       >
         {subjects.length === 0
             ? !isLoading && <Center
             mb="1rem"
         >
-          Vous n&apos;avez aucun sujet accepté par le spécialist!
+          Aucun sujet disponible!
         </Center>
             : !isLoading && <form
             onSubmit={submit}

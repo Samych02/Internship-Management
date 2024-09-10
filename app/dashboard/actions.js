@@ -1,5 +1,5 @@
 "use server"
-import {auth} from "@/auth";
+import getCurrentUserID from "@/app/api/auth/[...nextauth]/actions";
 
 export async function getNumberOfPendingSubjects() {
   let response = await fetch(`${process.env.API_URL}/subjects/count-pending`)
@@ -8,11 +8,10 @@ export async function getNumberOfPendingSubjects() {
 }
 
 export async function updatePassword(data) {
-  const session = await auth()
   let response = await fetch(`${process.env.API_URL}/users/update-password`, {
     method: "PATCH",
     body: JSON.stringify({
-      userID: parseInt(session?.user.id),
+      userID: await getCurrentUserID(),
       oldPassword: data.oldPassword,
       newPassword: data.newPassword,
     }),

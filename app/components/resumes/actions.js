@@ -1,23 +1,8 @@
 "use server"
-import {auth} from "@/auth";
+import getCurrentUserID from "@/app/api/auth/[...nextauth]/actions";
 
-// export async function fetchResumes(sendId = false) {
-//   if (!sendId) {
-//     let response = await fetch(`${process.env.API_URL}/resumes`, {
-//       method: "get"
-//     })
-//     response = await response.json()
-//     return response.body
-//   }
-//   const session = await auth()
-//   let response = await fetch(`${process.env.API_URL}/resumes?posterID=${parseInt(session?.user.id)}`, {
-//     method: "get"
-//   })
-//   response = await response.json()
-//   return response.body
-// }
 export async function fetchResumes() {
-  let response = await fetch(`${process.env.API_URL}/resumes`, {
+  let response = await fetch(`${process.env.API_URL}/interns-profiles/resumes`, {
     method: "get"
   })
   response = await response.json()
@@ -25,9 +10,8 @@ export async function fetchResumes() {
 }
 
 export async function addResumeAction(formData) {
-  const session = await auth()
-  formData.append("posterID", parseInt(session?.user.id))
-  let response = await fetch(`${process.env.API_URL}/resumes`, {
+  formData.append("posterID", await getCurrentUserID())
+  let response = await fetch(`${process.env.API_URL}/interns-profiles`, {
     method: "POST",
     body: formData
   })
@@ -35,21 +19,25 @@ export async function addResumeAction(formData) {
 }
 
 export async function checkProfileExisting(firstName, lastName) {
-  let response = await fetch(`${process.env.API_URL}/resumes/check-profile-existing?firstName=${firstName}&lastName=${lastName}`, {
+  let response = await fetch(`${process.env.API_URL}/interns-profiles/check-profile-existing?firstName=${firstName}&lastName=${lastName}`, {
     method: "GET"
   })
   response = await response.json()
   return response.body.isProfileExisting
 }
 
-export async function assignSubject(subjectID, resumeID) {
-  const session = await auth()
-
-  let response = await fetch(`${process.env.API_URL}/candidates`, {
+export async function fetchAssignableSubjects(internProfileID){
+  let response = await fetch(`${process.env.API_URL}/subjects/assignable?internProfileID=${internProfileID}`, {
+    method: "GET"
+  })
+  response = await response.json()
+  return response.body
+}
+export async function associateProfile(subjectID, resumeID) {
+  let response = await fetch(`${process.env.API_URL}/interns-profiles/associate/${subjectID}`, {
     method: "POST",
     body: JSON.stringify({
-      supervisorID: parseInt(session?.user.id),
-      resumeID: parseInt(resumeID),
+      supervisorID: await getCurrentUserID(),
       subjectID: parseInt(subjectID),
     }),
     headers: {

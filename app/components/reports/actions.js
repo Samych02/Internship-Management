@@ -1,9 +1,8 @@
 "use server"
-import {auth} from "@/auth";
+import getCurrentUserID from "@/app/api/auth/[...nextauth]/actions";
 
 export async function fetchReports(sendId) {
-  const session = await auth()
-  let response = await fetch(`${process.env.API_URL}/reports?internID=${sendId ? session?.user.id : ""}`, {
+  let response = await fetch(`${process.env.API_URL}/reports?internID=${sendId ? await getCurrentUserID() : ""}`, {
     method: "get"
   })
   response = await response.json()
@@ -11,8 +10,7 @@ export async function fetchReports(sendId) {
 }
 
 export async function addReport(formData) {
-  const session = await auth()
-  formData.append("internID", parseInt(session?.user.id))
+  formData.append("internID", await getCurrentUserID())
   formData.append("fullName", session?.user.name)
   let response = await fetch(`${process.env.API_URL}/reports`, {
     method: "POST",
