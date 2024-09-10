@@ -3,9 +3,9 @@
 import {Button, Center, Group, Loader, Modal, Select, Stack} from "@mantine/core";
 import {useEffect, useState} from "react";
 import {useForm} from "@mantine/form";
-import {associateProfile, fetchAssignableSubjects} from "@/app/components/resumes/actions";
+import {addCandidature, fetchAssignableSubjects} from "@/app/components/resumes/actions";
 
-export default function AssociateProfileModal({profile, setProfile, setFeedbackMessage, close, opened}) {
+export default function AssociateProfileModal({resume, setResume, setFeedbackMessage, close, opened}) {
   const [subjects, setSubjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const form = useForm({
@@ -25,10 +25,10 @@ export default function AssociateProfileModal({profile, setProfile, setFeedbackM
     }
     form.onSubmit(async (data) => {
       setIsLoading(true)
-      if (await associateProfile(data.subjectID, profile.id)) {
+      if (await addCandidature(data.subjectID, resume.id)) {
         setIsLoading(false)
         close()
-        setProfile(null)
+        setResume(null)
         setFeedbackMessage("Profile assigné avec succès")
       }
 
@@ -37,21 +37,21 @@ export default function AssociateProfileModal({profile, setProfile, setFeedbackM
 
   useEffect(() => {
     const fetchData = async () => {
-      setSubjects(await fetchAssignableSubjects(profile.id))
+      setSubjects(await fetchAssignableSubjects(resume.id))
       setIsLoading(false)
     }
     fetchData()
-  }, [profile.id])
+  }, [resume.id])
   return (
       <Modal
           opened={opened}
           onClose={() => {
-            setProfile(null)
+            setResume(null)
             close()
           }}
           overlayProps={{blur: 4, backgroundOpacity: 0.55}}
           size="xl"
-          title={`Assigner un sujet au candidat(e): ${profile?.firstName} ${profile?.lastName}`}
+          title={`Assigner un sujet au candidat(e): ${resume?.internFirstName} ${resume?.internLastName}`}
       >
         {subjects.length === 0
             ? !isLoading && <Center

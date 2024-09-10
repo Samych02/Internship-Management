@@ -19,14 +19,12 @@ export default function ResumeList({listType}) {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([])
   const [feedbackMessage, setFeedbackMessage] = useState("")
-  const [selectedProfile, setSelectedProfile] = useState(null);
+  const [selectedResume, setSelectedResume] = useState(null);
 
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
-      // if (listType === "RESPONSIBLE") setData(await fetchResumes())
-      // else setData(await fetchResumes(true))
       setData(await fetchResumes())
       setIsLoading(false)
     }
@@ -37,7 +35,7 @@ export default function ResumeList({listType}) {
     {
       header: 'Nom complet du candidat',
       filterVariant: 'text',
-      accessorFn: (row) => `${row.firstName} ${row.lastName}`
+      accessorFn: (row) => `${row.internFirstName} ${row.internLastName}`
     }, {
       accessorKey: 'studyField',
       header: 'Domaine',
@@ -132,7 +130,7 @@ export default function ResumeList({listType}) {
                     variant="filled"
                     color="green"
                     onClick={() => {
-                      setSelectedProfile(row.original)
+                      setSelectedResume(row.original)
                       toggleAssignModal.open()
                     }}
                     disabled={row.original.validated}
@@ -172,13 +170,13 @@ export default function ResumeList({listType}) {
           />
         </Modal>
 
-        {selectedProfile !== null && <AssociateProfileModal
+        {selectedResume !== null && <AssociateProfileModal
             opened={assignModalOpened}
             close={toggleAssignModal.close}
             setFeedbackMessage={setFeedbackMessage}
             setRefresh={setRefresh}
-            profile={selectedProfile}
-            setProfile={setSelectedProfile}
+            resume={selectedResume}
+            setResume={setSelectedResume}
         />}
 
         <MantineReactTable table={table}/>

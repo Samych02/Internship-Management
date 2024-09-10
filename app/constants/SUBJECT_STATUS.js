@@ -1,5 +1,5 @@
 const SUBJECT_STATUS = {
-  PENDING: "En attente d'approbation",
+  PENDING: "En attente",
   REJECTED: 'Rejeté',
   ACCEPTED: 'Accepté',
   IN_PROGRESS: 'En cours',

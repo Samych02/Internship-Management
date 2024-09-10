@@ -4,12 +4,13 @@ import React, {useEffect, useMemo, useState} from "react";
 import {fetchCandidates, updateCandidate} from "@/app/components/candidates_tracking/actions";
 import {MantineReactTable, useMantineReactTable} from "mantine-react-table";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
-import {ActionIcon, NativeSelect, Tooltip} from "@mantine/core";
+import {ActionIcon, Box, Group, NativeSelect, Text, Tooltip} from "@mantine/core";
 import SuccessAlert from "@/app/components/feedback/SuccessAlert";
 import {DateInput} from "@mantine/dates";
 import {IconUserPlus} from "@tabler/icons-react";
 import {registerAction} from "@/app/components/user/actions";
 import {editSubjectStatus} from "@/app/components/subjects/actions";
+import SUBJECT_STATUS from "@/app/constants/SUBJECT_STATUS";
 
 export default function CandidatesTrackingList() {
   const [isLoading, setIsLoading] = useState(true);
@@ -35,7 +36,37 @@ export default function CandidatesTrackingList() {
     {
       header: 'Candidat',
       filterVariant: 'text',
-      accessorFn: (row) => row.resume?.internFullName,
+      accessorFn: (row) => `${row.resume?.internFirstName} ${row.resume?.internLastName}`,
+      Cell: ({renderedCellValue, row}) => (
+          <Group
+              gap="sm"
+              style={{flexWrap: 'nowrap'}}
+          >
+            <Text
+                style={{whiteSpace: 'nowrap'}}
+            >
+              {`${row.original.resume?.internFirstName} ${row.original.resume?.internLastName}`}
+            </Text>
+
+            <Box
+                bg={row.original.status === "PENDING" ? "gray.5"
+                    : row.original.status === "ACCEPTED" ? "yellow"
+                        : row.original.status === "IN_PROGRESS" ? "cb"
+                            : row.original.status === "REJECTED" ? "red"
+                                : "green"
+                }
+                c="white"
+                p="4px"
+                w="fit-content"
+                style={{
+                  borderRadius: '4px',
+                  whiteSpace: 'nowrap',
+                }}
+            >
+              {SUBJECT_STATUS[row.original.status]}
+            </Box>
+          </Group>
+      )
     }, {
       header: 'Sujet',
       filterVariant: 'text',
@@ -55,7 +86,7 @@ export default function CandidatesTrackingList() {
                 setRefresh((refresh) => !refresh)
                 setFeedbackMessage("Modification enregistrée")
               }}
-              disabled={row.original.isFinallyAccepted}
+              disabled={row.original.status !== "PENDING"}
           />
       ),
     }, {
@@ -73,7 +104,7 @@ export default function CandidatesTrackingList() {
                 setRefresh((refresh) => !refresh)
                 setFeedbackMessage("Modification enregistrée")
               }}
-              disabled={row.original.isFinallyAccepted}
+              disabled={row.original.status !== "PENDING"}
           />
       ),
     }, {
@@ -96,7 +127,7 @@ export default function CandidatesTrackingList() {
                 setRefresh((refresh) => !refresh)
                 setFeedbackMessage("Modification enregistrée")
               }}
-              disabled={row.original.isFinallyAccepted}
+              disabled={row.original.status !== "PENDING"}
           />
       ),
     }, {
@@ -114,7 +145,7 @@ export default function CandidatesTrackingList() {
                 setRefresh((refresh) => !refresh)
                 setFeedbackMessage("Modification enregistrée")
               }}
-              disabled={row.original.isFinallyAccepted}
+              disabled={row.original.status !== "PENDING"}
           />
       ),
     }, {
@@ -132,11 +163,11 @@ export default function CandidatesTrackingList() {
                 setRefresh((refresh) => !refresh)
                 setFeedbackMessage("Modification enregistrée")
               }}
-              disabled={row.original.isFinallyAccepted}
+              disabled={row.original.status !== "PENDING"}
           />
       ),
     },
-  ], [],);
+  ], [boolSelect],);
 
   const table = useMantineReactTable({
     data,
@@ -175,7 +206,7 @@ export default function CandidatesTrackingList() {
     },
     renderRowActions: ({row}) => (
         <Tooltip
-            label={row.original.isFinallyAccepted ? "Candidat déjà accepté"
+            label={row.original.status !== "PENDING" ? "Candidat déjà accepté"
                 : row.original.chosen && row.original.hrValidation ? "Accepter le candidat définitivement"
                     : "Le candidat doit être marqué comme choisi et accepté par le RH"
             }
@@ -212,7 +243,7 @@ export default function CandidatesTrackingList() {
                   document.body.removeChild(link);
                 }
               }}
-              disabled={row.original.isFinallyAccepted || !(row.original.chosen && row.original.hrValidation) || isLoading}
+              disabled={row.original.status !== "PENDING" || !(row.original.chosen && row.original.hrValidation) || isLoading}
           >
             <IconUserPlus/>
           </ActionIcon>

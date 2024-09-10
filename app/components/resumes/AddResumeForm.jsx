@@ -15,15 +15,15 @@ export default function AddResumeForm({setRefresh}) {
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
-      firstName: '',
-      lastName: "",
+      internFirstName: '',
+      internLastName: "",
       studyField: "",
       file: null,
     },
     validate: {
-      firstName: (value) => value.length < 1 ? "Champ requis"
+      internFirstName: (value) => value.length < 1 ? "Champ requis"
           : isProfileExisting ? "Profile déjà recommandé" : null,
-      lastName: (value) => value.length < 1 ? "Champ requis"
+      internLastName: (value) => value.length < 1 ? "Champ requis"
           : isProfileExisting ? "Profile déjà recommandé" : null,
       studyField: (value) => value.length < 1 ? "Champ requis" : null,
       file: (value) => value === null ? "Champ requis" : value.type !== "application/pdf" ? "Format fichier invalid" : value.size > 10240000 ? "Fichier très volumineux" : null,
@@ -32,15 +32,15 @@ export default function AddResumeForm({setRefresh}) {
 
   const submit = async (event) => {
     event.preventDefault()
-    isProfileExisting = await checkProfileExisting(form.getValues().firstName, form.getValues().lastName)
+    isProfileExisting = await checkProfileExisting(form.getValues().internFirstName, form.getValues().internLastName)
     if (form.validate().hasErrors) {
       return
     }
     form.onSubmit(async (data) => {
       setLoading(true)
       const formData = new FormData();
-      formData.append("firstName", data.firstName)
-      formData.append("lastName", data.lastName)
+      formData.append("internFirstName", data.internFirstName)
+      formData.append("internLastName", data.internLastName)
       formData.append("studyField", data.studyField)
       formData.append("file", data.file)
       if (await addResumeAction(formData)) {
@@ -65,16 +65,16 @@ export default function AddResumeForm({setRefresh}) {
           <Group
           >
             <TextInput
-                {...form.getInputProps('firstName')}
-                key={form.key('firstName')}
+                {...form.getInputProps('internFirstName')}
+                key={form.key('internFirstName')}
                 label="Prénom du stagiaire"
                 placeholder="Prénom du stagiaire"
                 flex="1"
             />
 
             <TextInput
-                {...form.getInputProps('lastName')}
-                key={form.key('lastName')}
+                {...form.getInputProps('internLastName')}
+                key={form.key('internLastName')}
                 label="Nom du stagiaire"
                 placeholder="Nom du stagiaire"
                 flex="1"

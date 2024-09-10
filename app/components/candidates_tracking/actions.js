@@ -2,7 +2,7 @@
 import getCurrentUserID from "@/app/api/auth/[...nextauth]/actions";
 
 export async function fetchCandidates() {
-  let response = await fetch(`${process.env.API_URL}/candidates?supervisorID=${await getCurrentUserID()}`, {
+  let response = await fetch(`${process.env.API_URL}/candidatures?supervisorID=${await getCurrentUserID()}`, {
     method: "get"
   })
   response = await response.json()
@@ -10,7 +10,7 @@ export async function fetchCandidates() {
 }
 
 export async function updateCandidate(candidateID, key, value) {
-  let response = await fetch(`${process.env.API_URL}/candidates/${candidateID}`, {
+  let response = await fetch(`${process.env.API_URL}/candidatures/${candidateID}`, {
     method: "PATCH",
     body: JSON.stringify({
       [key]: value,
