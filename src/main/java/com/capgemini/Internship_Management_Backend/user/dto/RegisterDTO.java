@@ -4,9 +4,11 @@ import com.capgemini.Internship_Management_Backend.user.model.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class RegisterDTO {
   @NotEmpty(message = "Email is required.")
   @Email

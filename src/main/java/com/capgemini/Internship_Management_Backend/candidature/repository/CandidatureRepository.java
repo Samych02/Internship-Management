@@ -19,4 +19,8 @@ public interface CandidatureRepository extends JpaRepository<Candidature, Intege
   Integer countAllBySubjectAndStatus(Subject subject, SubjectStatus status);
 
   List<ProjectionForAssignableSubject> findAllProjectedByResume(Resume resume);
+
+  List<Candidature> findAllBySubject(Subject subject);
+
+  List<Candidature> findAllByResume(Resume resume);
 }

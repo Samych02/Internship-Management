@@ -23,10 +23,10 @@ public class UserService {
     return user != null;
   }
 
-  public void register(RegisterDTO registerDTO) {
+  public User register(RegisterDTO registerDTO) {
     registerDTO.setPassword(new BCryptPasswordEncoder().encode(registerDTO.getPassword()));
     User user = new User(registerDTO);
-    userRepository.save(user);
+    return userRepository.save(user);
   }
 
   public LoginDTO.response login(LoginDTO.request request) {
