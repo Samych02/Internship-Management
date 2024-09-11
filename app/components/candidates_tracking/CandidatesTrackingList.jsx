@@ -1,15 +1,13 @@
 "use client"
 
 import React, {useEffect, useMemo, useState} from "react";
-import {fetchCandidates, updateCandidate} from "@/app/components/candidates_tracking/actions";
+import {acceptCandidate, fetchCandidates, updateCandidate} from "@/app/components/candidates_tracking/actions";
 import {MantineReactTable, useMantineReactTable} from "mantine-react-table";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
 import {ActionIcon, Box, Group, NativeSelect, Text, Tooltip} from "@mantine/core";
 import SuccessAlert from "@/app/components/feedback/SuccessAlert";
 import {DateInput} from "@mantine/dates";
-import {IconUserPlus} from "@tabler/icons-react";
-import {registerAction} from "@/app/components/user/actions";
-import {editSubjectStatus} from "@/app/components/subjects/actions";
+import {IconUserMinus, IconUserPlus} from "@tabler/icons-react";
 import SUBJECT_STATUS from "@/app/constants/SUBJECT_STATUS";
 
 export default function CandidatesTrackingList() {
@@ -50,7 +48,7 @@ export default function CandidatesTrackingList() {
 
             <Box
                 bg={row.original.status === "PENDING" ? "gray.5"
-                    : row.original.status === "ACCEPTED" ? "yellow"
+                    : row.original.status === "ACCEPTED" ? "green"
                         : row.original.status === "IN_PROGRESS" ? "cb"
                             : row.original.status === "REJECTED" ? "red"
                                 : "green"
@@ -118,7 +116,6 @@ export default function CandidatesTrackingList() {
           <DateInput
               valueFormat="DD-MM-YYYY"
               placeholder="Non définie"
-              data={boolSelect}
               value={row.original.technicalInterviewDate !== null ? new Date(row.original.technicalInterviewDate) : null}
               onChange={async (event) => {
                 setIsLoading(true)
@@ -205,49 +202,73 @@ export default function CandidatesTrackingList() {
       },
     },
     renderRowActions: ({row}) => (
-        <Tooltip
-            label={row.original.status !== "PENDING" ? "Candidat déjà accepté"
-                : row.original.chosen && row.original.hrValidation ? "Accepter le candidat définitivement"
-                    : "Le candidat doit être marqué comme choisi et accepté par le RH"
-            }
+        <Group
+            style={{flexWrap: 'nowrap'}}
         >
-          <ActionIcon
-              color="green"
-              variant="filled"
-              onClick={async () => {
-                setIsLoading(true)
-                const data = {
-                  email: `${row.original.resume.internFirstName.replace(" ", "-")}.${row.original.resume.internLastName.replace(" ", "-")}@capgemini.com`,
-                  password: Math.floor(100000 + Math.random() * 900000),
-                  userRole: "INTERN",
-                  firstName: row.original.resume.internFirstName,
-                  lastName: row.original.resume.internLastName,
-                }
-                if (await registerAction(data)) {
-                  await updateCandidate(row.original.id, "isFinallyAccepted", true)
-                  await editSubjectStatus(row.original.subject.id, "IN_PROGRESS")
+          <Tooltip
+              label={row.original.status === "ACCEPTED" ? "Candidat déjà accepté"
+                  : row.original.status === "REJECTED" ? "Candidat déjà rejeté"
+                      : row.original.chosen && row.original.hrValidation ? "Accepter le candidat définitivement"
+                          : "Le candidat doit être marqué comme choisi et accepté par le RH"
+              }
+          >
+            <ActionIcon
+                color="green"
+                variant="filled"
+                onClick={async () => {
+                  setIsLoading(true)
+                  const data = {
+                    email: `${row.original.resume.internFirstName.replace(" ", "-").toLowerCase()}.${row.original.resume.internLastName.replace(" ", "-").toLowerCase()}@capgemini.com`,
+                    password: Math.floor(100000 + Math.random() * 900000),
+                    candidatureID: row.original.id
+                  }
+                  if (await acceptCandidate(data)) {
+                    setIsLoading(false)
+                    setRefresh((refresh) => !refresh)
+                    setFeedbackMessage("Profile accepté avec succès, les informations du login seront téléchargés dans un instant")
+                    const textContent = `email:${data.email}\npassword:${data.password}`;
+                    const blob = new Blob([textContent], {type: 'text/plain'});
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `login ${row.original.resume.internFirstName} ${row.original.resume.internLastName}.txt`;
+
+                    // Append the anchor to the body and trigger the download
+                    document.body.appendChild(link);
+                    link.click();
+
+                    // Remove the anchor element after download
+                    document.body.removeChild(link);
+                  }
+                }}
+                disabled={row.original.status !== "PENDING" || !(row.original.chosen && row.original.hrValidation) || isLoading}
+            >
+              <IconUserPlus/>
+            </ActionIcon>
+          </Tooltip>
+
+          <Tooltip
+              label={row.original.status === "ACCEPTED" ? "Candidat déjà accepté"
+                  : row.original.status === "REJECTED" ? "Candidat déjà rejeté"
+                      : "Rejeter le candidat définitivement"
+              }
+          >
+            <ActionIcon
+                color="red"
+                variant="filled"
+                onClick={async () => {
+                  setIsLoading(true)
+                  await updateCandidate(row.original.id, "status", "REJECTED")
                   setIsLoading(false)
                   setRefresh((refresh) => !refresh)
-                  setFeedbackMessage("Profile accepté avec succès, les informations du login seront téléchargés dans un instant")
-                  const textContent = `email:${data.email}\npassword:${data.password}`;
-                  const blob = new Blob([textContent], {type: 'text/plain'});
-                  const link = document.createElement('a');
-                  link.href = URL.createObjectURL(blob);
-                  link.download = `login ${data.firstName} ${data.lastName}.txt`;
+                  setFeedbackMessage("Modification enregistrée")
+                }}
+                disabled={row.original.status !== "PENDING" || isLoading}
+            >
+              <IconUserMinus/>
+            </ActionIcon>
+          </Tooltip>
 
-                  // Append the anchor to the body and trigger the download
-                  document.body.appendChild(link);
-                  link.click();
-
-                  // Remove the anchor element after download
-                  document.body.removeChild(link);
-                }
-              }}
-              disabled={row.original.status !== "PENDING" || !(row.original.chosen && row.original.hrValidation) || isLoading}
-          >
-            <IconUserPlus/>
-          </ActionIcon>
-        </Tooltip>
+        </Group>
     ),
   });
 

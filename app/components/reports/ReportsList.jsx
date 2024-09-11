@@ -17,7 +17,10 @@ export default function ReportsList({listType}) {
 
   useEffect(() => {
     const fetchData = async () => {
-      await setData(listType === "RESPONSIBLE" ? await fetchReports(false) : await  fetchReports(true))
+      await setData(listType === "RESPONSIBLE" ? await fetchReports(false)
+          : listType === "SUPERVISOR" ? await fetchReports(true, "SUPERVISOR")
+              : await fetchReports(true, "INTERN")
+      )
       await setIsLoading(false)
     }
     fetchData()

@@ -4,8 +4,8 @@ import {hasLength, isEmail, useForm} from "@mantine/form";
 import {Button, Loader, PasswordInput, Stack, TextInput} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 import {useState} from "react";
-import {loginAction} from "@/app/login/actions";
 import ErrorAlert from "@/app/components/feedback/ErrorAlert";
+import {loginAction} from "@/app/components/login/actions";
 
 export default function LoginForm() {
   const [alertOpened, toggleAlert] = useDisclosure(false);

@@ -50,8 +50,11 @@ export default async function Layout({children}) {
       icon: <IconUsersGroup size="1rem" stroke={1.5}/>,
       label: 'Suivi des candidats',
       href: "/dashboard/supervisor/suivi",
-    },
-    {
+    }, {
+      icon: <IconChecklist size="1rem" stroke={1.5}/>,
+      label: 'Liste des comptes rendus',
+      href: "/dashboard/supervisor/comptes-rendus",
+    }, {
       icon: <IconArchive size="1rem" stroke={1.5}/>,
       label: 'Archive des stages',
       href: "/dashboard/supervisor/archive-des-stages",
@@ -86,6 +89,10 @@ export default async function Layout({children}) {
       icon: <IconFileCv size="1rem" stroke={1.5}/>,
       label: 'CVs recommandés',
       href: "/dashboard/responsible/CV",
+    }, {
+      icon: <IconUsersGroup size="1rem" stroke={1.5}/>,
+      label: 'Candidatures retenus',
+      href: "/dashboard/responsible/suivi",
     }, {
       icon: <IconChecklist size="1rem" stroke={1.5}/>,
       label: 'Liste des comptes rendus',

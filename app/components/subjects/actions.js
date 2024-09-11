@@ -40,7 +40,7 @@ export async function editSubjectAction(subjectID, data) {
   let response = await fetch(`${process.env.API_URL}/subjects/${subjectID}`, {
     method: "PATCH",
     body: JSON.stringify({
-      posterId: await getCurrentUserID(),
+      posterID: await getCurrentUserID(),
       title: data.title,
       tasks: data.tasks.map(t => t.task),
       internType: data.internType,
