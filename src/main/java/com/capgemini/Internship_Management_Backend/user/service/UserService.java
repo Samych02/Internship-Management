@@ -2,6 +2,7 @@ package com.capgemini.Internship_Management_Backend.user.service;
 
 import com.capgemini.Internship_Management_Backend.user.dto.LoginDTO;
 import com.capgemini.Internship_Management_Backend.user.dto.RegisterDTO;
+import com.capgemini.Internship_Management_Backend.user.dto.ResetPasswordDTO;
 import com.capgemini.Internship_Management_Backend.user.dto.UpdatePasswordDTO;
 import com.capgemini.Internship_Management_Backend.user.entity.User;
 import com.capgemini.Internship_Management_Backend.user.repository.UserRepository;
@@ -46,6 +47,15 @@ public class UserService {
       return true;
     }
     return false;
+  }
+
+  public void resetPassword(ResetPasswordDTO resetPasswordDTO) {
+    Optional<User> user = userRepository.findById(resetPasswordDTO.getUserID());
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    if (user.isPresent()) {
+      user.get().setPassword(encoder.encode(resetPasswordDTO.getNewPassword()));
+      userRepository.save(user.get());
+    }
   }
 
   public List<UserProjection> getUserList() {

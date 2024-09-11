@@ -35,7 +35,7 @@ public class User extends BaseEntity {
 
   private String perimeter;
 
-  private String image;
+  private String image = null;
 
   public User(RegisterDTO registerDTO) {
     this.email = registerDTO.getEmail();

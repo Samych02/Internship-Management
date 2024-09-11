@@ -3,6 +3,7 @@ package com.capgemini.Internship_Management_Backend.user.controller;
 import com.capgemini.Internship_Management_Backend.common.httpresponse.util.ResponseUtil;
 import com.capgemini.Internship_Management_Backend.user.dto.LoginDTO;
 import com.capgemini.Internship_Management_Backend.user.dto.RegisterDTO;
+import com.capgemini.Internship_Management_Backend.user.dto.ResetPasswordDTO;
 import com.capgemini.Internship_Management_Backend.user.dto.UpdatePasswordDTO;
 import com.capgemini.Internship_Management_Backend.user.service.UserService;
 import jakarta.validation.Valid;
@@ -48,6 +49,12 @@ public class UsersController {
     } else {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtil.errorResponse("Invalid credentials."));
     }
+  }
+
+  @PatchMapping("reset-password")
+  public ResponseEntity<?> resetPassword(@RequestBody @Valid ResetPasswordDTO resetPasswordDTO) {
+    userService.resetPassword(resetPasswordDTO);
+    return ResponseEntity.ok().body(ResponseUtil.successResponse("Password reset successfully", Collections.singletonMap("isPasswordReset", true)));
   }
 
   @GetMapping
