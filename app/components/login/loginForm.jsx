@@ -38,7 +38,7 @@ export default function LoginForm() {
       >
         <Stack
             align="center"
-            bg="gray.1"
+            bg="white"
             w="25rem"
             bd="2px solid cb"
             py="1rem"

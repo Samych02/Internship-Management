@@ -35,7 +35,7 @@ export default function CandidatesTrackingList() {
       header: 'Candidat',
       filterVariant: 'text',
       accessorFn: (row) => `${row.resume?.internFirstName} ${row.resume?.internLastName}`,
-      Cell: ({renderedCellValue, row}) => (
+      Cell: ({row}) => (
           <Group
               gap="sm"
               style={{flexWrap: 'nowrap'}}
@@ -73,7 +73,7 @@ export default function CandidatesTrackingList() {
       header: 'Premier échange',
       filterVariant: 'select',
       accessorFn: (row) => row.firstExchange ? "Oui" : "Non",
-      Cell: ({renderedCellValue, row}) => (
+      Cell: ({row}) => (
           <NativeSelect
               data={boolSelect}
               value={row.original.firstExchange}
@@ -91,7 +91,7 @@ export default function CandidatesTrackingList() {
       header: 'Entretien technique',
       filterVariant: 'select',
       accessorFn: (row) => row.technicalInterview ? "Oui" : "Non",
-      Cell: ({renderedCellValue, row}) => (
+      Cell: ({row}) => (
           <NativeSelect
               data={boolSelect}
               value={row.original.technicalInterview}
@@ -112,7 +112,7 @@ export default function CandidatesTrackingList() {
         // convert 2000-01-31 to 31-01-2000
         return row.technicalInterviewDate === null ? "" : `${row.technicalInterviewDate?.split("-")[2]}-${row.technicalInterviewDate?.split("-")[1]}-${row.technicalInterviewDate?.split("-")[0]}`
       },
-      Cell: ({renderedCellValue, row}) => (
+      Cell: ({row}) => (
           <DateInput
               valueFormat="DD-MM-YYYY"
               placeholder="Non définie"
@@ -164,7 +164,7 @@ export default function CandidatesTrackingList() {
           />
       ),
     },
-  ], [boolSelect],);
+  ], [],);
 
   const table = useMantineReactTable({
     data,

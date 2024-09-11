@@ -1,6 +1,5 @@
 "use client"
 
-import {useDisclosure} from "@mantine/hooks";
 import {useEffect, useMemo, useState} from "react";
 import {MantineReactTable, useMantineReactTable} from "mantine-react-table";
 import {ActionIcon, Button, Group, Stack, Title, Tooltip} from "@mantine/core";
@@ -16,7 +15,7 @@ export default function UsersList() {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([])
   const [selectedUser, setSelectedUser] = useState(null);
-  const [feedbackMessage, setFeedbackMessage] = useDisclosure("");
+  const [feedbackMessage, setFeedbackMessage] = useState("");
 
 
   useEffect(() => {

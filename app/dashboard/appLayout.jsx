@@ -62,7 +62,7 @@ export default function AppLayout({children, data, session,}) {
                   size="xl"
                   fw={900}
                   variant="gradient"
-                  gradient={{from: 'blue.9', to: 'blue.3', deg: 90}}
+                  gradient={{from: 'cb', to: 'cb.3', deg: 90}}
               >
                 Smart Internship
               </Text>
@@ -178,7 +178,7 @@ export default function AppLayout({children, data, session,}) {
                       leftSection={<IconPower style={{width: rem(14), height: rem(14)}}/>}
                       color="red"
                       onClick={async () => {
-                        logout()
+                        await logout()
                       }}
                   >
                     Se déconnecter

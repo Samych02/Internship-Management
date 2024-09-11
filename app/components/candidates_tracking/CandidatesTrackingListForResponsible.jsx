@@ -44,7 +44,7 @@ export default function CandidatesTrackingListForResponsible() {
         // convert 2000-01-31 to 31-01-2000
         return row.integrationDate === null ? "" : `${row.integrationDate?.split("-")[2]}-${row.integrationDate?.split("-")[1]}-${row.integrationDate?.split("-")[0]}`
       },
-      Cell: ({renderedCellValue, row}) => (
+      Cell: ({row}) => (
           <DateInput
               valueFormat="DD-MM-YYYY"
               placeholder="Non définie"
@@ -65,7 +65,7 @@ export default function CandidatesTrackingListForResponsible() {
         // convert 2000-01-31 to 31-01-2000
         return row.materialRetrievalDate === null ? "" : `${row.materialRetrievalDate?.split("-")[2]}-${row.materialRetrievalDate?.split("-")[1]}-${row.materialRetrievalDate?.split("-")[0]}`
       },
-      Cell: ({renderedCellValue, row}) => (
+      Cell: ({row}) => (
           <DateInput
               valueFormat="DD-MM-YYYY"
               placeholder="Non réupéré"
