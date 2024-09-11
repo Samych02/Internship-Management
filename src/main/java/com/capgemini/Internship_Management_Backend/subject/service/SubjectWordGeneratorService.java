@@ -2,9 +2,8 @@ package com.capgemini.Internship_Management_Backend.subject.service;
 
 import com.capgemini.Internship_Management_Backend.subject.entity.Subject;
 import com.capgemini.Internship_Management_Backend.subject.model.InternType;
-import com.documents4j.api.DocumentType;
-import com.documents4j.api.IConverter;
-import com.documents4j.job.LocalConverter;
+import fr.opensagres.poi.xwpf.converter.pdf.PdfConverter;
+import fr.opensagres.poi.xwpf.converter.pdf.PdfOptions;
 import lombok.SneakyThrows;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +11,10 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -30,19 +32,19 @@ public class SubjectWordGeneratorService {
     XWPFDocument document = new XWPFDocument(resource.getInputStream());
 
     document = replaceText(document, "$title", subject.getTitle());
-    document = replaceText(document, "$tasks", "• " + String.join("\n• ", subject.getTasks()));
+    document = replaceText(document, "$tasks", "\u2022 " + String.join("\n\u2022 ", subject.getTasks()));
     // what these lines do is replace both intern type placeholders with 'X' and
     // sets the color to white (invisible) or black depending on the type
     if (subject.getInternType() == InternType.TECHNICIAN) {
-      document = replaceText(document, "$profileType", "☒ Technicien                ☐ Ingénieur", true);
+      document = replaceText(document, "$profileType", "[X] Technicien                [  ] Ingénieur", true);
     } else {
-      document = replaceText(document, "$profileType", "☐ Technicien                ☒ Ingénieur", true);
+      document = replaceText(document, "$profileType", "[  ] Technicien                [X] Ingénieur", true);
     }
 
     document = replaceText(document, "$targetSchools", String.join(", ", subject.getTargetSchools()));
     document = replaceText(document, "$targetSpecialities", String.join(", ", subject.getTargetSpecialities()));
     document = replaceText(document, "$targetSpecialities", String.join(", ", subject.getTargetSpecialities()));
-    document = replaceText(document, "$competenciesRequired", "• " + subject.getCompetenciesRequired().stream().map(c -> c.getCategory() + ": " + String.join(", ", c.getDetails())).collect(Collectors.joining("\n• ")));
+    document = replaceText(document, "$competenciesRequired", "\u2022 " + subject.getCompetenciesRequired().stream().map(c -> c.getCategory() + ": " + String.join(", ", c.getDetails())).collect(Collectors.joining("\n\u2022 ")));
     document = replaceText(document, "$supervisor", subject.getSupervisor());
     document = replaceText(document, "$internNumber", String.valueOf(subject.getInternNumber()));
 
@@ -64,29 +66,23 @@ public class SubjectWordGeneratorService {
     }
     try {
       Files.createDirectories(Paths.get(resourcesDirectory + partialPath));
+      // create docx file
       try (FileOutputStream out = new FileOutputStream(Paths.get(resourcesDirectory + partialPath + fileNameWithoutExtension + ".docx").toFile())) {
         document.write(out);
+      }
+
+      //convert to pdf
+      try (FileOutputStream out = new FileOutputStream(Paths.get(resourcesDirectory + partialPath + fileNameWithoutExtension + ".pdf").toFile())) {
+        PdfOptions options = PdfOptions.create();
+        PdfConverter.getInstance().convert(document, out, options);
         document.close();
       }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-//    todo: uncomment on windows
-    ConvertToPDF(resourcesDirectory + partialPath, fileNameWithoutExtension);
-    return partialPath + fileNameWithoutExtension;
-  }
 
-  private void ConvertToPDF(String path, String fileNameWithoutExtension) {
-    try {
-      InputStream docxInputStream = new FileInputStream(path + fileNameWithoutExtension + ".docx");
-      OutputStream outputStream = new FileOutputStream(path + fileNameWithoutExtension + ".pdf");
-      IConverter converter = LocalConverter.builder().build();
-      converter.convert(docxInputStream).as(DocumentType.DOCX).to(outputStream).as(DocumentType.PDF).execute();
-      outputStream.close();
-      converter.shutDown();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+
+    return partialPath + fileNameWithoutExtension;
   }
 
   private XWPFDocument replaceText(XWPFDocument doc, String originalText, String updatedText) {
