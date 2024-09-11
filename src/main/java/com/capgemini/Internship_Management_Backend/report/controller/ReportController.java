@@ -24,8 +24,11 @@ public class ReportController {
   }
 
   @GetMapping
-  public ResponseEntity<?> getAllReports(@RequestParam(required = false) Integer internID) {
+  public ResponseEntity<?> getAllReports(
+          @RequestParam(required = false) Integer internID,
+          @RequestParam(required = false) Integer supervisorID
+  ) {
     return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseUtil.successResponse("Reports fetched successfully", reportService.getAllReports(internID)));
+            .body(ResponseUtil.successResponse("Reports fetched successfully", reportService.getAllReports(internID, supervisorID)));
   }
 }

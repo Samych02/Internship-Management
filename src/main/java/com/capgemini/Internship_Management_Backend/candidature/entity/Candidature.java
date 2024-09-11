@@ -51,6 +51,14 @@ public class Candidature extends BaseEntity {
   // why not reusing classes for other purposes? :p
   private SubjectStatus status = SubjectStatus.PENDING;
 
+  private LocalDate integrationDate;
+
+  private LocalDate materialRetrievalDate;
+
+  private Boolean badgeRetrieval = false;
+
+  private Boolean platformAccess = false;
+
   public Candidature(AddCandidatureDTO addCandidatureDTO) {
     this.supervisor = new User(addCandidatureDTO.getSupervisorID());
     this.resume = new Resume(addCandidatureDTO.getResumeID());
@@ -66,5 +74,13 @@ public class Candidature extends BaseEntity {
     if (updateCandidatureDTO.getChosen() != null) this.setChosen(updateCandidatureDTO.getChosen());
     if (updateCandidatureDTO.getHrValidation() != null) this.setHrValidation(updateCandidatureDTO.getHrValidation());
     if (updateCandidatureDTO.getStatus() != null) this.setStatus(updateCandidatureDTO.getStatus());
+    if (updateCandidatureDTO.getIntegrationDate() != null)
+      this.setIntegrationDate(updateCandidatureDTO.getIntegrationDate());
+    if (updateCandidatureDTO.getMaterialRetrievalDate() != null)
+      this.setMaterialRetrievalDate(updateCandidatureDTO.getMaterialRetrievalDate());
+    if (updateCandidatureDTO.getBadgeRetrieval() != null)
+      this.setBadgeRetrieval(updateCandidatureDTO.getBadgeRetrieval());
+    if (updateCandidatureDTO.getPlatformAccess() != null)
+      this.setPlatformAccess(updateCandidatureDTO.getPlatformAccess());
   }
 }

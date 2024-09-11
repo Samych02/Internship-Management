@@ -31,6 +31,11 @@ public class CandidatureController {
     return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Candidates fetched successfully", candidatureService.getAllSupervisorCandidates(supervisorID)));
   }
 
+  @GetMapping("/responsible")
+  public ResponseEntity<?> getAllResponsibleCandidatures() {
+    return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Candidates fetched successfully", candidatureService.getAllResponsibleCandidates()));
+  }
+
   @PatchMapping("{candidateID}")
   public ResponseEntity<?> updateCandidature(@PathVariable Integer candidateID, @RequestBody @Valid UpdateCandidatureDTO updateCandidatureDTO) {
     candidatureService.updateCandidate(candidateID, updateCandidatureDTO);

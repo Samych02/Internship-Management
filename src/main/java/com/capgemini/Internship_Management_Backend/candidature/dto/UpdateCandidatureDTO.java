@@ -15,4 +15,11 @@ public class UpdateCandidatureDTO {
   private Boolean chosen;
   private Boolean hrValidation;
   private SubjectStatus status;
+  @DateTimeFormat
+  private LocalDate integrationDate;
+  @DateTimeFormat
+  private LocalDate materialRetrievalDate;
+  private Boolean badgeRetrieval;
+  private Boolean platformAccess;
+
 }
