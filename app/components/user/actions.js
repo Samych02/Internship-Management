@@ -1,5 +1,7 @@
 "use server"
 
+import getCurrentUserID from "@/app/api/auth/[...nextauth]/actions";
+
 export async function fetchUsers() {
   let response = await fetch(`${process.env.API_URL}/users`, {
     method: "get"
@@ -32,4 +34,33 @@ export async function checkEmailUsedAction(email) {
   response = await response.json()
   // @ts-ignore
   return response.body?.isEmailUsed
+}
+
+export async function resetPassword(newPassword, userID) {
+  let response = await fetch(`${process.env.API_URL}/users/reset-password`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      userID: userID,
+      newPassword: newPassword,
+    }),
+    headers: {
+      'Content-type': 'application/json'
+    }
+  })
+  return response.ok
+}
+
+export async function updatePassword(data) {
+  let response = await fetch(`${process.env.API_URL}/users/update-password`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      userID: await getCurrentUserID(),
+      oldPassword: data.oldPassword,
+      newPassword: data.newPassword,
+    }),
+    headers: {
+      'Content-type': 'application/json'
+    }
+  })
+  return response.ok
 }

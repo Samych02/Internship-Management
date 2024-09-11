@@ -1,8 +1,10 @@
+"use client"
 import '@mantine/core/styles.css';
 import 'mantine-react-table/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/carousel/styles.css';
 import {ColorSchemeScript, MantineProvider} from '@mantine/core';
+import {SessionProvider} from "next-auth/react";
 
 export default function RootLayout({children}) {
   return (
@@ -37,7 +39,9 @@ export default function RootLayout({children}) {
             },
           }}
       >
-        {children}
+        <SessionProvider>
+          {children}
+        </SessionProvider>
       </MantineProvider>
       </body>
       </html>

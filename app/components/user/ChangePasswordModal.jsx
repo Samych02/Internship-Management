@@ -2,9 +2,9 @@
 import {Button, Group, Modal, PasswordInput, Title} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 import {useForm} from "@mantine/form";
-import {updatePassword} from "@/app/dashboard/actions";
 import ErrorAlert from "@/app/components/feedback/ErrorAlert";
 import SuccessAlert from "@/app/components/feedback/SuccessAlert";
+import {updatePassword} from "@/app/components/user/actions";
 
 export default function ChangePasswordModal({opened, toggle}) {
   const [errorOpened, toggleError] = useDisclosure(false)

@@ -51,7 +51,7 @@ export default function LoginPage() {
                   size="xl"
                   fw={900}
                   variant="gradient"
-                  gradient={{from: 'blue.9', to: 'blue.3', deg: 90}}
+                  gradient={{from: 'cb.9', to: 'cb.3', deg: 90}}
               >
                 Smart Internship
               </Text>

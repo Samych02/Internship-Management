@@ -1,6 +1,6 @@
 "use server"
 import React from "react";
-import {auth, signOut} from "@/auth";
+import {auth} from "@/auth";
 import {
   IconArchive,
   IconBrowserCheck,
@@ -17,10 +17,6 @@ import {
 import AppLayout from "@/app/dashboard/appLayout";
 import {Badge} from "@mantine/core";
 import {getNumberOfPendingSubjects} from "@/app/dashboard/actions";
-
-export async function logout() {
-  await signOut({redirectTo: "/login"})
-}
 
 export default async function Layout({children}) {
   const session = await auth()

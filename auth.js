@@ -3,7 +3,7 @@ import NextAuth, {DefaultSession} from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 
 
-export const {handlers, signIn, signOut, auth} = NextAuth({
+export const {handlers, signIn, signOut, auth, unstable_update} = NextAuth({
   pages: {
     signIn: '/login',
   },
@@ -36,10 +36,16 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
     }),
   ],
   callbacks: {
-    jwt({token, user}) {
+    jwt({token, user, trigger, session}) {
       if (user) {
         token.userRole = user.userRole
         token.id = user.id
+      }
+      if (trigger === 'update') {
+        return {
+          ...token,
+          ...session.user
+        };
       }
       return token
     },

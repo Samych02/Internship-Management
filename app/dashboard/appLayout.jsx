@@ -4,13 +4,15 @@ import Image from "next/image";
 import React from "react";
 import {usePathname} from "next/navigation";
 import {IconChevronRight, IconLock, IconPower, IconUserCircle} from "@tabler/icons-react";
-import {logout} from "@/app/dashboard/layout";
 import ROLES from "@/app/constants/ROLES";
 import {useDisclosure} from "@mantine/hooks";
 import ChangePasswordModal from "@/app/components/user/ChangePasswordModal";
+import {logout} from "@/app/dashboard/actions";
+import ChangeProfilePictureModal from "@/app/components/user/ChangeProfilePictureModal";
 
-export default function AppLayout({children, data, session,}) {
+export default function AppLayout({children, data, session}) {
   const [changePasswordModalOpened, toggleChangePasswordModal] = useDisclosure(false);
+  const [changeProfilePictureOpened, toggleChangeProfilePictureModal] = useDisclosure(false);
 
   function NavItem({item}) {
     const pathname = usePathname()
@@ -36,6 +38,13 @@ export default function AppLayout({children, data, session,}) {
             opened={changePasswordModalOpened}
             toggle={toggleChangePasswordModal}
         />
+
+        <ChangeProfilePictureModal
+            opened={changeProfilePictureOpened}
+            toggle={toggleChangeProfilePictureModal}
+            session={session}
+        />
+
         <AppShell
             header={{height: 80}}
             navbar={{
@@ -106,8 +115,7 @@ export default function AppLayout({children, data, session,}) {
                         gap="10px"
                     >
                       <Avatar
-                          radius="xl"
-                          src={session?.user.image === null ? '' : `http://localhost/profile-pictures/${session?.user.image}`}
+                          src={session?.user.image}
                           alt="image profile"
                       />
 
@@ -167,7 +175,7 @@ export default function AppLayout({children, data, session,}) {
                   <Menu.Item
                       leftSection={<IconUserCircle style={{width: rem(14), height: rem(14)}}/>}
                       color="black"
-                      onClick
+                      onClick={toggleChangeProfilePictureModal.open}
                   >
                     Modifier votre image de profile
                   </Menu.Item>

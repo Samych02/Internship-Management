@@ -9,6 +9,7 @@ import SuccessAlert from "@/app/components/feedback/SuccessAlert";
 import {fetchUsers} from "@/app/components/user/actions";
 import ROLES from "@/app/constants/ROLES";
 import RegisterUserForm from "@/app/components/user/RegisterUserForm";
+import {useSession} from "next-auth/react";
 
 export default function UsersList() {
   const [refresh, setRefresh] = useState(false)
@@ -16,6 +17,7 @@ export default function UsersList() {
   const [data, setData] = useState([])
   const [selectedUser, setSelectedUser] = useState(null);
   const [feedbackMessage, setFeedbackMessage] = useState("");
+  const {update} = useSession()
 
 
   useEffect(() => {
@@ -107,14 +109,17 @@ export default function UsersList() {
             style={{flexWrap: 'nowrap'}}
         >
           <Tooltip
-              label="Modifier le mot de passe"
+              label="Réinitialiser le mot de passe"
           >
             <ActionIcon
                 variant="filled"
-                onClick={() => {
-                  setSelectedUser(row.original.id)
-                  //todo: ee
-                  togglePDFModal.open()
+                onClick={async () => {
+                  // const newPassword = Math.floor(100000 + Math.random() * 900000).toString()
+                  // setIsLoading(true)
+                  // await resetPassword(newPassword, row.original.id)
+                  // setIsLoading(false)
+                  // setFeedbackMessage(`Mot de passe réinitialisé avec succès! Nouveau mot de passe est: ${newPassword}`)
+
                 }}
             >
               <IconLockPassword/>

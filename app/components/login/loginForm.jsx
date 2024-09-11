@@ -40,7 +40,7 @@ export default function LoginForm() {
             align="center"
             bg="white"
             w="25rem"
-            bd="2px solid cb"
+            bd="1.5px solid cb"
             py="1rem"
             justify="center"
             style={{
