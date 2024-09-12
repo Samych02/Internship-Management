@@ -13,6 +13,7 @@ import ChangeProfilePictureModal from "@/app/components/user/ChangeProfilePictur
 export default function AppLayout({children, data, session}) {
   const [changePasswordModalOpened, toggleChangePasswordModal] = useDisclosure(false);
   const [changeProfilePictureOpened, toggleChangeProfilePictureModal] = useDisclosure(false);
+  const imageSrc = ((session.user?.image === null || session.user?.image === "") ? null : process.env.NEXT_PUBLIC_STATIC_FILES_URL + session?.user.image)
 
   function NavItem({item}) {
     const pathname = usePathname()
@@ -42,7 +43,7 @@ export default function AppLayout({children, data, session}) {
         <ChangeProfilePictureModal
             opened={changeProfilePictureOpened}
             toggle={toggleChangeProfilePictureModal}
-            session={session}
+            imageSrc={imageSrc}
         />
 
         <AppShell
@@ -115,7 +116,7 @@ export default function AppLayout({children, data, session}) {
                         gap="10px"
                     >
                       <Avatar
-                          src={session?.user.image}
+                          src={imageSrc}
                           alt="image profile"
                       />
 

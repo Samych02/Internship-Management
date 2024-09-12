@@ -64,3 +64,15 @@ export async function updatePassword(data) {
   })
   return response.ok
 }
+
+export async function updateProfilePicture(formData){
+  formData.append("userID", await getCurrentUserID())
+  let response = await fetch(`${process.env.API_URL}/users/update-profile-picture`, {
+    method: "PATCH",
+    body: formData
+  })
+  response = await response.json()
+  console.log(1111)
+  console.log(response.body.path)
+  return response.body.path
+}

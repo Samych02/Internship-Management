@@ -32,3 +32,11 @@ export async function addCourse(data) {
   })
   return response.ok
 }
+
+export async function getInternTrackingCourses(){
+  let response = await fetch(`${process.env.API_URL}/courses/tracking`, {
+    method: "get"
+  })
+  response = await response.json()
+  return response.body
+}

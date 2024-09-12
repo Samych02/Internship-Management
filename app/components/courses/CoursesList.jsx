@@ -1,7 +1,6 @@
 "use client"
 import React, {useEffect, useMemo, useState} from "react";
 import {fetchCourses, updateCourseStatus} from "@/app/components/courses/actions";
-import '@mantine/charts/styles.css';
 import COURSE_STATUS from "@/app/constants/COURSE_STATUS";
 import {DonutChart} from "@mantine/charts";
 import {MantineReactTable, useMantineReactTable} from "mantine-react-table";
@@ -90,7 +89,7 @@ export default function CoursesList({coursesType}) {
       header: '',
       enableColumnFilter: false,
       enableSorting: false,
-      Cell: ({renderedCellValue, row}) => (
+      Cell: ({renderedCellValue}) => (
           <Anchor
               href={renderedCellValue}
               underline="hover"

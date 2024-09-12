@@ -34,6 +34,10 @@ export default function CandidatesTrackingListForResponsible() {
       filterVariant: 'text',
       accessorFn: (row) => `${row.resume?.internFirstName} ${row.resume?.internLastName}`,
     }, {
+      header: 'Encadrant',
+      filterVariant: 'text',
+      accessorFn: (row) => `${row.supervisor?.fullName}`,
+    }, {
       header: 'Sujet',
       filterVariant: 'text',
       accessorFn: (row) => row.subject?.title,

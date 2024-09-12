@@ -6,7 +6,7 @@ import {ActionIcon, Button, Group, Stack, Title, Tooltip} from "@mantine/core";
 import {IconLockPassword, IconShieldHalf, IconTrash} from "@tabler/icons-react";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
 import SuccessAlert from "@/app/components/feedback/SuccessAlert";
-import {fetchUsers} from "@/app/components/user/actions";
+import {fetchUsers, resetPassword} from "@/app/components/user/actions";
 import ROLES from "@/app/constants/ROLES";
 import RegisterUserForm from "@/app/components/user/RegisterUserForm";
 import {useSession} from "next-auth/react";
@@ -114,12 +114,11 @@ export default function UsersList() {
             <ActionIcon
                 variant="filled"
                 onClick={async () => {
-                  // const newPassword = Math.floor(100000 + Math.random() * 900000).toString()
-                  // setIsLoading(true)
-                  // await resetPassword(newPassword, row.original.id)
-                  // setIsLoading(false)
-                  // setFeedbackMessage(`Mot de passe réinitialisé avec succès! Nouveau mot de passe est: ${newPassword}`)
-
+                  const newPassword = Math.floor(100000 + Math.random() * 900000).toString()
+                  setIsLoading(true)
+                  await resetPassword(newPassword, row.original.id)
+                  setIsLoading(false)
+                  setFeedbackMessage(`Mot de passe réinitialisé avec succès! Nouveau mot de passe est: ${newPassword}`)
                 }}
             >
               <IconLockPassword/>
