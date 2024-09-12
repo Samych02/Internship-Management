@@ -1,1 +1,50 @@
-# the frontend folder is in the same directory as the backend
+version: '3.8'
+
+services:
+  backend:
+    build: ./
+    container_name: backend
+    networks:
+      - internal
+    expose:
+      - "8081" # Expose only for internal Docker communication (no external access)
+
+  db:
+    image: postgres:16
+    container_name: db
+    environment:
+      - POSTGRES_DB=Internship-Management
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal
+
+  frontend:
+    build: ../Internship-Management-Frontend
+    container_name: frontend
+    ports:
+      - "3000:3000" # Expose Next.js frontend to external network
+    depends_on:
+      - backend
+    networks:
+      - internal
+      - external
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - "80:80" # Expose Nginx to external network
+    networks:
+      - external
+
+networks:
+  internal:
+    driver: bridge
+  external:
+    driver: bridge
+
+volumes:
+  postgres_data:
