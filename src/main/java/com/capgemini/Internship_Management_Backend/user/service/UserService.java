@@ -1,9 +1,7 @@
 package com.capgemini.Internship_Management_Backend.user.service;
 
-import com.capgemini.Internship_Management_Backend.user.dto.LoginDTO;
-import com.capgemini.Internship_Management_Backend.user.dto.RegisterDTO;
-import com.capgemini.Internship_Management_Backend.user.dto.ResetPasswordDTO;
-import com.capgemini.Internship_Management_Backend.user.dto.UpdatePasswordDTO;
+import com.capgemini.Internship_Management_Backend.common.service.FileUtility;
+import com.capgemini.Internship_Management_Backend.user.dto.*;
 import com.capgemini.Internship_Management_Backend.user.entity.User;
 import com.capgemini.Internship_Management_Backend.user.repository.UserRepository;
 import com.capgemini.Internship_Management_Backend.user.repository.projection.UserProjection;
@@ -18,6 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
   private final UserRepository userRepository;
+  private final FileUtility fileUtility;
 
   public Boolean isEmailUsed(String email) {
     User user = userRepository.findByEmailIgnoreCase(email);
@@ -60,5 +59,15 @@ public class UserService {
 
   public List<UserProjection> getUserList() {
     return userRepository.findAllByOrderByCreatedAtDesc();
+  }
+
+
+  public String updateProfilePicture(UpdatePictureDTO updatePictureDTO) {
+    User user = userRepository.findById(updatePictureDTO.getUserID()).get();
+    fileUtility.createFolder("profile-images");
+    fileUtility.saveUploadFile(updatePictureDTO.getFile(), "\\profile-images\\" + user.getID().toString());
+    user.setImage("\\profile-images\\" + user.getID().toString());
+    userRepository.save(user);
+    return ("\\profile-images\\" + user.getID().toString());
   }
 }

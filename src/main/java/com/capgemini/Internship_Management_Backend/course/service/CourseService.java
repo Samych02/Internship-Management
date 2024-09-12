@@ -1,5 +1,6 @@
 package com.capgemini.Internship_Management_Backend.course.service;
 
+import com.capgemini.Internship_Management_Backend.course.dto.FetchCoursesForResponsibleDTO;
 import com.capgemini.Internship_Management_Backend.course.dto.PushCourseDTO;
 import com.capgemini.Internship_Management_Backend.course.entity.Course;
 import com.capgemini.Internship_Management_Backend.course.model.CourseStatus;
@@ -7,6 +8,9 @@ import com.capgemini.Internship_Management_Backend.course.model.CourseType;
 import com.capgemini.Internship_Management_Backend.course.repository.CourseRepository;
 import com.capgemini.Internship_Management_Backend.course.repository.projection.CourseProjection;
 import com.capgemini.Internship_Management_Backend.user.entity.User;
+import com.capgemini.Internship_Management_Backend.user.model.UserRole;
+import com.capgemini.Internship_Management_Backend.user.repository.UserRepository;
+import com.capgemini.Internship_Management_Backend.user.repository.projection.IDProjection;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +18,7 @@ import lombok.SneakyThrows;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CourseService {
   private final CourseRepository courseRepository;
+  private final UserRepository userRepository;
 
   public void addCourse(PushCourseDTO pushCourseDTO) {
     Course course = new Course(pushCourseDTO);
@@ -51,6 +57,19 @@ public class CourseService {
       courseRepository.save(c);
     }
     return courseRepository.findAllProjectedByUserAndCourseTypeOrderByCourseStatusDesc(new User(internID), CourseType.OBLIGATORY);
+  }
+
+  public List<FetchCoursesForResponsibleDTO> trackCourses() {
+    List<IDProjection> internList = userRepository.findAllProjectedByUserRole(UserRole.INTERN);
+    List<FetchCoursesForResponsibleDTO> fetchCoursesForResponsibleDTOList = new ArrayList<>();
+    FetchCoursesForResponsibleDTO fetchCoursesForResponsibleDTO = new FetchCoursesForResponsibleDTO();
+    for (IDProjection intern : internList) {
+      fetchCoursesForResponsibleDTO.setCourseProjectionList(getAllObligatoryCoursesOfIntern(intern.getID()));
+      fetchCoursesForResponsibleDTO.setInternName(intern.getFirstName() + " " + intern.getLastName());
+      fetchCoursesForResponsibleDTOList.add(fetchCoursesForResponsibleDTO);
+    }
+    return fetchCoursesForResponsibleDTOList;
+
   }
 
   public void updateCourseStatus(Integer courseID, CourseStatus courseStatus) {

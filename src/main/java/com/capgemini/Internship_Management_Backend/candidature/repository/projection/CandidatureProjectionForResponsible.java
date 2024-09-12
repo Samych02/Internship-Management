@@ -2,6 +2,7 @@ package com.capgemini.Internship_Management_Backend.candidature.repository.proje
 
 import com.capgemini.Internship_Management_Backend.resume.repository.projection.ResumeFullNameProjection;
 import com.capgemini.Internship_Management_Backend.subject.repository.projection.SubjectTitleProjection;
+import com.capgemini.Internship_Management_Backend.user.repository.projection.UserFullNameProjection;
 
 import java.time.LocalDate;
 
@@ -9,6 +10,8 @@ public interface CandidatureProjectionForResponsible {
   Integer getID();
 
   ResumeFullNameProjection getResume();
+
+  UserFullNameProjection getSupervisor();
 
   SubjectTitleProjection getSubject();
 

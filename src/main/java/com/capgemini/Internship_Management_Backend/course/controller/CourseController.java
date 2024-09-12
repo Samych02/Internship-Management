@@ -39,4 +39,9 @@ public class CourseController {
     courseService.updateCourseStatus(courseID, courseStatus);
     return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Course status updated successfully", Collections.singletonMap("updated", true)));
   }
+
+  @GetMapping("tracking")
+  public ResponseEntity<?> getInternTrackingCourses() {
+    return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse(" courses fetched successfully", courseService.trackCourses()));
+  }
 }
