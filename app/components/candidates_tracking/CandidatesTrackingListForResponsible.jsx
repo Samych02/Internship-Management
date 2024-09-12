@@ -14,11 +14,6 @@ export default function CandidatesTrackingListForResponsible() {
   const [refresh, setRefresh] = useState(false)
   const [feedbackMessage, setFeedbackMessage] = useState("")
 
-  const boolSelect = [
-    {label: 'Non', value: false},
-    {label: 'Oui', value: true},
-  ]
-
   useEffect(() => {
     const fetchData = async () => {
       await setIsLoading(true)
@@ -89,7 +84,7 @@ export default function CandidatesTrackingListForResponsible() {
       accessorFn: (row) => row.badgeRetrieval ? "Oui" : "Non",
       Cell: ({renderedCellValue, row}) => (
           <NativeSelect
-              data={boolSelect}
+              data={BOOLEANS}
               value={row.original.badgeRetrieval}
               onChange={async (event) => {
                 setIsLoading(true)
@@ -106,7 +101,7 @@ export default function CandidatesTrackingListForResponsible() {
       accessorFn: (row) => row.platformAccess ? "Oui" : "Non",
       Cell: ({renderedCellValue, row}) => (
           <NativeSelect
-              data={boolSelect}
+              data={BOOLEANS}
               value={row.original.platformAccess}
               onChange={async (event) => {
                 setIsLoading(true)
@@ -118,7 +113,7 @@ export default function CandidatesTrackingListForResponsible() {
           />
       ),
     },
-  ], [boolSelect],);
+  ], [],);
 
   const table = useMantineReactTable({
     data,

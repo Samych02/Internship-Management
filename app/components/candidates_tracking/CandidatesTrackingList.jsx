@@ -9,6 +9,7 @@ import SuccessAlert from "@/app/components/feedback/SuccessAlert";
 import {DateInput} from "@mantine/dates";
 import {IconUserMinus, IconUserPlus} from "@tabler/icons-react";
 import SUBJECT_STATUS from "@/app/constants/SUBJECT_STATUS";
+import BOOLEANS from "@/app/constants/BOOLEANS";
 
 export default function CandidatesTrackingList() {
   const [isLoading, setIsLoading] = useState(true);
@@ -16,10 +17,6 @@ export default function CandidatesTrackingList() {
   const [refresh, setRefresh] = useState(false)
   const [feedbackMessage, setFeedbackMessage] = useState("")
 
-  const boolSelect = [
-    {label: 'Non', value: false},
-    {label: 'Oui', value: true},
-  ]
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,7 +72,7 @@ export default function CandidatesTrackingList() {
       accessorFn: (row) => row.firstExchange ? "Oui" : "Non",
       Cell: ({row}) => (
           <NativeSelect
-              data={boolSelect}
+              data={BOOLEANS}
               value={row.original.firstExchange}
               onChange={async (event) => {
                 setIsLoading(true)
@@ -93,7 +90,7 @@ export default function CandidatesTrackingList() {
       accessorFn: (row) => row.technicalInterview ? "Oui" : "Non",
       Cell: ({row}) => (
           <NativeSelect
-              data={boolSelect}
+              data={BOOLEANS}
               value={row.original.technicalInterview}
               onChange={async (event) => {
                 setIsLoading(true)
@@ -133,7 +130,7 @@ export default function CandidatesTrackingList() {
       accessorFn: (row) => row.chosen ? "Oui" : "Non",
       Cell: ({renderedCellValue, row}) => (
           <NativeSelect
-              data={boolSelect}
+              data={BOOLEANS}
               value={row.original.chosen}
               onChange={async (event) => {
                 setIsLoading(true)
@@ -151,7 +148,7 @@ export default function CandidatesTrackingList() {
       accessorFn: (row) => row.hrValidation ? "Oui" : "Non",
       Cell: ({renderedCellValue, row}) => (
           <NativeSelect
-              data={boolSelect}
+              data={BOOLEANS}
               value={row.original.hrValidation}
               onChange={async (event) => {
                 setIsLoading(true)
