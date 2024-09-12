@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
   List<IDProjection> findAllProjectedByUserRole(UserRole userRole);
 
+  Integer countAllByUserRole(UserRole userRole);
+
 }
