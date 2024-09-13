@@ -1,13 +1,26 @@
-version: '3.8'
-
 services:
   backend:
-    build: ./
+    image: 'docker-spring-boot-postgres:latest'
+    build:
+      context: .
     container_name: backend
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/Internship-Management
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    volumes:
+      - C:\Users\scherif\OneDrive - Capgemini\InternshipManagementResources:/app/data
+
     networks:
-      - internal
-    expose:
-      - "8081" # Expose only for internal Docker communication (no external access)
+      - backend
+      - frontend
+    ports:
+      - 8081:8081
 
   db:
     image: postgres:16
@@ -17,34 +30,39 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     networks:
-      - internal
+      - backend
+    expose:
+      - 5432
 
   frontend:
     build: ../Internship-Management-Frontend
     container_name: frontend
-    ports:
-      - "3000:3000" # Expose Next.js frontend to external network
     depends_on:
       - backend
     networks:
-      - internal
-      - external
+      - frontend
+    ports:
+      - 3000:3000
 
   nginx:
-    build: ./nginx
+    build: ../Internship-Management-Frontend/nginx
     container_name: nginx
+    volumes:
+      - C:/Users/scherif/OneDrive - Capgemini/InternshipManagementResources:/usr/share/nginx/html/
     ports:
-      - "80:80" # Expose Nginx to external network
+      - 80:80
     networks:
-      - external
+      - frontend
 
 networks:
+  backend:
+    internal: true  # Only for postgres <-> springboot
   internal:
-    driver: bridge
-  external:
-    driver: bridge
+    internal: true  # Only for springboot <-> nextjs
+  frontend:
+    driver: bridge  # Publicly accessible network
 
 volumes:
-  postgres_data:
+  pgdata:

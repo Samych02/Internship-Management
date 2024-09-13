@@ -31,7 +31,6 @@ public class DataSeeder {
                       .build()
       );
 
-      System.out.println("Default admin user created with username: admin and password: admin123");
     }
   }
 }
