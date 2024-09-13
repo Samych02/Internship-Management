@@ -7,6 +7,7 @@ import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
 import {NativeSelect} from "@mantine/core";
 import SuccessAlert from "@/app/components/feedback/SuccessAlert";
 import {DateInput} from "@mantine/dates";
+import BOOLEANS from "@/app/constants/BOOLEANS";
 
 export default function CandidatesTrackingListForResponsible() {
   const [isLoading, setIsLoading] = useState(true);

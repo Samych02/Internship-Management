@@ -93,7 +93,7 @@ export default function InternshipArchivesList({listType = "NORMAL"}) {
         </Stack>
     ),
     renderTopToolbarCustomActions: ({table}) => (
-        listType === "SPECIALIST" &&
+        (listType === "SPECIALIST" || listType === "RESPONSIBLE") &&
         <Button
             onClick={() => table.setCreatingRow(true)}
         >

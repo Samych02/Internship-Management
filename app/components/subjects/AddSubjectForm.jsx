@@ -95,6 +95,7 @@ export default function AddSubjectForm({existingSubject = null, setRefresh}) {
             key={form.key(`tasks.${index}.task`)}
             {...form.getInputProps(`tasks.${index}.task`)}
             flex="1"
+            mb="1rem"
         />
 
         <ActionIcon

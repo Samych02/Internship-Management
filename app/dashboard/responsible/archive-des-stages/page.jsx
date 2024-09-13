@@ -2,6 +2,8 @@ import InternshipArchivesList from "@/app/components/internships_archives/Intern
 
 export default async function InternshipsArchive() {
   return (
-      <InternshipArchivesList/>
+      <InternshipArchivesList
+        listType="RESPONSIBLE"
+      />
   )
 }

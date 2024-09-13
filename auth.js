@@ -7,6 +7,7 @@ export const {handlers, signIn, signOut, auth, unstable_update} = NextAuth({
   pages: {
     signIn: '/login',
   },
+  trustHost:true,
   providers: [
     Credentials({
       credentials: {

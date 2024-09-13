@@ -87,7 +87,7 @@ export default async function Layout({children}) {
       href: "/dashboard/responsible/CV",
     }, {
       icon: <IconUsersGroup size="1rem" stroke={1.5}/>,
-      label: 'Candidatures retenus',
+      label: 'Candidats retenus',
       href: "/dashboard/responsible/suivi",
     }, {
       icon: <IconChecklist size="1rem" stroke={1.5}/>,

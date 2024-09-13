@@ -72,7 +72,5 @@ export async function updateProfilePicture(formData){
     body: formData
   })
   response = await response.json()
-  console.log(1111)
-  console.log(response.body.path)
   return response.body.path
 }
