@@ -102,7 +102,9 @@ export default function InternshipArchivesList({listType = "NORMAL"}) {
     ),
 
     renderRowActions: ({row}) => (
-        <Group>
+        <Group
+            style={{flexWrap: 'nowrap'}}
+        >
           <Tooltip
               label="Afficher les details"
           >
@@ -138,7 +140,7 @@ export default function InternshipArchivesList({listType = "NORMAL"}) {
               >
                 <ActionIcon
                     variant="filled"
-                    color="yellow"
+                    bg="yellow"
                 >
                   <a
                       href={process.env.NEXT_PUBLIC_STATIC_FILES_URL + row.original.presentationPath}
