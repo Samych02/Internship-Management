@@ -24,8 +24,8 @@ public class ResumeService {
 
   public void saveResume(PushResumeDTO pushResumeDTO) {
     Resume resume = new Resume(pushResumeDTO);
-    fileUtility.createFolder("CV\\" + resume.getInternFullName());
-    fileUtility.saveUploadFile(pushResumeDTO.getFile(), "CV\\" + resume.getInternFullName() + "\\cv.pdf");
+    fileUtility.createFolder("CV/" + resume.getInternFullName());
+    fileUtility.saveUploadFile(pushResumeDTO.getFile(), "CV/" + resume.getInternFullName() + "/cv.pdf");
     resumeRepository.save(resume);
   }
 

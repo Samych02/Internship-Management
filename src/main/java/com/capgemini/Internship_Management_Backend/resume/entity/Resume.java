@@ -39,7 +39,7 @@ public class Resume extends BaseEntity {
     this.internFirstName = pushResumeDTO.getInternFirstName().substring(0, 1).toUpperCase() + pushResumeDTO.getInternFirstName().substring(1).toLowerCase();
     this.internLastName = pushResumeDTO.getInternLastName().substring(0, 1).toUpperCase() + pushResumeDTO.getInternLastName().substring(1).toLowerCase();
     this.studyField = pushResumeDTO.getStudyField();
-    this.path = "\\CV\\" + getInternFullName() + "\\CV.pdf";
+    this.path = "/CV/" + getInternFullName() + "/CV.pdf";
   }
 
   public Resume(Integer ID) {

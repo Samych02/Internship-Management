@@ -29,8 +29,8 @@ public class ReportService {
 
   public void saveReport(PushReportDTO pushReportDTO) {
     Report report = new Report(pushReportDTO);
-    fileUtility.createFolder("\\CR\\" + pushReportDTO.getFullName() + "\\" + pushReportDTO.getDate());
-    fileUtility.saveUploadFile(pushReportDTO.getFile(), "\\CR\\" + pushReportDTO.getFullName() + "\\" + pushReportDTO.getDate() + "\\CR.pdf");
+    fileUtility.createFolder("/CR/" + pushReportDTO.getFullName() + "/" + pushReportDTO.getDate());
+    fileUtility.saveUploadFile(pushReportDTO.getFile(), "/CR/" + pushReportDTO.getFullName() + "/" + pushReportDTO.getDate() + "/CR.pdf");
     reportRepository.save(report);
   }
 

@@ -1,40 +1,34 @@
 services:
   backend:
-    image: 'docker-spring-boot-postgres:latest'
-    build:
-      context: .
     container_name: backend
+    build: .
     depends_on:
-      - db
+      - postgres
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/Internship-Management
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/Internship-Management
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - RESOURCES_DIRECTORY=/app/data
     volumes:
-      - C:\Users\scherif\OneDrive - Capgemini\InternshipManagementResources:/app/data
-
+      - /Users/samy/Desktop:/app/data
     networks:
-      - backend
+      - database
       - frontend
-    ports:
-      - 8081:8081
 
-  db:
+  postgres:
+    container_name: postgres
     image: postgres:16
-    container_name: db
     environment:
       - POSTGRES_DB=Internship-Management
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - postgresVolume:/var/lib/postgresql/data
     networks:
-      - backend
-    expose:
-      - 5432
+      - database
 
   frontend:
     build: ../Internship-Management-Frontend
@@ -44,25 +38,27 @@ services:
     networks:
       - frontend
     ports:
-      - 3000:3000
+      - "3000:3000"
+    environment:
+      - AUTH_SECRET=XOaTyNPsGlz+n4t4O2Ph2D4WkYvjWhBntCYfFfOcTqk=
+      - API_URL=http://backend:8080/api
+      - NEXT_PUBLIC_STATIC_FILES_URL=http://127.0.0.1:80/
+    env_file:
+      - ../Internship-Management-Frontend/.env.local
 
   nginx:
-    build: ../Internship-Management-Frontend/nginx
+    image: nginx:alpine
     container_name: nginx
     volumes:
-      - C:/Users/scherif/OneDrive - Capgemini/InternshipManagementResources:/usr/share/nginx/html/
+      - /Users/samy/Desktop:/usr/share/nginx/html/
     ports:
-      - 80:80
-    networks:
-      - frontend
+      - "80:80"
 
 networks:
-  backend:
-    internal: true  # Only for postgres <-> springboot
-  internal:
-    internal: true  # Only for springboot <-> nextjs
   frontend:
-    driver: bridge  # Publicly accessible network
+    driver: bridge
+  database:
+    driver: bridge
 
 volumes:
-  pgdata:
+  postgresVolume:

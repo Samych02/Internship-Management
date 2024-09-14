@@ -53,16 +53,16 @@ public class SubjectWordGeneratorService {
     String partialPath = null;
     String fileNameWithoutExtension = null;
     if (subject.getPath() != null) {
-      int lastIndex = subject.getPath().lastIndexOf('\\');
+      int lastIndex = subject.getPath().lastIndexOf('/');
       partialPath = subject.getPath().substring(0, lastIndex + 1);
       fileNameWithoutExtension = subject.getPath().substring(lastIndex + 1);
 
     } else {
-      partialPath = "\\sujets\\" + subject.getYear();
+      partialPath = "/sujets/" + subject.getYear();
       // the subject file should have this naming convention Cap Eng Sujet de stage_09_AIS_RBSE
       //first we get the index of the subject from subject folder then we append the rest of the path to partialPath
       fileNameWithoutExtension = "Cap Eng Sujet de stage_" + String.format("%02d", getSubjectIndex(resourcesDirectory + partialPath) + 1) + "_AIS_RBSE";
-      partialPath += "\\" + subject.getTitle() + "\\";
+      partialPath += "/" + subject.getTitle() + "/";
     }
     try {
       Files.createDirectories(Paths.get(resourcesDirectory + partialPath));

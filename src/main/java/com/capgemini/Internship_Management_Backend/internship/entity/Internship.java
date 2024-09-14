@@ -35,9 +35,9 @@ public class Internship extends BaseEntity {
     this.schoolName = pushInternshipDTO.getSchoolName();
     this.supervisorFullName = pushInternshipDTO.getSupervisorFullName();
     this.internshipType = pushInternshipDTO.getInternshipType();
-    this.reportPath = "\\Stage\\" + pushInternshipDTO.getYear() + "\\" + pushInternshipDTO.getTitle() + "\\Rapport.pdf";
+    this.reportPath = "/Stage/" + pushInternshipDTO.getYear() + "/" + pushInternshipDTO.getTitle() + "/Rapport.pdf";
     if (pushInternshipDTO.getPresentationFile() != null) {
-      this.presentationPath = "\\Stage\\" + pushInternshipDTO.getYear() + "\\" + pushInternshipDTO.getTitle() + "\\Présentation.pptx";
+      this.presentationPath = "/Stage/" + pushInternshipDTO.getYear() + "/" + pushInternshipDTO.getTitle() + "/Présentation.pptx";
     }
   }
 }

@@ -17,7 +17,7 @@ public class InternshipService {
 
   public void addInternship(PushInternshipDTO pushInternshipDTO) {
     Internship internship = new Internship(pushInternshipDTO);
-    fileUtility.createFolder("\\Stage\\" + pushInternshipDTO.getYear() + "\\" + pushInternshipDTO.getTitle());
+    fileUtility.createFolder("/Stage/" + pushInternshipDTO.getYear() + "/" + pushInternshipDTO.getTitle());
     fileUtility.saveUploadFile(pushInternshipDTO.getReportFile(), internship.getReportPath());
     if (pushInternshipDTO.getPresentationFile() != null)
       fileUtility.saveUploadFile(pushInternshipDTO.getPresentationFile(), internship.getPresentationPath());

@@ -30,7 +30,7 @@ public class Report extends BaseEntity {
     this.intern = new User(pushReportDTO.getInternID());
     this.summary = pushReportDTO.getSummary();
     this.date = pushReportDTO.getDate();
-    this.path = "\\CR\\" + pushReportDTO.getFullName() + "\\" + pushReportDTO.getDate() + "\\CR.pdf";
+    this.path = "/CR/" + pushReportDTO.getFullName() + "/" + pushReportDTO.getDate() + "/CR.pdf";
   }
 
 }

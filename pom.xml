@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.capgemini</groupId>
     <artifactId>Internship-Management-Backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>Internship-Management-Backend</name>
     <description>Internship-Management-Backend</description>
     <properties>

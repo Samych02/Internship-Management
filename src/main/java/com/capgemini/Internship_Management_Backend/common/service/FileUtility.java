@@ -17,13 +17,13 @@ public class FileUtility {
   @SneakyThrows
   public void saveUploadFile(MultipartFile file, String path) {
     byte[] bytes = file.getBytes();
-    Path fullPath = Paths.get(resourcesDirectory + "\\" + path);
+    Path fullPath = Paths.get(resourcesDirectory + "/" + path);
     Files.write(fullPath, bytes);
   }
 
   @SneakyThrows
   public void createFolder(String path) {
-    Files.createDirectories(Paths.get(resourcesDirectory + "\\" + path));
+    Files.createDirectories(Paths.get(resourcesDirectory + "/" + path));
   }
 
 }

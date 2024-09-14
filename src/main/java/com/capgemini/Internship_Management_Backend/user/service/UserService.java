@@ -65,9 +65,9 @@ public class UserService {
   public String updateProfilePicture(UpdatePictureDTO updatePictureDTO) {
     User user = userRepository.findById(updatePictureDTO.getUserID()).get();
     fileUtility.createFolder("profile-images");
-    fileUtility.saveUploadFile(updatePictureDTO.getFile(), "\\profile-images\\" + user.getID().toString());
-    user.setImage("\\profile-images\\" + user.getID().toString());
+    fileUtility.saveUploadFile(updatePictureDTO.getFile(), "/profile-images/" + user.getID().toString());
+    user.setImage("/profile-images/" + user.getID().toString());
     userRepository.save(user);
-    return ("\\profile-images\\" + user.getID().toString());
+    return ("/profile-images/" + user.getID().toString());
   }
 }
