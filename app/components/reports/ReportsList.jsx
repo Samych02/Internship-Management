@@ -85,7 +85,7 @@ export default function ReportsList({listType}) {
         right: ['mrt-row-actions'],
       },
       columnVisibility: {
-        Stagiaire: listType === "RESPONSIBLE"
+        Stagiaire: listType !== "INTERN"
       },
     },
     renderCreateRowModalContent: () => (
@@ -132,7 +132,7 @@ export default function ReportsList({listType}) {
       togglePDFModal.close()
     }} centered size="auto">
       <object
-          data={"http://localhost" + path + `?&v=${Math.random()}#view=FitH`}
+          data={process.env.NEXT_PUBLIC_STATIC_FILES_URL + path + `?&v=${Math.random()}#view=FitH`}
           type="application/pdf"
           width="600"
           height="700"

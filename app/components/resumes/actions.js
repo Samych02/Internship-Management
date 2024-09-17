@@ -27,7 +27,7 @@ export async function checkProfileExisting(firstName, lastName) {
 }
 
 export async function fetchAssignableSubjects(resumeID){
-  let response = await fetch(`${process.env.API_URL}/subjects/assignable?resumeID=${resumeID}`, {
+  let response = await fetch(`${process.env.API_URL}/subjects/assignable?resumeID=${resumeID}&supervisorID=${await getCurrentUserID()}`, {
     method: "GET"
   })
   response = await response.json()
