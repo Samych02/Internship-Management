@@ -6,10 +6,8 @@ spring:
     name: Internship-Management-Backend
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/Internship-Management
-    username: admin
-    password: admin
-
+    url: jdbc:postgresql://localhost:5432/internshipmanagement
+    username: samy
   jpa:
     properties:
       hibernate:
@@ -25,4 +23,4 @@ spring:
       max-file-size: 15MB
       max-request-size: 15MB
 
-resources-directory: C:\Users\scherif\OneDrive - Capgemini\InternshipManagementResources
+resources-directory: /Users/samy/Documents/Projects/InternshipManagementResources

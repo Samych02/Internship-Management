@@ -65,5 +65,16 @@ public class UsersController {
     return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Users fetched successfully", userService.getUserList()));
   }
 
+  @DeleteMapping("{userID}")
+  public ResponseEntity<?> deleteUser(@PathVariable Integer userID) {
+    userService.deleteAccount(userID);
+    return ResponseEntity.ok().body(ResponseUtil.successResponse("Account deleted successfully", Collections.singletonMap("isAccountDeleted", true)));
+  }
+
+  @PatchMapping("update-role")
+  public ResponseEntity<?> updateRole(@RequestBody @Valid EditRoleDTO editRoleDTO){
+    userService.editRole(editRoleDTO);
+    return ResponseEntity.ok().body(ResponseUtil.successResponse("Account role edited successfully", Collections.singletonMap("isRoleEdited", true)));
+  }
 
 }

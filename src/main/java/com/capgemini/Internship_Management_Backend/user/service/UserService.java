@@ -70,4 +70,15 @@ public class UserService {
     userRepository.save(user);
     return ("/profile-images/" + user.getID().toString());
   }
+
+  public void deleteAccount(Integer userID) {
+    userRepository.deleteById(userID);
+  }
+
+  public void editRole(EditRoleDTO editRoleDTO) {
+    User user = userRepository.findById(editRoleDTO.getUserID()).get();
+    user.setUserRole(editRoleDTO.getNewUserRole());
+    userRepository.save(user);
+  }
+
 }
