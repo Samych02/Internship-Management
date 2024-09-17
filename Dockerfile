@@ -15,4 +15,4 @@ COPY . .
 RUN npm run build
 
 # Start the Next.js application
-CMD ["npm", "start"]
+CMD ["npm", "start", "--", "-H", "0.0.0.0"]
