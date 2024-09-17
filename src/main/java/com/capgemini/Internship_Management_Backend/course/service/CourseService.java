@@ -67,6 +67,7 @@ public class CourseService {
       fetchCoursesForResponsibleDTO.setCourseProjectionList(getAllObligatoryCoursesOfIntern(intern.getID()));
       fetchCoursesForResponsibleDTO.setInternName(intern.getFirstName() + " " + intern.getLastName());
       fetchCoursesForResponsibleDTOList.add(fetchCoursesForResponsibleDTO);
+      fetchCoursesForResponsibleDTO = new FetchCoursesForResponsibleDTO();
     }
     return fetchCoursesForResponsibleDTOList;
 
