@@ -82,9 +82,9 @@ public class SubjectService {
     subjectRepository.deleteById(subjectID);
   }
 
-  public List<?> getAllSubjectsAssignableToResume(Integer resumeID) {
+  public List<?> getAllSubjectsAssignableToResume(Integer resumeID, Integer supervsorID) {
     // 1: get a list of all accepted subjects
-    List<SubjectProjectionForAssociation> acceptedSubjectsList = subjectRepository.findAllProjectedBySubjectStatus(SubjectStatus.ACCEPTED);
+    List<SubjectProjectionForAssociation> acceptedSubjectsList = subjectRepository.findAllProjectedBySubjectStatusAndAndPoster(SubjectStatus.ACCEPTED, new User(supervsorID));
 
     // 2: get a list of all associated subject
     List<ProjectionForAssignableSubject> associatedSubjectsList = candidatureRepository.findAllProjectedByResume(new Resume(resumeID));

@@ -19,8 +19,6 @@ import java.util.Collections;
 @RequestMapping("/api/subjects")
 @RequiredArgsConstructor
 public class SubjectController {
-  private final SubjectWordGeneratorService subjectWordGeneratorService;
-  private final ValidationAutoConfiguration validationAutoConfiguration;
   private final SubjectService subjectService;
 
   @GetMapping("/check-title-used")
@@ -45,9 +43,10 @@ public class SubjectController {
 
   @GetMapping("assignable")
   public ResponseEntity<?> getAllAssociableSubjects(
-          @RequestParam @Valid Integer resumeID
+          @RequestParam @Valid Integer resumeID,
+          @RequestParam @Valid Integer supervisorID
   ) {
-    return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Subjects fetched successfully", subjectService.getAllSubjectsAssignableToResume(resumeID)));
+    return ResponseEntity.status(HttpStatus.OK).body(ResponseUtil.successResponse("Subjects fetched successfully", subjectService.getAllSubjectsAssignableToResume(resumeID, supervisorID)));
   }
 
   @GetMapping("count-pending")

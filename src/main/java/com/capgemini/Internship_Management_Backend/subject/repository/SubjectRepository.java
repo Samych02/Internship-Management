@@ -20,7 +20,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Integer>, JpaS
 
   List<SubjectProjection> findAllProjectedBySubjectStatusOrderByCreatedAtDesc(SubjectStatus subjectStatus);
 
-  List<SubjectProjectionForAssociation> findAllProjectedBySubjectStatus(SubjectStatus subjectStatus);
+  List<SubjectProjectionForAssociation> findAllProjectedBySubjectStatusAndAndPoster(SubjectStatus subjectStatus, User poster);
 
   List<SubjectProjection> findAllProjectedByPosterOrderByCreatedAtDesc(User poster);
 
