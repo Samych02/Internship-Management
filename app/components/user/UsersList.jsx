@@ -6,10 +6,12 @@ import {ActionIcon, Button, Group, Stack, Title, Tooltip} from "@mantine/core";
 import {IconLockPassword, IconShieldHalf, IconTrash} from "@tabler/icons-react";
 import {MRT_Localization_FR} from "mantine-react-table/locales/fr";
 import SuccessAlert from "@/app/components/feedback/SuccessAlert";
-import {fetchUsers, resetPassword} from "@/app/components/user/actions";
+import {deleteAccount, fetchUsers, resetPassword} from "@/app/components/user/actions";
 import ROLES from "@/app/constants/ROLES";
 import RegisterUserForm from "@/app/components/user/RegisterUserForm";
 import {useSession} from "next-auth/react";
+import EditRoleModal from "@/app/components/user/EditRoleModal";
+import {useDisclosure} from "@mantine/hooks";
 
 export default function UsersList() {
   const [refresh, setRefresh] = useState(false)
@@ -17,7 +19,7 @@ export default function UsersList() {
   const [data, setData] = useState([])
   const [selectedUser, setSelectedUser] = useState(null);
   const [feedbackMessage, setFeedbackMessage] = useState("");
-  const {update} = useSession()
+  const [editRoleModalOpened, toggleEditRoleModal] = useDisclosure(false)
 
 
   useEffect(() => {
@@ -133,9 +135,9 @@ export default function UsersList() {
                 color="yellow"
                 onClick={() => {
                   setSelectedUser(row.original.id)
-                  //todo: ee
-                  togglePDFModal.open()
+                  toggleEditRoleModal.open()
                 }}
+                disabled={row.original.id === 1} //plz dont kill me for this
             >
               <IconShieldHalf/>
             </ActionIcon>
@@ -147,10 +149,12 @@ export default function UsersList() {
             <ActionIcon
                 variant="filled"
                 color="red"
-                onClick={() => {
-                  setSelectedUser(row.original.id)
-                  //todo: ee
-                  togglePDFModal.open()
+                onClick={async () => {
+                  setIsLoading(true)
+                  await deleteAccount(row.original.id)
+                  setIsLoading(false)
+                  setRefresh((refresh) => !refresh)
+                  setFeedbackMessage("Compte supprimé avec succès!")
                 }}
             >
               <IconTrash/>
@@ -169,6 +173,15 @@ export default function UsersList() {
               setFeedbackMessage("")
             }}
             title={feedbackMessage}
+        />
+
+        <EditRoleModal
+            close={toggleEditRoleModal.close}
+            opened={editRoleModalOpened}
+            setFeedbackMessage={setFeedbackMessage}
+            setRefresh={setRefresh}
+            setUserID={setSelectedUser}
+            userID={selectedUser}
         />
 
         <MantineReactTable table={table}/>

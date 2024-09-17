@@ -74,3 +74,24 @@ export async function updateProfilePicture(formData){
   response = await response.json()
   return response.body.path
 }
+
+export async function deleteAccount(userID){
+  let response = await fetch(`${process.env.API_URL}/users/${userID}`, {
+    method: "DELETE",
+  })
+  return response.ok
+}
+
+export async function editUserRole(userID, newUserRole) {
+  let response = await fetch(`${process.env.API_URL}/users/update-role`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      userID: userID,
+      newUserRole: newUserRole,
+    }),
+    headers: {
+      'Content-type': 'application/json'
+    }
+  })
+  return response.ok
+}

@@ -124,12 +124,13 @@ export default function InternshipArchivesList({listType = "NORMAL"}) {
           >
             <ActionIcon
                 variant="filled"
+                bg="green"
             >
               <a
                   href={process.env.NEXT_PUBLIC_STATIC_FILES_URL + row.original.reportPath}
                   target="_blank"
               >
-                <IconFileDescription/>
+                <IconFileDescription color="white"/>
               </a>
             </ActionIcon>
           </Tooltip>
@@ -146,7 +147,7 @@ export default function InternshipArchivesList({listType = "NORMAL"}) {
                       href={process.env.NEXT_PUBLIC_STATIC_FILES_URL + row.original.presentationPath}
                       target="_blank"
                   >
-                    <IconPresentationAnalytics/>
+                    <IconPresentationAnalytics color="white"/>
                   </a>
                 </ActionIcon>
               </Tooltip>

@@ -44,6 +44,7 @@ export default function SubjectsList({listType}) {
       accessorKey: 'title',
       header: 'Sujet',
       filterVariant: 'text',
+      size:300,
     }, {
       accessorKey: 'internshipType',
       header: 'PFE/PFA',
@@ -132,7 +133,6 @@ export default function SubjectsList({listType}) {
         poster: listType !== "SUPERVISOR"
       },
     },
-
     renderCreateRowModalContent: () => (
         listType === "SUPERVISOR" &&
         <Stack>
