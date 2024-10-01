@@ -1,0 +1,64 @@
+services:
+  backend:
+    container_name: backend
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/Internship-Management
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - RESOURCES_DIRECTORY=/app/data
+    volumes:
+      - /Users/samy/Desktop:/app/data
+    networks:
+      - database
+      - frontend
+
+  postgres:
+    container_name: postgres
+    image: postgres:16
+    environment:
+      - POSTGRES_DB=Internship-Management
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    volumes:
+      - postgresVolume:/var/lib/postgresql/data
+    networks:
+      - database
+
+  frontend:
+    build: ../Internship-Management-Frontend
+    container_name: frontend
+    depends_on:
+      - backend
+    networks:
+      - frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - AUTH_SECRET=XOaTyNPsGlz+n4t4O2Ph2D4WkYvjWhBntCYfFfOcTqk=
+      - API_URL=http://backend:8080/api
+      - NEXT_PUBLIC_STATIC_FILES_URL=http://127.0.0.1:80/
+    env_file:
+      - ../Internship-Management-Frontend/.env.local
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    volumes:
+      - /Users/samy/Desktop:/usr/share/nginx/html/
+    ports:
+      - "80:80"
+
+networks:
+  frontend:
+    driver: bridge
+  database:
+    driver: bridge
+
+volumes:
+  postgresVolume:
