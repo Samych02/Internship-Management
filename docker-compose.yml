@@ -1,0 +1,56 @@
+services:
+  backend:
+    container_name: backend
+    build: backend
+    depends_on:
+      - postgres
+    environment:
+      - RESOURCES_DIRECTORY=/app/data
+    volumes:
+      #Resources folder is the folder where users' documents (resumes, profile pictures...) are stored.
+      #In our case we chose a folder children of OneDrive so users' data are automatically backed up (cool)
+      # /path/to/users/resources/folder/on/host/machine:/app/data
+      - /Users/samy/Desktop/ttt:/app/data
+    networks:
+      - database
+      - frontend
+    env_file:
+      - springboot.env
+
+  postgres:
+    container_name: postgres
+    image: postgres:16
+    env_file:
+      - postgres.env
+
+    volumes:
+      - postgresVolume:/var/lib/postgresql/data
+    networks:
+      - database
+
+  frontend:
+    build: .
+    container_name: frontend
+    depends_on:
+      - backend
+    networks:
+      - frontend
+    ports:
+      - "80:3000"
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    volumes:
+      - /Users/samy/Desktop:/usr/share/nginx/html/
+    ports:
+      - "8090:80"
+
+networks:
+  frontend:
+    driver: bridge
+  database:
+    driver: bridge
+
+volumes:
+  postgresVolume:
