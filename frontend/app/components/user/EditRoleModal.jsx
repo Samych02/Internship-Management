@@ -1,7 +1,5 @@
 "use client"
-import {Button, Group, Modal, Select, Stack, Text, TextInput} from "@mantine/core";
-import {useRouter} from "next/navigation";
-import {editSubjectStatus} from "@/app/components/subjects/actions";
+import {Button, Group, Modal, Select, Stack, Text} from "@mantine/core";
 import {useForm} from "@mantine/form";
 import {editUserRole} from "@/app/components/user/actions";
 import ROLES from "@/app/constants/ROLES";
@@ -58,7 +56,7 @@ export default function EditRoleModal({opened, close, userID, setUserID, setRefr
               <Button
                   bg="red"
                   onClick={() => {
-                    setSubjectID(null)
+                    setUserID(null)
                     close()
                   }}
               >
